@@ -49,8 +49,8 @@ public class About implements Co2Configurable{
                 " See the License for the specific language governing permissions and<br/>" +
                 " limitations under the License.<br/>"+
 
-     //           "<h2>Bugs and Feature Requests</h2>" +
-     //           "Co2's home page is at <a href=\"http://co2.professionallyevil.com>co2.professionallyevil.com</a>" +
+                "<h2>Bugs and Feature Requests</h2>" +
+                "Bug tracking for Co2 is at <a href=\"https://code.google.com/p/burp-co2/issues/list\">code.google.com/p/burp-co2/</a>" +
 
 
                 "</body></html>");
