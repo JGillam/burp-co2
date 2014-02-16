@@ -1,5 +1,9 @@
 = Burp Co2 Release Notes =
 
+==Version 0.5 (TBD):==
+  * Updated information on About tab to include clickable links
+  * Implemented Co2 version checker (optionally automated)
+
 ==Version 0.4 (12 Feb, 2014):==
   * Initial Public Release!
   * SQLMapper Module

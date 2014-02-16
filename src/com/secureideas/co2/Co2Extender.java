@@ -18,6 +18,7 @@ package com.secureideas.co2;
 
 import burp.IBurpExtender;
 import burp.IBurpExtenderCallbacks;
+import burp.IExtensionStateListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,10 +27,11 @@ import java.awt.*;
  * Delegate fo burp.BurpExtender.  All the functionality should be implemented in this class rather than
  * burp.BurpExtender
  */
-public class Co2Extender implements IBurpExtender {
-    public static final String VERSION = "0.4";
+public class Co2Extender implements IBurpExtender, IExtensionStateListener {
+    public static final String VERSION = "0.5.0";
     private Co2ConfigTab configTab;
     private IBurpExtenderCallbacks callbacks;
+    private java.util.Timer co2Timer = new java.util.Timer("Co2",false);
 
 
     public Co2Extender() {
@@ -58,7 +60,13 @@ public class Co2Extender implements IBurpExtender {
 
         OAutherTab oauther = new OAutherTab(callbacks);
 
-        About about = new About();
+        final About about = new About(callbacks);
+        co2Timer.schedule(new java.util.TimerTask(){
+            @Override
+            public void run() {
+                about.performUpdateCheck();
+            }
+        }, 1000 * 30, 1000 * 60 * 60 * 24);  // check 30 seconds after startup + every 24 hrs
 
         Co2Configurable[] configurables = {mapper, userGenerator, oauther, payloadProcessor, beautifier, about};
 
@@ -67,6 +75,14 @@ public class Co2Extender implements IBurpExtender {
         callbacks.addSuiteTab(configTab);
 
         callbacks.printOutput("Co2 Loaded.  Version: "+VERSION+" (build "+about.build+")");
+
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        if(co2Timer!=null){
+            co2Timer.cancel();
+        }
     }
 
     /**
