@@ -22,6 +22,10 @@ import burp.IBurpExtenderCallbacks;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Delegate fo burp.BurpExtender.  All the functionality should be implemented in this class rather than
+ * burp.BurpExtender
+ */
 public class Co2Extender implements IBurpExtender {
     public static final String VERSION = "0.4";
     private Co2ConfigTab configTab;
@@ -50,13 +54,13 @@ public class Co2Extender implements IBurpExtender {
 
         Hunter hunter = new Hunter(callbacks);
 
-        Lister lister = new Lister(callbacks);
+        UserGenerator userGenerator = new UserGenerator(callbacks);
 
         OAutherTab oauther = new OAutherTab(callbacks);
 
         About about = new About();
 
-        Co2Configurable[] configurables = {mapper,  lister, oauther, payloadProcessor, beautifier, about};
+        Co2Configurable[] configurables = {mapper, userGenerator, oauther, payloadProcessor, beautifier, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);

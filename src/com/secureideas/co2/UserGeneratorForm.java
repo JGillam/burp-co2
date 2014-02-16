@@ -41,7 +41,7 @@ import java.util.concurrent.ExecutionException;
  * Date: 2/6/14
  * Time: 8:06 PM
  */
-public class ListerForm  implements ClipboardOwner{
+public class UserGeneratorForm implements ClipboardOwner{
     private JPanel mainPanel;
     private JPanel outputPanel;
     private JSlider startSlider;
@@ -73,7 +73,7 @@ public class ListerForm  implements ClipboardOwner{
     private static final int MAX_COLLECTED = 200000; //TODO: make configurable
     private static final int MAX_PAYLOADS = 100000; //TODO: make configurable
 
-    public ListerForm(){
+    public UserGeneratorForm(){
         final JPopupMenu popup = new JPopupMenu();
         JMenuItem copy = new JMenuItem("Copy all");
         popup.add(copy);
@@ -83,7 +83,7 @@ public class ListerForm  implements ClipboardOwner{
             public void actionPerformed(ActionEvent e) {
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 StringSelection contents = new StringSelection(outputListArea.getText());
-                clipboard.setContents(contents, ListerForm.this);
+                clipboard.setContents(contents, UserGeneratorForm.this);
             }
         });
 
@@ -355,7 +355,7 @@ public class ListerForm  implements ClipboardOwner{
 
     //TODO: processes nicknames even for surnames
     private int readListInto(String resourceName, Map<StatItem, Integer> itemSet, int maxCount, boolean lowercase, boolean mixedcase, boolean uppercase, boolean justInitial) throws Exception {
-        InputStream inStream = ListerForm.this.getClass().getClassLoader().getResourceAsStream(RESOURCE_FOLDER + resourceName);
+        InputStream inStream = UserGeneratorForm.this.getClass().getClassLoader().getResourceAsStream(RESOURCE_FOLDER + resourceName);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
 
         String line = reader.readLine();
@@ -426,7 +426,7 @@ public class ListerForm  implements ClipboardOwner{
     private HashMap<String, String[]> getNicknames() {
         HashMap<String, String[]> nicknames = new HashMap<String, String[]>();
         if (commonNicknamesCheckBox.isSelected()) {
-            InputStream inStream = ListerForm.this.getClass().getClassLoader().getResourceAsStream(RESOURCE_FOLDER + "nicknames.csv");
+            InputStream inStream = UserGeneratorForm.this.getClass().getClassLoader().getResourceAsStream(RESOURCE_FOLDER + "nicknames.csv");
             BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
 
             try {

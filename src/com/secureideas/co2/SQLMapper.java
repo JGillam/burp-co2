@@ -25,6 +25,9 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Handler class for SQLMapper tab setup.
+ */
 public class SQLMapper implements Co2Configurable, IContextMenuFactory {
 
     SQLMapperForm tab = new SQLMapperForm();
@@ -61,9 +64,7 @@ public class SQLMapper implements Co2Configurable, IContextMenuFactory {
                     try {
                         IRequestInfo request = helpers.analyzeRequest(service, selectedRequest);
                          extender.getCallbacks().printOutput("SQLMapper analyzed request: "+request.toString());
-                        //System.out.println("Analyzed request...");
                         tab.setRequestInfo(request, helpers);
-                        //System.out.println("Set request...");
                         extender.selectConfigurableTab(SQLMapper.this);
                     } catch (Exception e1) {
                         extender.getCallbacks().printError(e1.getMessage());

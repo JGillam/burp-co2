@@ -21,6 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+
+/**
+ * This class handles the About tab logic.
+ */
 public class About implements Co2Configurable{
 
     AboutTab tab = new AboutTab();
@@ -66,7 +70,7 @@ public class About implements Co2Configurable{
         return "About";
     }
 
-    // NOTE: this always seems to come back one number behind - seems to be an issue with IntelliJ's build pre-processing.
+    // NOTE: this always seems to come back one number behind - seems to be an issue with IntelliJ's build pre-processing order.
     private String loadBuild(){
         try {
             InputStream inStream = About.this.getClass().getClassLoader().getResourceAsStream("com/secureideas/co2/build.txt");

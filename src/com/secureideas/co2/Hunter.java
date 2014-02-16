@@ -20,6 +20,7 @@ import burp.IBurpExtenderCallbacks;
 
 import java.awt.*;
 
+// TODO: Currently not used.
 public class Hunter implements Co2Configurable {
     HunterForm tab = new HunterForm();
     IBurpExtenderCallbacks callbacks;

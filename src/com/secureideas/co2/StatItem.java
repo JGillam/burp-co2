@@ -16,6 +16,11 @@
 
 package com.secureideas.co2;
 
+/**
+ * A stat item is basically a weighted string.  This is what how sorting is handled in UserGenerator.  Simply
+ * add StatItems to any collection that can do comparisons (i.e. that recognizes the Comparable interface).
+ *
+ */
 public class StatItem implements Comparable {
     private String name;
     private int value;
