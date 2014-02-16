@@ -1,0 +1,9 @@
+= Burp Co2 Release Notes =
+
+==Version 0.4 (12 Feb, 2014):==
+  * Initial Public Release!
+  * SQLMapper Module
+  * User Generator Module
+  * OAuther module
+  * ASCII Payload processor
+  * Prettier JS (Javascript Beautifier)
