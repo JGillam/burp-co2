@@ -184,6 +184,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
                 mangledNames.add(first.toLowerCase() + delim + last.toLowerCase() + domain);
                 mangledNames.add(first.substring(0, 1).toLowerCase() + delim + last.toLowerCase() + domain);
                 mangledNames.add(last.toLowerCase() + delim + first.substring(0, 1).toLowerCase() + domain);
+                mangledNames.add(first.toLowerCase() + delim + last.substring(0, 1).toLowerCase() + domain);
                 if (caseSensitiveCheckBox.isSelected()) {
                     mangledNames.add(toMixedCase(first) + delim + toMixedCase(last) + domain);
                     mangledNames.add(first.substring(0, 1).toUpperCase() + delim + last.toLowerCase() + domain);
@@ -209,6 +210,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
                         addCommonNumeric(mangledNames, first.toLowerCase() + delim + last.toLowerCase(), i);
                         addCommonNumeric(mangledNames, first.substring(0, 1).toLowerCase() + delim + last.toLowerCase(), i);
                         addCommonNumeric(mangledNames, last.toLowerCase(), i);
+                        addCommonNumeric(mangledNames, first.toLowerCase() + delim + last.substring(0, 1).toLowerCase(), i);
 
                         if (caseSensitiveCheckBox.isSelected()) {
                             addCommonNumeric(mangledNames, toMixedCase(first), i);
@@ -224,6 +226,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
                         addCommonNumeric(mangledNames, first.toLowerCase() + delim + last.toLowerCase(), i);
                         addCommonNumeric(mangledNames, first.substring(0, 1).toLowerCase() + delim + last.toLowerCase(), i);
                         addCommonNumeric(mangledNames, last.toLowerCase(), i);
+                        addCommonNumeric(mangledNames, first.toLowerCase() + delim + last.substring(0, 1).toLowerCase(), i);
 
                         if (caseSensitiveCheckBox.isSelected()) {
                             addCommonNumeric(mangledNames, toMixedCase(first), i);
