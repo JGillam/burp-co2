@@ -60,6 +60,8 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 
         OAutherTab oauther = new OAutherTab(callbacks);
 
+        NameManglerTab nameMangler = new NameManglerTab(callbacks);
+
         final About about = new About(callbacks);
         co2Timer.schedule(new java.util.TimerTask(){
             @Override
@@ -68,7 +70,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
             }
         }, 1000 * 30, 1000 * 60 * 60 * 24);  // check 30 seconds after startup + every 24 hrs
 
-        Co2Configurable[] configurables = {mapper, userGenerator, oauther, payloadProcessor, beautifier, about};
+        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, oauther, payloadProcessor, beautifier, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);

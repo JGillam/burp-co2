@@ -2,6 +2,7 @@
 
 ==Version 0.5 (TBD):==
   * Updated information on About tab to include clickable links
+  * Name Mangler module added
   * Implemented Co2 version checker (optionally automated)
 
 ==Version 0.4 (12 Feb, 2014):==
