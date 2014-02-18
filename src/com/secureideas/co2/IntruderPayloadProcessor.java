@@ -20,6 +20,9 @@ import burp.IIntruderPayloadProcessor;
 
 import java.awt.*;
 
+/**
+ * A limited payload processor, currently just does transformations to ASCII decimal
+ */
 public class IntruderPayloadProcessor implements Co2Configurable, IIntruderPayloadProcessor {
 
     IntruderPayloadForm settingsForm;

@@ -36,9 +36,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * User: jasong
- * Date: 2/16/14
- * Time: 3:57 PM
+ * The NameMangler is a module for generating a list of potential usernames given a list of known users.  It will generate
+ * a list using combinations of first and last name, plus initials, etc...
  */
 public class NameManglerTab implements Co2Configurable, ClipboardOwner {
     private JPanel mainPanel;

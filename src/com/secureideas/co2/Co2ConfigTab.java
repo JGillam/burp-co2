@@ -22,6 +22,9 @@ import burp.ITab;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The main configuration tab for Co2 modules.  Each Co2Configurable module has its own subtab under this tab.
+ */
 public class Co2ConfigTab extends JPanel implements ITab {
     IBurpExtenderCallbacks callbacks;
 

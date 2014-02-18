@@ -54,7 +54,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
         SQLMapper mapper = new SQLMapper(callbacks.getHelpers(), this);
         callbacks.registerContextMenuFactory(mapper);
 
-        Hunter hunter = new Hunter(callbacks);
+        //Hunter hunter = new Hunter(callbacks);
 
         UserGenerator userGenerator = new UserGenerator(callbacks);
 
