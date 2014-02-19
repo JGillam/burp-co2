@@ -18,55 +18,16 @@ package com.secureideas.co2;
 
 import burp.*;
 import com.secureideas.co2.beautify.Beautifier;
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class MessageBeautifierFactory implements IMessageEditorTabFactory, Co2Configurable {
     IBurpExtenderCallbacks callbacks;
-    BeautifierConfigForm tab = new BeautifierConfigForm();
-    private boolean isEnabled = false;
-    private static String SETTING_EXTENSION_ENABLED = "co2.beautifier.enabled";
+    BeautifierConfigForm tab;
 
     public MessageBeautifierFactory(IBurpExtenderCallbacks callbacks) {
         this.callbacks = callbacks;
-        String on = callbacks.loadExtensionSetting(SETTING_EXTENSION_ENABLED);
-        if (on == null) {
-            on = "true";
-        }
-
-
-        if( on!=null && Boolean.parseBoolean(on) ) {
-            callbacks.registerMessageEditorTabFactory(this);
-            isEnabled = true;
-        }
-
-        tab.getEnableJavascriptBeautifierCheckBox().addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                boolean enabled = tab.getEnableJavascriptBeautifierCheckBox().isSelected();
-                if (enabled != isEnabled) {
-                    MessageBeautifierFactory.this.callbacks.printOutput("Prettier Enabled changed to " + enabled);
-                    isEnabled = enabled;
-                    if (isEnabled) {
-                        MessageBeautifierFactory.this.callbacks.registerMessageEditorTabFactory(MessageBeautifierFactory.this);
-                    } else {
-                        MessageBeautifierFactory.this.callbacks.removeMessageEditorTabFactory(MessageBeautifierFactory.this);
-
-                    }
-                    MessageBeautifierFactory.this.callbacks.saveExtensionSetting(SETTING_EXTENSION_ENABLED, "" + isEnabled);
-
-                }
-
-            }
-        });
-
+        tab = new BeautifierConfigForm(callbacks);
     }
 
     @Override
@@ -81,16 +42,14 @@ public class MessageBeautifierFactory implements IMessageEditorTabFactory, Co2Co
 
     @Override
     public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-        return new Co2MessageBeautifier(controller, editable);
+        return new Co2MessageBeautifier(editable);
     }
 
     class Co2MessageBeautifier implements IMessageEditorTab {
-        private boolean editable;
         private ITextEditor editor;
         private byte[] currentMessage;
 
-        Co2MessageBeautifier(IMessageEditorController controller, boolean editable){
-            this.editable = editable;
+        Co2MessageBeautifier(boolean editable){
             editor = callbacks.createTextEditor();
             editor.setEditable(editable);
         }
@@ -107,7 +66,7 @@ public class MessageBeautifierFactory implements IMessageEditorTabFactory, Co2Co
 
         @Override
         public boolean isEnabled(byte[] content, boolean isRequest) {
-            if (!isRequest){
+            if (!isRequest && tab.getBeautifierEnabled()){
                 IResponseInfo respinfo = callbacks.getHelpers().analyzeResponse(content);
                 return ("script".equals(respinfo.getStatedMimeType()) || "script".equals(respinfo.getInferredMimeType()));
             } else{

@@ -68,7 +68,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
             public void run() {
                 about.performUpdateCheck();
             }
-        }, 1000 * 30, 1000 * 60 * 60 * 24);  // check 30 seconds after startup + every 24 hrs
+        }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hrs
 
         Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, oauther, payloadProcessor, beautifier, about};
 

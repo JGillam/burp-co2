@@ -16,20 +16,31 @@
 
 package com.secureideas.co2;
 
-import javax.swing.*;
+import burp.IBurpExtenderCallbacks;
 
-/**
- * User: jasong
- * Date: 1/27/14
- * Time: 5:20 PM
- */
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 public class BeautifierConfigForm {
     private JCheckBox enableJavascriptBeautifierCheckBox;
     private JPanel mainPanel;
+    private static String SETTING_EXTENSION_ENABLED = "co2.beautifier.enabled";
+    private IBurpExtenderCallbacks callbacks;
 
 
-    public JCheckBox getEnableJavascriptBeautifierCheckBox() {
-        return enableJavascriptBeautifierCheckBox;
+    public BeautifierConfigForm(IBurpExtenderCallbacks burpExtenderCallbacks) {
+        this.callbacks = burpExtenderCallbacks;
+
+        String enabledSetting = callbacks.loadExtensionSetting(SETTING_EXTENSION_ENABLED);
+        enableJavascriptBeautifierCheckBox.setSelected(enabledSetting==null || Boolean.parseBoolean(enabledSetting));
+
+        enableJavascriptBeautifierCheckBox.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                callbacks.saveExtensionSetting(SETTING_EXTENSION_ENABLED, ""+enableJavascriptBeautifierCheckBox.isSelected());
+            }
+        });
     }
 
     public JPanel getMainPanel() {
@@ -37,4 +48,7 @@ public class BeautifierConfigForm {
     }
 
 
+    public boolean getBeautifierEnabled(){
+        return enableJavascriptBeautifierCheckBox.isSelected();
+    }
 }

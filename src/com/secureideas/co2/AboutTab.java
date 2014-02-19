@@ -64,7 +64,7 @@ public class AboutTab{
             additionalInfoLink.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    executeLink("http://co2.professionallyevil.com");
+                    executeLink("http://co2.professionallyevil.com?src=co2");
                 }
             });
             bugTrackingLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -77,7 +77,7 @@ public class AboutTab{
             latestVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    executeLink("http://co2.professionallyevil.com/download.php");
+                    executeLink("http://co2.professionallyevil.com/download.php?src=co2");
                 }
             });
         } else {
@@ -98,6 +98,7 @@ public class AboutTab{
 
         String autoUpdateCheckSetting =  burpCallbacks.loadExtensionSetting(SETTING_UPDATE_CHECK_AUTO);
         autoCheck = autoUpdateCheckSetting != null && Boolean.parseBoolean(autoUpdateCheckSetting);
+        chkAutoCheck.setSelected(autoCheck);
 
         chkAutoCheck.addChangeListener(new ChangeListener() {
             @Override
