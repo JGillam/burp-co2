@@ -109,7 +109,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
         try {
             while ((name = reader.readLine()) != null) {
                 lines.add(name);
-                callbacks.printOutput("Added name " + name);
+                //callbacks.printOutput("Added name " + name);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -119,7 +119,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
     }
 
     private void mangleNames(final List<String> nameList, final List<String> domainList) {
-        callbacks.printOutput("Mangling names " + nameList.size());
+        //callbacks.printOutput("Mangling names " + nameList.size());
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
@@ -253,7 +253,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
                 try {
                     String results = (String) get();
                     outputText.setText(results);
-                    callbacks.printOutput("Results length set to output: " + results.length());
+                    //callbacks.printOutput("Results length set to output: " + results.length());
                 } catch (InterruptedException e) {
                     callbacks.printError(e.toString());
                 } catch (ExecutionException e) {

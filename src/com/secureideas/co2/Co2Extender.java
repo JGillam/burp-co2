@@ -19,6 +19,7 @@ package com.secureideas.co2;
 import burp.IBurpExtender;
 import burp.IBurpExtenderCallbacks;
 import burp.IExtensionStateListener;
+import com.secureideas.co2.cewler.CewlerTab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,6 +63,8 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 
         NameManglerTab nameMangler = new NameManglerTab(callbacks);
 
+        CewlerTab cewler = new CewlerTab(callbacks);
+
         final About about = new About(callbacks);
         co2Timer.schedule(new java.util.TimerTask(){
             @Override
@@ -70,7 +73,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
             }
         }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hrs
 
-        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, oauther, payloadProcessor, beautifier, about};
+        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, oauther, payloadProcessor, beautifier, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);
