@@ -46,12 +46,14 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
     private List<IHttpRequestResponse> messages;
     private WordExtractorListener listener;
     private StatusBar statusBar;
+    private boolean forceLowercase;
     private Pattern wordPattern = Pattern.compile("[a-zA-Z0-9]*");
 
-    public WordExtractorWorker(IBurpExtenderCallbacks callbacks, StatusBar statusBar, List<IHttpRequestResponse> messages, WordExtractorListener l) {
+    public WordExtractorWorker(IBurpExtenderCallbacks callbacks, StatusBar statusBar, List<IHttpRequestResponse> messages, boolean forceLowercase, WordExtractorListener l) {
         this.callbacks = callbacks;
         this.statusBar = statusBar;
         this.messages = messages;
+        this.forceLowercase = forceLowercase;
         this.listener = l;
     }
 
@@ -77,7 +79,11 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
                 String phrase = new String(data);
                 Matcher m = wordPattern.matcher(phrase);
                 while (m.find()) {
-                    words.add(m.group());
+                    if (forceLowercase) {
+                        words.add(m.group().toLowerCase());
+                    } else {
+                        words.add(m.group());
+                    }
                 }
             }
         };

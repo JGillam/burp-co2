@@ -24,11 +24,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.List;
 
 
 public class CewlerTab implements Co2Configurable, IContextMenuFactory {
+    private static final String RESOURCE_FOLDER = "com/secureideas/co2/lists/";
     private JPanel mainPanel;
     private JList<IHttpRequestResponse> responseList;
     private JList<String> wordList;
@@ -36,10 +41,14 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory {
     private JButton clearButton;
     private JProgressBar progressBar;
     private JTextField statusTextField;
+    private JSlider minWordSizeSlider;
+    private JCheckBox forceToLowercaseCheckBox;
+    private JCheckBox ignoreCommonWordsCheckBox;
     private IBurpExtenderCallbacks callbacks;
     private BurpMessageListModel messageList = new BurpMessageListModel();
     private BurpMessageListCellRenderer messageListCellRenderer;
     private DefaultListModel<String> wordListModel = new DefaultListModel<String>();
+    private Set<String> commonWords = new HashSet<String>();
     private StatusBar statusBar;
 
     public CewlerTab(IBurpExtenderCallbacks burpCallbacks) {
@@ -54,19 +63,49 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory {
         extractWordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WordExtractorWorker extractor = new WordExtractorWorker(callbacks, statusBar, messageList.getMessages(), new WordExtractorListener() {
+                WordExtractorWorker extractor = new WordExtractorWorker(callbacks, statusBar, messageList.getMessages(), forceToLowercaseCheckBox.isSelected(), new WordExtractorListener() {
                     @Override
                     public void addWords(Set<String> words) {
                         wordListModel.clear();
-                        for(String word:words){
-                            wordListModel.addElement(word);
+
+                        if (ignoreCommonWordsCheckBox.isSelected()) {
+                            words.removeAll(commonWords);
+                        }
+
+                        int minWordSize = minWordSizeSlider.getValue();
+
+                        for (String word : words) {
+                            if (word.length() >= minWordSize) {
+                                wordListModel.addElement(word);
+                            }
                         }
                     }
                 });
+
+                if (ignoreCommonWordsCheckBox.isSelected() && commonWords.isEmpty()) {
+                    InputStream inStream = CewlerTab.this.getClass().getClassLoader().getResourceAsStream(RESOURCE_FOLDER + "common_words.txt");
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+
+                    try {
+                        String line = reader.readLine();
+                        while (line != null) {
+                            commonWords.add(line.trim());
+                            line = reader.readLine();
+                        }
+                    } catch (IOException e1) {
+                        callbacks.printError(e1.toString());
+                    }
+                }
                 extractor.execute();
             }
         });
 
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                messageList.clearMessages();
+            }
+        });
     }
 
     @Override
