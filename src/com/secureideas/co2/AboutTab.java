@@ -126,7 +126,7 @@ public class AboutTab{
             protected Object doInBackground() throws Exception {
                 URL url = new URL("http://co2.professionallyevil.com/latestversion.txt?v="+
                         currentVersion.getVersionString()+
-                        "t="+
+                        "&t="+
                         (automatic?"a":"m")  // reports if automated or manual update, for debugging
                 );
 

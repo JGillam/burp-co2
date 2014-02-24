@@ -57,8 +57,8 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
         mangleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List nameList = parseLines(inputText.getText());
-                List domainList = parseLines(domains.getText());
+                List<String> nameList = parseLines(inputText.getText());
+                List<String> domainList = parseLines(domains.getText());
                 mangleNames(nameList, domainList);
             }
         });
@@ -103,7 +103,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
     }
 
     private List<String> parseLines(String blockOfText) {
-        List<String> lines = new ArrayList();
+        List<String> lines = new ArrayList<String>();
         BufferedReader reader = new BufferedReader(new StringReader(blockOfText));
         String name;
         try {

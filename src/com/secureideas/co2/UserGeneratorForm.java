@@ -114,9 +114,9 @@ public class UserGeneratorForm implements ClipboardOwner{
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText("Reading first names...");
                 progressBar.setIndeterminate(true);
-                SwingWorker worker = new SwingWorker() {
+                SwingWorker worker = new SwingWorker<TreeSet<StatItem>,Object>() {
                     @Override
-                    protected Object doInBackground() throws Exception {
+                    protected TreeSet<StatItem> doInBackground() throws Exception {
                         HashMap<StatItem, Integer> stats = getFirstNamesMap();
                         TreeSet<StatItem> sortedItems = new TreeSet<StatItem>();
                         sortedItems.addAll(stats.keySet());
@@ -127,7 +127,7 @@ public class UserGeneratorForm implements ClipboardOwner{
                     protected void done() {
                         super.done();
                         try {
-                            TreeSet<StatItem> sortedItems = (TreeSet<StatItem>) get();
+                            TreeSet<StatItem> sortedItems = get();
                             statusLabel.setText("Result set size: " + sortedItems.size());
                             progressBar.setIndeterminate(false);
                             outputList(sortedItems);
@@ -155,9 +155,9 @@ public class UserGeneratorForm implements ClipboardOwner{
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText("Reading surnames...");
                 progressBar.setIndeterminate(true);
-                SwingWorker worker = new SwingWorker() {
+                SwingWorker<Set<StatItem>, Integer> worker = new SwingWorker<Set<StatItem>,Integer>() {
                     @Override
-                    protected Object doInBackground() throws Exception {
+                    protected Set<StatItem> doInBackground() throws Exception {
                         HashMap<StatItem, Integer> stats = getSurnamesMap();
                         TreeSet<StatItem> sortedItems = new TreeSet<StatItem>();
                         sortedItems.addAll(stats.keySet());
@@ -202,10 +202,9 @@ public class UserGeneratorForm implements ClipboardOwner{
             public void actionPerformed(ActionEvent e) {
 
                 progressBar.setIndeterminate(true);
-                SwingWorker worker = new SwingWorker() {
+                SwingWorker worker = new SwingWorker<TreeSet<StatItem>,Object>() {
                     @Override
                     protected void process(List chunks) {
-                        super.process(chunks);
                         if (chunks.size() > 0) {
                             Integer i = (Integer) chunks.get(chunks.size() - 1);
                             progressBar.setValue(i);
@@ -214,7 +213,7 @@ public class UserGeneratorForm implements ClipboardOwner{
                     }
 
                     @Override
-                    protected Object doInBackground() throws Exception {
+                    protected TreeSet<StatItem> doInBackground() throws Exception {
                         progressBar.setIndeterminate(true);
                         statusLabel.setText("Getting first names...");
                         TreeSet<StatItem> firstNameStats = new TreeSet<StatItem>();
@@ -281,7 +280,7 @@ public class UserGeneratorForm implements ClipboardOwner{
                     protected void done() {
                         super.done();
                         try {
-                            TreeSet<StatItem> results = (TreeSet<StatItem>) get();
+                            TreeSet<StatItem> results = get();
                             progressBar.setValue(0);
                             statusLabel.setText("Payload list iterated through: " + results.size());
                             outputList(results);
@@ -353,7 +352,7 @@ public class UserGeneratorForm implements ClipboardOwner{
         label.setText(String.valueOf(1900 + value) + "s");
     }
 
-    //TODO: processes nicknames even for surnames
+    //TODO: fix issue - processes nicknames even for surnames
     private int readListInto(String resourceName, Map<StatItem, Integer> itemSet, int maxCount, boolean lowercase, boolean mixedcase, boolean uppercase, boolean justInitial) throws Exception {
         InputStream inStream = UserGeneratorForm.this.getClass().getClassLoader().getResourceAsStream(RESOURCE_FOLDER + resourceName);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
