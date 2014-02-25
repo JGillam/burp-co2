@@ -38,7 +38,9 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.List;
 
-
+/**
+ * The main tab of CeWLer functionality.
+ */
 public class CewlerTab implements Co2Configurable, IContextMenuFactory, ClipboardOwner {
     private static final String RESOURCE_FOLDER = "com/secureideas/co2/lists/";
     private JPanel mainPanel;

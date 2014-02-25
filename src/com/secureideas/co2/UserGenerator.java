@@ -20,7 +20,10 @@ import burp.IBurpExtenderCallbacks;
 
 import java.awt.*;
 
-public class UserGenerator implements Co2Configurable {
+/**
+ * UserGenerator Co2Configurable object
+ */
+public class UserGenerator implements Co2Configurable {  //TODO: combine with UserGeneratorForm class
     UserGeneratorForm form = new UserGeneratorForm();
 
     public UserGenerator(IBurpExtenderCallbacks callbacks){

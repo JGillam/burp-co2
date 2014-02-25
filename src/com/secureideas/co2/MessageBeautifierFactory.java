@@ -21,6 +21,9 @@ import com.secureideas.co2.beautify.Beautifier;
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * Class to hook into Javascript beautifier tab
+ */
 public class MessageBeautifierFactory implements IMessageEditorTabFactory, Co2Configurable {
     IBurpExtenderCallbacks callbacks;
     BeautifierConfigForm tab;

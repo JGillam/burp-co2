@@ -24,6 +24,9 @@ import burp.IRequestInfo;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * ListCellRenderer for IHttpRequestResponse items.  It displays the URL.
+ */
 public class BurpMessageListCellRenderer extends JLabel implements ListCellRenderer <IHttpRequestResponse>{
     IBurpExtenderCallbacks callbacks;
 

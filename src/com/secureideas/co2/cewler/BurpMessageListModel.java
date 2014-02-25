@@ -23,6 +23,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ListModel for IHttpRequestResponse items.  Much like the default ListModel but backed with an ArrayList.
+ */
 public class BurpMessageListModel extends AbstractListModel<IHttpRequestResponse> {
     private List<IHttpRequestResponse> messages = new ArrayList<IHttpRequestResponse>();
 
