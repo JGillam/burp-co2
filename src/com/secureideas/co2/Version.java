@@ -16,6 +16,9 @@
 
 package com.secureideas.co2;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Class to encapsulate a version.  For comparison purposes.
  */
@@ -25,44 +28,33 @@ public class Version {
     private int patch;  // bug fix or minor feature enhancement
     private int build;  // the build number
     private String extra = "";
-    private String versionString;
+    private String readibleVersionString;
+    private Pattern versionPattern = Pattern.compile("^(?<major>[0-9]+)\\.(?<minor>[0-9]+)\\.(?<patch>[0-9]+)(([\\. ])?(?<extra>[a-zA-Z0-9]+))?(\\.(?<build>[0-9]+))?");
 
 
     public Version(String version){
-        String[] parts = version.split("\\.");
-        if(parts.length > 0){
-            major = Integer.parseInt(parts[0]);
-        }
-        if(parts.length > 1){
-            minor = Integer.parseInt(parts[1]);
-        }
-        if(parts.length > 2){
-            patch = Integer.parseInt(parts[2]);
-        }
-
-        if(parts.length > 4){
-            build = Integer.parseInt(parts[4]);
-            extra = parts[3];
-        }else if(parts.length > 3){
-            build = Integer.parseInt(parts[3]);
+        Matcher m = versionPattern.matcher(version);
+        if(m.matches()){
+            major = Integer.parseInt(m.group("major"));
+            minor = Integer.parseInt(m.group("minor"));
+            patch = Integer.parseInt(m.group("patch"));
+            extra = m.group("extra")==null?"":m.group("extra");
+            build = m.group("build")==null?0:Integer.parseInt(m.group("build"));
         }
 
         StringBuilder buf = new StringBuilder();
-        buf.append(major);
-        buf.append('.');
-        buf.append(minor);
-        buf.append('.');
+        buf.append(major).append('.');
+        buf.append(minor).append('.');
         buf.append(patch);
         if(!extra.isEmpty()){
-            buf.append(' ');
             buf.append(extra);
         }
         if(build>0){
             buf.append(" (build ");
             buf.append(build);
-            buf.append(')');
+            buf.append(")");
         }
-        this.versionString = buf.toString();
+        this.readibleVersionString = buf.toString();
     }
 
     public Version(String versionString, String buildString){
@@ -85,18 +77,37 @@ public class Version {
     }
 
     public String toString(){
-        return versionString;
+        return readibleVersionString;
     }
 
     public String getVersionString(){
         StringBuilder buf = new StringBuilder();
         buf.append(major).append('.');
         buf.append(minor).append('.');
-        buf.append(patch).append('.');
+        buf.append(patch);
         if(!extra.isEmpty()){
-            buf.append(extra).append('.');
+            buf.append('.');
+            buf.append(extra);
         }
+        if(build>0){
+            buf.append('.');
         buf.append(build);
+        }
         return buf.toString();
+    }
+
+    public static void main(String[] args) {
+        Version v = new Version("1.2.3");
+        Version v1 = new Version("1.2.3.a");
+        Version v2 = new Version ("1.2.3 a");
+        Version v3 = new Version ("1.2.3.99");
+        Version v4 = new Version ("1.2.3.a.99");
+
+        System.out.println(v.toString());
+        System.out.println(v1.toString());
+        System.out.println(v2.toString());
+        System.out.println(v3.toString());
+        System.out.println(v4.toString());
+
     }
 }

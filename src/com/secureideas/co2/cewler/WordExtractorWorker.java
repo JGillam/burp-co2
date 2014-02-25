@@ -23,6 +23,8 @@ import burp.IResponseInfo;
 import com.secureideas.co2.StatusBar;
 
 import javax.swing.*;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 import java.io.ByteArrayInputStream;
@@ -48,6 +50,9 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
     private StatusBar statusBar;
     private boolean forceLowercase;
     private Pattern wordPattern = Pattern.compile("[a-zA-Z0-9]*");
+    private boolean ignoreScriptTags = false;
+    private boolean ignoreStyleTags = false;
+    private boolean ignoreComments = false;
 
     public WordExtractorWorker(IBurpExtenderCallbacks callbacks, StatusBar statusBar, List<IHttpRequestResponse> messages, boolean forceLowercase, WordExtractorListener l) {
         this.callbacks = callbacks;
@@ -63,16 +68,45 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
         final Set<String> words = new TreeSet<String>();
 
         HTMLEditorKit.ParserCallback parserCallback = new HTMLEditorKit.ParserCallback() {
+            boolean inStyleTag = false;
+            boolean inScriptTag = false;
+
             @Override
             public void handleComment(char[] data, int pos) {
                 super.handleComment(data, pos);
+                if(!ignoreComments){
                 extractWords(data);
+                }
             }
 
             @Override
             public void handleText(char[] data, int pos) {
                 super.handleText(data, pos);
-                extractWords(data);
+                if (!inStyleTag) {
+                    extractWords(data);
+                }
+            }
+
+            @Override
+            public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos) {
+                super.handleStartTag(t, a, pos);
+                if (HTML.Tag.STYLE.equals(t) && ignoreStyleTags) {
+                    inStyleTag = true;
+                }
+                if (HTML.Tag.SCRIPT.equals(t) && ignoreScriptTags) {
+                    inScriptTag = true;
+                }
+            }
+
+            @Override
+            public void handleEndTag(HTML.Tag t, int pos) {
+                super.handleEndTag(t, pos);
+                if (HTML.Tag.STYLE.equals(t) ) {
+                    inStyleTag = false;
+                }
+                if (HTML.Tag.SCRIPT.equals(t)) {
+                    inScriptTag = false;
+                }
             }
 
             private void extractWords(char[] data) {
@@ -107,7 +141,6 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
     protected void done() {
         super.done();
         try {
-            statusBar.setStatusText("Done.");
             Set<String> words = get();
             listener.addWords(words);
         } catch (InterruptedException e) {
@@ -115,5 +148,17 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
         } catch (ExecutionException e) {
             callbacks.printError(e.toString());
         }
+    }
+
+    public void setIgnoreScriptTags(boolean ignoreScriptTags) {
+        this.ignoreScriptTags = ignoreScriptTags;
+    }
+
+    public void setIgnoreStyleTags(boolean ignoreStyleTags) {
+        this.ignoreStyleTags = ignoreStyleTags;
+    }
+
+    public void setIgnoreComments(boolean ignoreComments) {
+        this.ignoreComments = ignoreComments;
     }
 }

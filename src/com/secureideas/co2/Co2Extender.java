@@ -29,10 +29,10 @@ import java.awt.*;
  * burp.BurpExtender
  */
 public class Co2Extender implements IBurpExtender, IExtensionStateListener {
-    public static final String VERSION = "0.5.0";
+    public static final String VERSION = "0.6.0a";
     private Co2ConfigTab configTab;
     private IBurpExtenderCallbacks callbacks;
-    private java.util.Timer co2Timer = new java.util.Timer("Co2",false);
+    private java.util.Timer co2Timer = new java.util.Timer("Co2", false);
 
 
     public Co2Extender() {
@@ -63,10 +63,10 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 
         NameManglerTab nameMangler = new NameManglerTab(callbacks);
 
-        CewlerTab cewler = new CewlerTab(callbacks);
+        CewlerTab cewler = new CewlerTab(this);
 
         final About about = new About(callbacks);
-        co2Timer.schedule(new java.util.TimerTask(){
+        co2Timer.schedule(new java.util.TimerTask() {
             @Override
             public void run() {
                 about.performUpdateCheck();
@@ -79,13 +79,13 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
         callbacks.customizeUiComponent(configTab);
         callbacks.addSuiteTab(configTab);
 
-        callbacks.printOutput("Co2 Loaded.  Version: "+VERSION+" (build "+about.build+")");
+        callbacks.printOutput("Co2 Loaded.  Version: " + VERSION + " (build " + about.build + ")");
 
     }
 
     @Override
     public void extensionUnloaded() {
-        if(co2Timer!=null){
+        if (co2Timer != null) {
             co2Timer.cancel();
         }
     }
@@ -95,7 +95,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
      *
      * @param configurable The configurable item for which a tab should be selected.
      */
-    public void selectConfigurableTab(Co2Configurable configurable) {
+    public void selectConfigurableTab(Co2Configurable configurable, boolean selectCo2Tab) {
         Component tabComponent = configurable.getTabComponent();
         if (tabComponent != null) {
             Container parent = tabComponent.getParent();
@@ -103,11 +103,13 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
                 ((JTabbedPane) parent).setSelectedComponent(tabComponent);
             }
 
-            Component mainCo2Tab = configTab.getUiComponent();
-            if (mainCo2Tab != null) {
-                Container mainParent = mainCo2Tab.getParent();
-                if (mainParent instanceof JTabbedPane) {
-                    ((JTabbedPane) mainParent).setSelectedComponent(mainCo2Tab);
+            if (selectCo2Tab) {
+                Component mainCo2Tab = configTab.getUiComponent();
+                if (mainCo2Tab != null) {
+                    Container mainParent = mainCo2Tab.getParent();
+                    if (mainParent instanceof JTabbedPane) {
+                        ((JTabbedPane) mainParent).setSelectedComponent(mainCo2Tab);
+                    }
                 }
             }
         }

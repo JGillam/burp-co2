@@ -65,7 +65,7 @@ public class SQLMapper implements Co2Configurable, IContextMenuFactory {
                         IRequestInfo request = helpers.analyzeRequest(service, selectedRequest);
                          extender.getCallbacks().printOutput("SQLMapper analyzed request: "+request.toString());
                         tab.setRequestInfo(request, helpers);
-                        extender.selectConfigurableTab(SQLMapper.this);
+                        extender.selectConfigurableTab(SQLMapper.this, true);
                     } catch (Exception e1) {
                         extender.getCallbacks().printError(e1.getMessage());
                     }

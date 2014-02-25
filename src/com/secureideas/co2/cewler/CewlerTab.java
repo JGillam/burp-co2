@@ -18,12 +18,19 @@ package com.secureideas.co2.cewler;
 
 import burp.*;
 import com.secureideas.co2.Co2Configurable;
+import com.secureideas.co2.Co2Extender;
 import com.secureideas.co2.StatusBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +39,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class CewlerTab implements Co2Configurable, IContextMenuFactory {
+public class CewlerTab implements Co2Configurable, IContextMenuFactory, ClipboardOwner {
     private static final String RESOURCE_FOLDER = "com/secureideas/co2/lists/";
     private JPanel mainPanel;
     private JList<IHttpRequestResponse> responseList;
@@ -44,18 +51,24 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory {
     private JSlider minWordSizeSlider;
     private JCheckBox forceToLowercaseCheckBox;
     private JCheckBox ignoreCommonWordsCheckBox;
+    private JSlider maxWordSizeSlider;
+    private JCheckBox ignoreStyleTagContentsCheckBox;
+    private JCheckBox ignoreScriptTagContentsCheckBox;
+    private JCheckBox ignoreCommentsCheckBox;
     private IBurpExtenderCallbacks callbacks;
     private BurpMessageListModel messageList = new BurpMessageListModel();
     private BurpMessageListCellRenderer messageListCellRenderer;
     private DefaultListModel<String> wordListModel = new DefaultListModel<String>();
     private Set<String> commonWords = new HashSet<String>();
     private StatusBar statusBar;
+    private Co2Extender extender;
 
-    public CewlerTab(IBurpExtenderCallbacks burpCallbacks) {
-        this.callbacks = burpCallbacks;
+    public CewlerTab(Co2Extender extender) {
+        this.extender = extender;
+        this.callbacks = extender.getCallbacks();
         statusBar = new StatusBar(callbacks, statusTextField, progressBar);
-        messageListCellRenderer = new BurpMessageListCellRenderer(burpCallbacks);
-        burpCallbacks.registerContextMenuFactory(this);
+        messageListCellRenderer = new BurpMessageListCellRenderer(callbacks);
+        callbacks.registerContextMenuFactory(this);
         responseList.setCellRenderer(messageListCellRenderer);
         responseList.setModel(messageList);
         wordList.setModel(wordListModel);
@@ -73,12 +86,14 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory {
                         }
 
                         int minWordSize = minWordSizeSlider.getValue();
+                        int maxWordSize = maxWordSizeSlider.getValue();
 
                         for (String word : words) {
-                            if (word.length() >= minWordSize) {
+                            if (word.length() >= minWordSize && word.length() <= maxWordSize) {   // TODO: add logic to ignore numbers and hex
                                 wordListModel.addElement(word);
                             }
                         }
+                        statusBar.setStatusText("Words extracted (after filtering): "+wordListModel.getSize());
                     }
                 });
 
@@ -96,6 +111,9 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory {
                         callbacks.printError(e1.toString());
                     }
                 }
+                extractor.setIgnoreComments(ignoreCommentsCheckBox.isSelected());
+                extractor.setIgnoreScriptTags(ignoreScriptTagContentsCheckBox.isSelected());
+                extractor.setIgnoreStyleTags(ignoreStyleTagContentsCheckBox.isSelected());
                 extractor.execute();
             }
         });
@@ -106,6 +124,8 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory {
                 messageList.clearMessages();
             }
         });
+
+        setupBasicWordsPopup();
     }
 
     @Override
@@ -152,6 +172,66 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory {
     private void addMessages(List<IHttpRequestResponse> messages) {
         messageList.addMessages(messages);
         responseList.setCellRenderer(messageListCellRenderer);   // somehow this is getting (annoyingly) unset, so we will just reset it when we change the message list
+        extender.selectConfigurableTab(this, false);
     }
 
+    private void setupBasicWordsPopup(){
+        final JPopupMenu popup = new JPopupMenu();
+
+        final JMenuItem copy = new JMenuItem("Copy");
+        popup.add(copy);
+        copy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                StringBuilder buf = new StringBuilder();
+                for(int i=0;i<wordListModel.getSize();i++){
+                    buf.append(wordListModel.get(i));
+                    buf.append("\n");
+                }
+                StringSelection contents = new StringSelection(buf.toString().trim());
+                clipboard.setContents(contents, CewlerTab.this);
+            }
+        });
+
+        //todo: add remove selected
+        //todo: add paste
+        //todo: add load from file
+        //todo: add save to file
+
+
+
+        wordList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                if(e.isPopupTrigger()){
+                    showPopup(e);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                if(e.isPopupTrigger()){
+                    showPopup(e);
+                }
+            }
+
+            private void showPopup(MouseEvent e){
+                JPopupMenu popup = new JPopupMenu();
+                popup.setInvoker(wordList);
+
+                copy.setEnabled(wordListModel.getSize()!=0);
+                popup.add(copy);
+
+                popup.show(e.getComponent(), e.getX(), e.getY());
+            }
+        });
+    }
+
+    @Override
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
+        // do nothing
+    }
 }
