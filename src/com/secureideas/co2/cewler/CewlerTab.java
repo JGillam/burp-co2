@@ -25,16 +25,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -57,8 +53,10 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
     private JCheckBox ignoreStyleTagContentsCheckBox;
     private JCheckBox ignoreScriptTagContentsCheckBox;
     private JCheckBox ignoreCommentsCheckBox;
+    private JButton saveButton;
+    private JCheckBox checkContentTypeCheckBox;
     private IBurpExtenderCallbacks callbacks;
-    private BurpMessageListModel messageList = new BurpMessageListModel();
+    private BurpMessageListModel messageListModel = new BurpMessageListModel();
     private BurpMessageListCellRenderer messageListCellRenderer;
     private DefaultListModel<String> wordListModel = new DefaultListModel<String>();
     private Set<String> commonWords = new HashSet<String>();
@@ -72,13 +70,13 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
         messageListCellRenderer = new BurpMessageListCellRenderer(callbacks);
         callbacks.registerContextMenuFactory(this);
         responseList.setCellRenderer(messageListCellRenderer);
-        responseList.setModel(messageList);
+        responseList.setModel(messageListModel);
         wordList.setModel(wordListModel);
         callbacks.printOutput("Cell Renderer" + responseList.getCellRenderer().getClass().getName());
         extractWordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WordExtractorWorker extractor = new WordExtractorWorker(callbacks, statusBar, messageList.getMessages(), forceToLowercaseCheckBox.isSelected(), new WordExtractorListener() {
+                WordExtractorWorker extractor = new WordExtractorWorker(callbacks, statusBar, messageListModel.getMessages(), forceToLowercaseCheckBox.isSelected(), new WordExtractorListener() {
                     @Override
                     public void addWords(Set<String> words) {
                         wordListModel.clear();
@@ -95,7 +93,7 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
                                 wordListModel.addElement(word);
                             }
                         }
-                        statusBar.setStatusText("Words extracted (after filtering): "+wordListModel.getSize());
+                        statusBar.setStatusText("Words extracted (after filtering): " + wordListModel.getSize());
                     }
                 });
 
@@ -116,6 +114,7 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
                 extractor.setIgnoreComments(ignoreCommentsCheckBox.isSelected());
                 extractor.setIgnoreScriptTags(ignoreScriptTagContentsCheckBox.isSelected());
                 extractor.setIgnoreStyleTags(ignoreStyleTagContentsCheckBox.isSelected());
+                extractor.setCheckContentType(checkContentTypeCheckBox.isSelected());
                 extractor.execute();
             }
         });
@@ -123,11 +122,39 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                messageList.clearMessages();
+                messageListModel.clear();
             }
         });
 
+        setupMessagesPopup();
         setupBasicWordsPopup();
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (wordListModel.size() > 0) {
+                    JFileChooser chooser = new JFileChooser();
+                    int result = chooser.showSaveDialog(getTabComponent());
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File f = chooser.getSelectedFile();
+                        try {
+                            BufferedWriter w = new BufferedWriter(new FileWriter(f));
+                            for (int i = 0; i < wordListModel.getSize(); i++) {
+                                w.write(wordListModel.get(i));
+                                if(i < wordListModel.getSize()) {
+                                    w.newLine();
+                                }
+                            }
+                            w.flush();
+                            w.close();
+                        } catch (IOException e1) {
+                            callbacks.printError(e1.toString());
+                        }
+                    }
+                }
+
+            }
+        });
     }
 
     @Override
@@ -172,42 +199,22 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
     }
 
     private void addMessages(List<IHttpRequestResponse> messages) {
-        messageList.addMessages(messages);
+        messageListModel.addMessages(messages);
         responseList.setCellRenderer(messageListCellRenderer);   // somehow this is getting (annoyingly) unset, so we will just reset it when we change the message list
         extender.selectConfigurableTab(this, false);
     }
 
-    private void setupBasicWordsPopup(){
-        final JPopupMenu popup = new JPopupMenu();
+    private void setupMessagesPopup() {
+        final JPopupMenu popupMsg = new JPopupMenu();
 
-        final JMenuItem copy = new JMenuItem("Copy");
-        popup.add(copy);
-        copy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringBuilder buf = new StringBuilder();
-                for(int i=0;i<wordListModel.getSize();i++){
-                    buf.append(wordListModel.get(i));
-                    buf.append("\n");
-                }
-                StringSelection contents = new StringSelection(buf.toString().trim());
-                clipboard.setContents(contents, CewlerTab.this);
-            }
-        });
+        final Action actionRemoveSelected = new ActionRemoveSelected(responseList, messageListModel);
+        popupMsg.add(actionRemoveSelected);
 
-        //todo: add remove selected
-        //todo: add paste
-        //todo: add load from file
-        //todo: add save to file
-
-
-
-        wordList.addMouseListener(new MouseAdapter() {
+        responseList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                if(e.isPopupTrigger()){
+                if (e.isPopupTrigger()) {
                     showPopup(e);
                 }
             }
@@ -215,21 +222,56 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                if(e.isPopupTrigger()){
+                if (e.isPopupTrigger()) {
                     showPopup(e);
                 }
             }
 
-            private void showPopup(MouseEvent e){
-                JPopupMenu popup = new JPopupMenu();
-                popup.setInvoker(wordList);
-
-                copy.setEnabled(wordListModel.getSize()!=0);
-                popup.add(copy);
-
-                popup.show(e.getComponent(), e.getX(), e.getY());
+            private void showPopup(MouseEvent e) {
+                popupMsg.setInvoker(wordList);
+                actionRemoveSelected.setEnabled(responseList.getSelectedIndices().length > 0);
+                popupMsg.show(e.getComponent(), e.getX(), e.getY());
             }
         });
+
+    }
+
+    private void setupBasicWordsPopup() {
+        final JPopupMenu popupBWL = new JPopupMenu();
+
+        final Action actionCopyAll = new ActionCopyAll(wordListModel, CewlerTab.this);
+        final Action actionCopySelected = new ActionCopySelected(wordList, wordListModel, CewlerTab.this);
+        final Action actionRemoveSelected = new ActionRemoveSelected(wordList, wordListModel);
+
+        popupBWL.add(actionCopyAll);
+        popupBWL.add(actionCopySelected);
+        popupBWL.add(actionRemoveSelected);
+
+        wordList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                if (e.isPopupTrigger()) {
+                    showPopup(e);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                if (e.isPopupTrigger()) {
+                    showPopup(e);
+                }
+            }
+
+            private void showPopup(MouseEvent e) {
+                popupBWL.setInvoker(wordList);
+                actionCopyAll.setEnabled(wordListModel.getSize() != 0);
+                actionRemoveSelected.setEnabled(wordList.getSelectedIndices().length > 0);
+                popupBWL.show(e.getComponent(), e.getX(), e.getY());
+            }
+        });
+
     }
 
     @Override

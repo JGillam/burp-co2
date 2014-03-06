@@ -26,32 +26,18 @@ import java.util.List;
 /**
  * ListModel for IHttpRequestResponse items.  Much like the default ListModel but backed with an ArrayList.
  */
-public class BurpMessageListModel extends AbstractListModel<IHttpRequestResponse> {
-    private List<IHttpRequestResponse> messages = new ArrayList<IHttpRequestResponse>();
+public class BurpMessageListModel extends DefaultListModel<IHttpRequestResponse> {
 
-    public void addMessages(List<IHttpRequestResponse> newMessages){
-        int startSize = messages.size();
-        messages.addAll(newMessages);
-        fireIntervalAdded(this, startSize, messages.size());
+    public void addMessages(List<IHttpRequestResponse> messages) {
+        for(IHttpRequestResponse msg:messages){
+            addElement(msg);
+        }
     }
 
-    public void clearMessages(){
-        int startSize = messages.size();
-        messages.clear();
-        fireIntervalRemoved(this, 0, messages.size());
-    }
-
-    @Override
-    public int getSize() {
-        return messages.size();
-    }
-
-    @Override
-    public IHttpRequestResponse getElementAt(int index) {
-        return messages.get(index);
-    }
-
-    public List<IHttpRequestResponse> getMessages(){
+    public IHttpRequestResponse[] getMessages() {
+        List<IHttpRequestResponse> messagesList = new ArrayList<IHttpRequestResponse>(getSize());
+        IHttpRequestResponse[] messages = new IHttpRequestResponse[getSize()];
+        copyInto(messages);
         return messages;
     }
 }

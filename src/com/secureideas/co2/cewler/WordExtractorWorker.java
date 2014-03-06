@@ -30,10 +30,7 @@ import javax.swing.text.html.parser.ParserDelegator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +42,7 @@ import java.util.regex.Pattern;
  */
 public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
     private IBurpExtenderCallbacks callbacks;
-    private List<IHttpRequestResponse> messages;
+    private IHttpRequestResponse[] messages;
     private WordExtractorListener listener;
     private StatusBar statusBar;
     private boolean forceLowercase;
@@ -53,8 +50,9 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
     private boolean ignoreScriptTags = false;
     private boolean ignoreStyleTags = false;
     private boolean ignoreComments = false;
+    private boolean checkContentType = true;
 
-    public WordExtractorWorker(IBurpExtenderCallbacks callbacks, StatusBar statusBar, List<IHttpRequestResponse> messages, boolean forceLowercase, WordExtractorListener l) {
+    public WordExtractorWorker(IBurpExtenderCallbacks callbacks, StatusBar statusBar, IHttpRequestResponse[] messages, boolean forceLowercase, WordExtractorListener l) {
         this.callbacks = callbacks;
         this.statusBar = statusBar;
         this.messages = messages;
@@ -74,8 +72,8 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
             @Override
             public void handleComment(char[] data, int pos) {
                 super.handleComment(data, pos);
-                if(!ignoreComments){
-                extractWords(data);
+                if (!ignoreComments) {
+                    extractWords(data);
                 }
             }
 
@@ -101,7 +99,7 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
             @Override
             public void handleEndTag(HTML.Tag t, int pos) {
                 super.handleEndTag(t, pos);
-                if (HTML.Tag.STYLE.equals(t) ) {
+                if (HTML.Tag.STYLE.equals(t)) {
                     inStyleTag = false;
                 }
                 if (HTML.Tag.SCRIPT.equals(t)) {
@@ -126,12 +124,29 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
             byte[] responseBytes = message.getResponse();
             IResponseInfo responseInfo = callbacks.getHelpers().analyzeResponse(responseBytes);
             byte[] responseBody = Arrays.copyOfRange(responseBytes, responseInfo.getBodyOffset(), responseBytes.length);
-            InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(responseBody));
-            try {
-                parser.parse(reader, parserCallback, true);
-            } catch (IOException e1) {
-                callbacks.printError("Could not parse HTML file " + e1.toString());
 
+            boolean skip = false;
+            if (checkContentType) {
+                List<String> headers = responseInfo.getHeaders();
+                for (String header : headers) {
+                    String lcheader = header.toLowerCase();
+                    if (lcheader.startsWith("content-type:")) {
+                        String value = lcheader.substring(lcheader.indexOf(' ') + 1);
+                        if (value.startsWith("image/") || value.equals("application/javascript")) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!skip) {
+                InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                try {
+                    parser.parse(reader, parserCallback, true);
+                } catch (IOException e1) {
+                    callbacks.printError("Could not parse HTML file " + e1.toString());
+
+                }
             }
         }
         return words;
@@ -160,5 +175,9 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
 
     public void setIgnoreComments(boolean ignoreComments) {
         this.ignoreComments = ignoreComments;
+    }
+
+    public void setCheckContentType(boolean checkContentType) {
+        this.checkContentType = checkContentType;
     }
 }
