@@ -29,7 +29,7 @@ import java.awt.*;
  * burp.BurpExtender
  */
 public class Co2Extender implements IBurpExtender, IExtensionStateListener {
-    public static final String VERSION = "0.6.0a";
+    public static final String VERSION = "0.6.0b";
     private Co2ConfigTab configTab;
     private IBurpExtenderCallbacks callbacks;
     private java.util.Timer co2Timer = new java.util.Timer("Co2", false);
