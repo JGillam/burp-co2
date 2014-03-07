@@ -1,13 +1,7 @@
 package burp;
 
-import com.secureideas.co2.*;
+import com.professionallyevil.co2.*;
 
-/**
- * User: jasong
- * Date: 12/10/13
- * Time: 6:57 PM
- * BurpExtender implementation for Burp Co2
- */
 public class BurpExtender implements IBurpExtender {
     private final Co2Extender co2Extender = new Co2Extender();
 

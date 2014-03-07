@@ -10,7 +10,7 @@
         <tstamp/>
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${resources}"/>
-        <buildnumber file="${resources}/com/secureideas/co2/build.txt"/>
+        <buildnumber file="${resources}/com/professionallyevil/co2/build.txt"/>
     </target>
 
 </project>
