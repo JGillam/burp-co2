@@ -18,6 +18,8 @@ package com.professionallyevil.co2;
 
 import burp.*;
 import com.professionallyevil.co2.beautify.Beautifier;
+import com.professionallyevil.co2.beautify.BeautifierConfigForm;
+
 import java.awt.*;
 import java.util.Arrays;
 

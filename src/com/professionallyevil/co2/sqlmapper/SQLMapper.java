@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package com.professionallyevil.co2;
+package com.professionallyevil.co2.sqlmapper;
 
 import burp.*;
+import com.professionallyevil.co2.Co2Configurable;
+import com.professionallyevil.co2.Co2Extender;
 
 import javax.swing.*;
 import java.awt.*;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.professionallyevil.co2;
+package com.professionallyevil.co2.sqlmapper;
 
 import burp.IExtensionHelpers;
 import burp.IParameter;

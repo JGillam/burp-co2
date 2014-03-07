@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.professionallyevil.co2;
+package com.professionallyevil.co2.namemangler;
 
 import burp.IBurpExtenderCallbacks;
+import com.professionallyevil.co2.Co2Configurable;
 
 import javax.swing.*;
 import java.awt.*;

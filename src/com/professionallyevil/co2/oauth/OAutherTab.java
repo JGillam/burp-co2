@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.professionallyevil.co2;
+package com.professionallyevil.co2.oauth;
 
 import burp.IBurpExtenderCallbacks;
 import burp.IHttpListener;
 import burp.IHttpRequestResponse;
-import com.professionallyevil.co2.oauth.SignpostBurpHttpRequestWrapper;
+import com.professionallyevil.co2.Co2Configurable;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.exception.OAuthException;
