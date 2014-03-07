@@ -28,7 +28,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Handler class for SQLMapper tab setup.
+ * Handler class for SQLMapper tab setup and context menu.
  */
 public class SQLMapper implements Co2Configurable, IContextMenuFactory {
 

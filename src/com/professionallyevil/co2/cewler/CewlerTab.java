@@ -19,6 +19,7 @@ package com.professionallyevil.co2.cewler;
 import burp.*;
 import com.professionallyevil.co2.Co2Configurable;
 import com.professionallyevil.co2.Co2Extender;
+import com.professionallyevil.co2.Co2HelpLink;
 import com.professionallyevil.co2.StatusBar;
 
 import javax.swing.*;
