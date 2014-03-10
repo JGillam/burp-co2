@@ -17,6 +17,7 @@
 package com.professionallyevil.co2.usergenerator;
 
 import burp.IBurpExtenderCallbacks;
+import com.professionallyevil.co2.Co2HelpLink;
 import com.professionallyevil.co2.StatItem;
 
 import javax.swing.*;
@@ -29,6 +30,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,6 +70,7 @@ public class UserGeneratorForm implements ClipboardOwner{
     private JProgressBar progressBar;
     private JLabel statusLabel;
     private JCheckBox commonNicknamesCheckBox;
+    private JLabel helpUserGenerator;
     private static final String RESOURCE_FOLDER = "com/professionallyevil/co2/lists/";
     private IBurpExtenderCallbacks callbacks;
     private int surnamesMax = 151671;
@@ -304,6 +307,7 @@ public class UserGeneratorForm implements ClipboardOwner{
                 }
             }
         });
+        helpUserGenerator.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-usergen.php", helpUserGenerator));
     }
 
     // must be called from within a SwingWorker

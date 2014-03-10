@@ -19,6 +19,7 @@ package com.professionallyevil.co2.sqlmapper;
 import burp.IExtensionHelpers;
 import burp.IParameter;
 import burp.IRequestInfo;
+import com.professionallyevil.co2.Co2HelpLink;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -74,6 +75,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JComboBox cmboDetectionRisk;
     private JCheckBox chkDetectLevel;
     private JCheckBox chkDetectRisk;
+    private JLabel helpSQLMapper;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox,String>();
 
 
@@ -163,6 +165,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             }
         });
 
+        helpSQLMapper.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-sqlmapper.php", helpSQLMapper));
     }
 
     public JPanel getMainPanel() {

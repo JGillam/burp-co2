@@ -56,6 +56,7 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
     private JCheckBox ignoreCommentsCheckBox;
     private JButton saveButton;
     private JCheckBox checkContentTypeCheckBox;
+    private JLabel cewlerHelp;
     private IBurpExtenderCallbacks callbacks;
     private BurpMessageListModel messageListModel = new BurpMessageListModel();
     private BurpMessageListCellRenderer messageListCellRenderer;
@@ -156,6 +157,7 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
 
             }
         });
+        cewlerHelp.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-cewler.php", cewlerHelp));
     }
 
     @Override

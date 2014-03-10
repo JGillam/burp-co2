@@ -18,6 +18,7 @@ package com.professionallyevil.co2.namemangler;
 
 import burp.IBurpExtenderCallbacks;
 import com.professionallyevil.co2.Co2Configurable;
+import com.professionallyevil.co2.Co2HelpLink;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,6 +51,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
     private JCheckBox numericSuffixesCheckBox;
     private JCheckBox yearSuffixesCheckBox;
     private JTextField delimitersText;
+    private JPanel helpNameMangler;
     private IBurpExtenderCallbacks callbacks;
     private int thisYear;
 
@@ -101,6 +103,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
         });
 
         thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        helpNameMangler.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-namemangler.php", helpNameMangler));
     }
 
     private List<String> parseLines(String blockOfText) {
