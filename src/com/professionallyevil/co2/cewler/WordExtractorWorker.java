@@ -132,7 +132,13 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
                     String lcheader = header.toLowerCase();
                     if (lcheader.startsWith("content-type:")) {
                         String value = lcheader.substring(lcheader.indexOf(' ') + 1);
-                        if (value.startsWith("image/") || value.equals("application/javascript")) {
+                        if (value.startsWith("image/")
+                                || value.startsWith("audio/")
+                                || value.startsWith("video/")
+                                || value.equals("application/javascript")
+                                || value.equals("application/octet-stream")
+                                || value.equals("application/pdf")
+                                ) {
                             skip = true;
                             break;
                         }

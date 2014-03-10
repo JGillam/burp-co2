@@ -193,7 +193,7 @@
               <splitpane position="right"/>
             </constraints>
             <properties/>
-            <border type="line" title="Basic Word List"/>
+            <border type="line" title="Custom Word List"/>
             <children>
               <scrollpane id="ecd4c">
                 <constraints>
