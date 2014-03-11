@@ -2,6 +2,7 @@
 
 ==Version 0.6 (TBD):==
   * CeWLer module added
+  * Online module help added
 
 ==Version 0.5 (24 Feb, 2014):==
   * Updated information on About tab to include clickable links
