@@ -49,7 +49,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         this.callbacks = callbacks;
-        callbacks.setExtensionName("Burp Co2");
+        callbacks.setExtensionName("Burp CO2");
 
         IntruderPayloadProcessor payloadProcessor = new IntruderPayloadProcessor();
         callbacks.registerIntruderPayloadProcessor(payloadProcessor);
