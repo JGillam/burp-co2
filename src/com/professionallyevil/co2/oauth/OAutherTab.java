@@ -32,11 +32,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * User: jasong
- * Date: 2/7/14
- * Time: 10:52 PM
- */
 public class OAutherTab implements Co2Configurable, IHttpListener{
     private JPanel mainPanel;
     private JCheckBox enableOAuthWrappingCheckBox;

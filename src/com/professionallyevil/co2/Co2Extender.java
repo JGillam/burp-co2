@@ -63,7 +63,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 
         UserGenerator userGenerator = new UserGenerator(callbacks);
 
-        OAutherTab oauther = new OAutherTab(callbacks);
+        //OAutherTab oauther = new OAutherTab(callbacks);
 
         NameManglerTab nameMangler = new NameManglerTab(callbacks);
 
@@ -77,7 +77,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
             }
         }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hrs
 
-        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, oauther, payloadProcessor, beautifier, about};
+        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, payloadProcessor, beautifier, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);
