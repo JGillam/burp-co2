@@ -1,9 +1,11 @@
 = Burp CO2 Release Notes =
 
 ==Version 1.0 (TBD):==
+  * Rename from Co2 to CO2
+
+==Version 0.6 (25 Mar, 2014):==
   * CeWLer module added
   * Online module help added
-  * Rename from Co2 to CO2
 
 ==Version 0.5 (24 Feb, 2014):==
   * Updated information on About tab to include clickable links

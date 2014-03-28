@@ -21,7 +21,6 @@ import burp.IBurpExtenderCallbacks;
 import burp.IExtensionStateListener;
 import com.professionallyevil.co2.cewler.CewlerTab;
 import com.professionallyevil.co2.namemangler.NameManglerTab;
-import com.professionallyevil.co2.oauth.OAutherTab;
 import com.professionallyevil.co2.sqlmapper.SQLMapper;
 import com.professionallyevil.co2.usergenerator.UserGenerator;
 
