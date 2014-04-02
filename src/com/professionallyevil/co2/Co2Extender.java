@@ -20,6 +20,7 @@ import burp.IBurpExtender;
 import burp.IBurpExtenderCallbacks;
 import burp.IExtensionStateListener;
 import com.professionallyevil.co2.cewler.CewlerTab;
+import com.professionallyevil.co2.masher.MasherConfig;
 import com.professionallyevil.co2.namemangler.NameManglerTab;
 import com.professionallyevil.co2.sqlmapper.SQLMapper;
 import com.professionallyevil.co2.usergenerator.UserGenerator;
@@ -32,7 +33,7 @@ import java.awt.*;
  * burp.BurpExtender
  */
 public class Co2Extender implements IBurpExtender, IExtensionStateListener {
-    public static final String VERSION = "0.6.0";
+    public static final String VERSION = "1.0.0 RC1";
     private Co2ConfigTab configTab;
     private IBurpExtenderCallbacks callbacks;
     private java.util.Timer co2Timer = new java.util.Timer("Co2", false);
@@ -62,11 +63,11 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 
         UserGenerator userGenerator = new UserGenerator(callbacks);
 
-        //OAutherTab oauther = new OAutherTab(callbacks);
-
         NameManglerTab nameMangler = new NameManglerTab(callbacks);
 
         CewlerTab cewler = new CewlerTab(this);
+
+        MasherConfig masher = new MasherConfig(this);
 
         final About about = new About(callbacks);
         co2Timer.schedule(new java.util.TimerTask() {
@@ -76,7 +77,7 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
             }
         }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hrs
 
-        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, payloadProcessor, beautifier, about};
+        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, masher, payloadProcessor, beautifier, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);
