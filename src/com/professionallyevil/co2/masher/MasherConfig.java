@@ -30,12 +30,11 @@ import java.util.HashMap;
 
 public class MasherConfig implements Co2Configurable {
     private JPanel mainPanel;
-    private JPanel tabContainer;
     private JButton addTabButton;
     private JTabbedPane tabbedPane;
     private IBurpExtenderCallbacks callbacks;
 
-    private int counter = 0;
+    private int counter = 1;
     private HashMap<JButton, MasherTab> tabs = new HashMap<JButton, MasherTab>();
 
     public MasherConfig(final Co2Extender extender) {
@@ -49,6 +48,8 @@ public class MasherConfig implements Co2Configurable {
         });
 
         //TODO: add a clone tab button
+
+        addMasherTab();
     }
 
     private void addMasherTab() {
@@ -80,7 +81,8 @@ public class MasherConfig implements Co2Configurable {
         panel.add(label, BorderLayout.CENTER);
         //panel.add(closeButton, BorderLayout.EAST);   // TODO add the close tab functionality
 
-        MasherTab masherTab = new MasherTab();
+        MasherTab masherTab = new MasherTab(callbacks);
+        masherTab.setGeneratorName("CO2 Masher "+counter);
         tabbedPane.addTab(null, masherTab.getMainPanel());
         int index = tabbedPane.indexOfComponent(masherTab.getMainPanel());
         tabbedPane.setTabComponentAt(index, panel);

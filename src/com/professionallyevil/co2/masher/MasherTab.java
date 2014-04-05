@@ -16,11 +16,18 @@
 
 package com.professionallyevil.co2.masher;
 
+import burp.IBurpExtenderCallbacks;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MasherTab {
@@ -39,9 +46,12 @@ public class MasherTab {
     private JCheckBox spacesOKCheckBox;
     private JTextField generatorName;
     private JButton createButton;
+    private JSpinner alphaSpinner;
 
+    IBurpExtenderCallbacks callbacks;
 
-    public MasherTab() {
+    public MasherTab(final IBurpExtenderCallbacks callbacks) {
+        this.callbacks = callbacks;
         minimumCharsLbl.setText(""+minCharsSlider.getValue());
         maximumCharsLbl.setText(""+maxCharsSlider.getValue());
 
@@ -82,6 +92,7 @@ public class MasherTab {
                 inputList.setEditable(false);
                 minCharsSlider.setEnabled(false);
                 maxCharsSlider.setEnabled(false);
+                alphaSpinner.setEnabled(false);
                 uppercaseSpinner.setEnabled(false);
                 lowercaseSpinner.setEnabled(false);
                 numericSpinner.setEnabled(false);
@@ -94,7 +105,25 @@ public class MasherTab {
                 generatorName.setEditable(false);
                 createButton.setEnabled(false);
 
-                //TODO: create generator
+                PasswordSpec spec = new PasswordSpec(minCharsSlider.getValue(), maxCharsSlider.getValue(),
+                        (Integer)alphaSpinner.getValue(), (Integer)uppercaseSpinner.getValue(), (Integer)lowercaseSpinner.getValue(),
+                        (Integer)numericSpinner.getValue(), (Integer)specialSpinner.getValue(), restrictSpecialsCheckBox.isSelected(),
+                        specialsText.getText(), spacesOKCheckBox.isSelected());
+
+                String inputString = inputList.getText();
+                List<String> input = new ArrayList<String>();
+                BufferedReader reader = new BufferedReader(new StringReader(inputString));
+                try {
+                    String line = reader.readLine();
+                    while(line!=null){
+                        input.add(line);
+                        line = reader.readLine();
+                    }
+                } catch (IOException e1) {
+                    callbacks.printError("Can't read input list... " + e1.getMessage());
+                }
+
+                callbacks.registerIntruderPayloadGeneratorFactory(new MasherGeneratorFactory(generatorName.getText(), input, spec));
             }
         });
     }
