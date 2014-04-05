@@ -115,17 +115,13 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
 
     private void addLowercaseWords(List<String[]> words, String suffix) throws InterruptedException {
         for (String[] word : words) {
-            String lcWord = word[0] + suffix;
-            if (word.length == 1 && spec.conforms(lcWord)) {
-                queue.put(lcWord.getBytes());
-            } else {
-                StringBuilder buf = new StringBuilder();
-                for (String w : word) {
-                    buf.append(w);
-                }
-                if (spec.conforms(buf.toString())) {
-                    queue.put(buf.toString().getBytes());
-                }
+            StringBuilder buf = new StringBuilder();
+            for (String w : word) {
+                buf.append(w);
+            }
+            buf.append(suffix);
+            if (spec.conforms(buf.toString())) {
+                queue.put(buf.toString().getBytes());
             }
         }
     }
