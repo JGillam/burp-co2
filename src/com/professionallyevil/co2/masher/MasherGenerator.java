@@ -197,15 +197,15 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
 
     private void addCommon1337Variants(List<String[]> words) throws InterruptedException {
         Map<Character, String> variants = new HashMap<Character, String>();
-        variants.put('a', "4@");
-        variants.put('b', "8");
-        variants.put('e', "3");
-        variants.put('g', "9");
-        variants.put('i', "!1");
-        variants.put('k', "X");
-        variants.put('l', "17");
-        variants.put('o', "0");
-        variants.put('s', "5$");
+        variants.put('a', testSpecialChars("4@"));
+        variants.put('b', testSpecialChars("8"));
+        variants.put('e', testSpecialChars("3"));
+        variants.put('g', testSpecialChars("9"));
+        variants.put('i', testSpecialChars("!1"));
+        variants.put('k', testSpecialChars("X"));
+        variants.put('l', testSpecialChars("17"));
+        variants.put('o', testSpecialChars("0"));
+        variants.put('s', testSpecialChars("5$"));
 
         String[] suffixes = new String[COMMON_SUFFIXES.length + 1];
         suffixes[0] = "";
@@ -219,23 +219,23 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
 
     private void addLessCommon1337Variants(List<String[]> words) throws InterruptedException {
         Map<Character, String> variants = new HashMap<Character, String>();
-        variants.put('b', "6");
-        variants.put('c', "(<{");
-        variants.put('g', "6&");
-        variants.put('h', "#");
-        variants.put('i', "|");
-        variants.put('j', "]");
-        variants.put('l', "|");
-        variants.put('n', "~");
-        variants.put('p', "?9");
-        variants.put('q', "9");
-        variants.put('r', "2");
-        variants.put('s', "z");
-        variants.put('t', "7+1");
-        variants.put('u', "M");
-        variants.put('x', "%");
-        variants.put('y', "j");
-        variants.put('z', "23%");
+        variants.put('b', testSpecialChars("6"));
+        variants.put('c', testSpecialChars("(<{"));
+        variants.put('g', testSpecialChars("6&"));
+        variants.put('h', testSpecialChars("#"));
+        variants.put('i', testSpecialChars("|"));
+        variants.put('j', testSpecialChars("]"));
+        variants.put('l', testSpecialChars("|"));
+        variants.put('n', testSpecialChars("~"));
+        variants.put('p', testSpecialChars("?9"));
+        variants.put('q', testSpecialChars("9"));
+        variants.put('r', testSpecialChars("2"));
+        variants.put('s', testSpecialChars("z"));
+        variants.put('t', testSpecialChars("7+1"));
+        variants.put('u', testSpecialChars("M"));
+        variants.put('x', testSpecialChars("%"));
+        variants.put('y', testSpecialChars("j"));
+        variants.put('z', testSpecialChars("23%"));
 
         String[] suffixes = new String[COMMON_SUFFIXES.length + 1];
         suffixes[0] = "";
@@ -249,27 +249,27 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
 
     private void doubleUp1337Variants(List<String[]> words) throws InterruptedException {
         Map<Character, String> variants = new HashMap<Character, String>();
-        variants.put('a', "4@");
-        variants.put('b', "86");
-        variants.put('c', "(<{");
-        variants.put('e', "3");
-        variants.put('g', "69&");
-        variants.put('h', "#");
-        variants.put('i', "!1|");
-        variants.put('j', "]");
-        variants.put('k', "X");
-        variants.put('l', "17|");
-        variants.put('n', "~");
-        variants.put('o', "0");
-        variants.put('p', "?9");
-        variants.put('q', "9");
-        variants.put('r', "2");
-        variants.put('s', "5z$");
-        variants.put('t', "7+1");
-        variants.put('u', "M");
-        variants.put('x', "%");
-        variants.put('y', "j");
-        variants.put('z', "23%");
+        variants.put('a', testSpecialChars("4@"));
+        variants.put('b', testSpecialChars("86"));
+        variants.put('c', testSpecialChars("(<{"));
+        variants.put('e', testSpecialChars("3"));
+        variants.put('g', testSpecialChars("69&"));
+        variants.put('h', testSpecialChars("#"));
+        variants.put('i', testSpecialChars("!1|"));
+        variants.put('j', testSpecialChars("]"));
+        variants.put('k', testSpecialChars("X"));
+        variants.put('l', testSpecialChars("17|"));
+        variants.put('n', testSpecialChars("~"));
+        variants.put('o', testSpecialChars("0"));
+        variants.put('p', testSpecialChars("?9"));
+        variants.put('q', testSpecialChars("9"));
+        variants.put('r', testSpecialChars("2"));
+        variants.put('s', testSpecialChars("5z$"));
+        variants.put('t', testSpecialChars("7+1"));
+        variants.put('u', testSpecialChars("M"));
+        variants.put('x', testSpecialChars("%"));
+        variants.put('y', testSpecialChars("j"));
+        variants.put('z', testSpecialChars("23%"));
 
         if (spec.isLowercaseOK()) {
             addDoubleSubstitutions(words, variants, false);
@@ -343,6 +343,17 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
             }
         }
 
+    }
+
+    private String testSpecialChars(String chars){
+        StringBuilder buf = new StringBuilder();
+        for(int i=0;i<chars.length();i++){
+            char c = chars.charAt(i);
+            if(Character.isLetterOrDigit(c) || spec.isSpecialCharOK(c)){
+                buf.append(c);
+            }
+        }
+        return buf.toString();
     }
 
     private void addPhrases(List<String[]> words) throws InterruptedException {

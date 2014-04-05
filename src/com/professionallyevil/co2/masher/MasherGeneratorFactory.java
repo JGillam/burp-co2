@@ -43,6 +43,6 @@ public class MasherGeneratorFactory implements IIntruderPayloadGeneratorFactory{
 
     @Override
     public IIntruderPayloadGenerator createNewInstance(IIntruderAttack attack) {
-        return null;
+        return new MasherGenerator(name, input, spec);
     }
 }

@@ -28,7 +28,6 @@ public class PasswordSpec {
     private static Pattern lowercasePattern = Pattern.compile("[a-z]");
     private static Pattern numericPattern = Pattern.compile("[0-9]");
     private Pattern specialPattern;
-    // TODO: regex for permitted characters
     // TODO: handle situation where entire password is uppercase
 
     public PasswordSpec(int minChars, int maxChars, int minAlpha, int minUpper, int minLower, int minNumeric, int minSpecial,
@@ -104,6 +103,11 @@ public class PasswordSpec {
 
     public boolean isLowercaseOK(){
         return minUpper == 0;
+    }
+
+    public boolean isSpecialCharOK(Character symbol) {
+        Matcher m = specialPattern.matcher(""+symbol);
+        return m.find();
     }
 
 //    Some light-weight unit testing to make sure this works

@@ -82,7 +82,7 @@ public class MasherConfig implements Co2Configurable {
         //panel.add(closeButton, BorderLayout.EAST);   // TODO add the close tab functionality
 
         MasherTab masherTab = new MasherTab(callbacks);
-        masherTab.setGeneratorName("CO2 Masher "+counter);
+        masherTab.setGeneratorName("CO2 Masher "+(counter-1));
         tabbedPane.addTab(null, masherTab.getMainPanel());
         int index = tabbedPane.indexOfComponent(masherTab.getMainPanel());
         tabbedPane.setTabComponentAt(index, panel);
