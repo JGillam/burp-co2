@@ -368,6 +368,7 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
         }
     }
 
+    //TODO: if spec allows, make combos with more than just two words
     private List<String[]> makeWordCombos() {
         ArrayList<String[]> comboList = new ArrayList<String[]>(words.size() * words.size());
         for (String[] firstWord : words) {
@@ -384,8 +385,6 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
 
     public static void main(String[] args) {
         ArrayList<String> inputList = new ArrayList<String>();
-        inputList.add("Jason");
-        inputList.add("Gillam");
         inputList.add("Professionally");
         inputList.add("Evil");
 
