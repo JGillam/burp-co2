@@ -6,6 +6,7 @@
 
 ==Version 1.0 RC1 (23 Apr, 2014):==
   * Masher module added
+  * OAuther module removed (distributed as separate extension)
   * Rename from Co2 to CO2
 
 ==Version 0.6 (25 Mar, 2014):==
