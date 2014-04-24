@@ -1,6 +1,11 @@
 = Burp CO2 Release Notes =
 
 ==Version 1.0 (TBD):==
+  * Update notification disabled
+  * Deployment moved to BApp store
+
+==Version 1.0 RC1 (23 Apr, 2014):==
+  * Masher module added
   * Rename from Co2 to CO2
 
 ==Version 0.6 (25 Mar, 2014):==
