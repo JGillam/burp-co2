@@ -19,6 +19,7 @@ package com.professionallyevil.co2.masher;
 import burp.IBurpExtenderCallbacks;
 import com.professionallyevil.co2.Co2Configurable;
 import com.professionallyevil.co2.Co2Extender;
+import com.professionallyevil.co2.Co2HelpLink;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -32,6 +33,7 @@ public class MasherConfig implements Co2Configurable {
     private JPanel mainPanel;
     private JButton addTabButton;
     private JTabbedPane tabbedPane;
+    private JLabel masherHelp;
     private IBurpExtenderCallbacks callbacks;
 
     private int counter = 1;
@@ -46,6 +48,8 @@ public class MasherConfig implements Co2Configurable {
                 addMasherTab();
             }
         });
+
+        masherHelp.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-masher.php", masherHelp));
 
         //TODO: add a clone tab button
 
