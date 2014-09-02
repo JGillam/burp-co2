@@ -19,6 +19,7 @@ package com.professionallyevil.co2;
 import burp.IBurpExtender;
 import burp.IBurpExtenderCallbacks;
 import burp.IExtensionStateListener;
+import com.professionallyevil.co2.basicauth.BasicAuther;
 import com.professionallyevil.co2.cewler.CewlerTab;
 import com.professionallyevil.co2.masher.MasherConfig;
 import com.professionallyevil.co2.namemangler.NameManglerTab;
@@ -69,6 +70,8 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 
         MasherConfig masher = new MasherConfig(this);
 
+        BasicAuther basicauther = new BasicAuther();
+
         final About about = new About(callbacks);
 //        co2Timer.schedule(new java.util.TimerTask() {     -- disabled for BAppStore integration
 //            @Override
@@ -77,7 +80,8 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 //            }
 //        }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hrs
 
-        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, masher, payloadProcessor, beautifier, about};
+        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, masher, basicauther, payloadProcessor,
+                beautifier, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);
