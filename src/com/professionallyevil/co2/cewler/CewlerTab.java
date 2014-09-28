@@ -74,7 +74,7 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
         responseList.setCellRenderer(messageListCellRenderer);
         responseList.setModel(messageListModel);
         wordList.setModel(wordListModel);
-        callbacks.printOutput("Cell Renderer" + responseList.getCellRenderer().getClass().getName());
+        //callbacks.printOutput("Cell Renderer" + responseList.getCellRenderer().getClass().getName());
         extractWordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

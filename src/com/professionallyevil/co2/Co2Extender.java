@@ -21,6 +21,7 @@ import burp.IBurpExtenderCallbacks;
 import burp.IExtensionStateListener;
 import com.professionallyevil.co2.basicauth.BasicAuther;
 import com.professionallyevil.co2.cewler.CewlerTab;
+import com.professionallyevil.co2.laudanum.LaudanumClient;
 import com.professionallyevil.co2.masher.MasherConfig;
 import com.professionallyevil.co2.namemangler.NameManglerTab;
 import com.professionallyevil.co2.sqlmapper.SQLMapper;
@@ -34,7 +35,7 @@ import java.awt.*;
  * burp.BurpExtender
  */
 public class Co2Extender implements IBurpExtender, IExtensionStateListener {
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0 a";
     private Co2ConfigTab configTab;
     private IBurpExtenderCallbacks callbacks;
     private java.util.Timer co2Timer = new java.util.Timer("Co2", false);
@@ -72,6 +73,8 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 
         BasicAuther basicauther = new BasicAuther();
 
+        LaudanumClient laudanum = new LaudanumClient(this);
+
         final About about = new About(callbacks);
 //        co2Timer.schedule(new java.util.TimerTask() {     -- disabled for BAppStore integration
 //            @Override
@@ -80,8 +83,8 @@ public class Co2Extender implements IBurpExtender, IExtensionStateListener {
 //            }
 //        }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hrs
 
-        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, masher, basicauther, payloadProcessor,
-                beautifier, about};
+        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, masher, basicauther, laudanum,
+                payloadProcessor, beautifier, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);
