@@ -23,6 +23,8 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class LaudanumClient implements Co2Configurable, ClipboardOwner {
@@ -49,6 +51,11 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     public LaudanumClient(final Co2Extender extender) {
+        final Map<String,PayloadType> payloadTypes = new HashMap<String,PayloadType>();
+        payloadTypes.put("PHP Shell", new PHPShellPayloadType());
+        payloadTypes.put("JSP Shell", new JSPShellPayloadType());
+        payloadTypes.put("WAR Shell", new WARShellPayloadType());
+
         this.callbacks = extender.getCallbacks();
         String token = callbacks.loadExtensionSetting(SETTING_LAUD_TOKEN);
         if (token != null && token.length() > 0) {
@@ -128,40 +135,12 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
         btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final JFileChooser fc = new JFileChooser();
-                fc.setSelectedFile(new File("shell.php")); // todo: support other extensions
-                int returnVal = fc.showSaveDialog(mainPanel);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File f = fc.getSelectedFile();
-                    String[] ips = txtAllowedIP.getText().split(",");
-                    StringBuilder ipslist = new StringBuilder();
-                    for (String ip : ips) {
-                        ipslist.append('"');
-                        ipslist.append(ip);
-                        ipslist.append('"');
-                        ipslist.append(',');
-                    }
-                    ipslist.deleteCharAt(ipslist.length() - 1);
-                    try {
-                        FileOutputStream fos = new FileOutputStream(f);
-                        InputStream inStream = LaudanumClient.this.getClass().getClassLoader().getResourceAsStream("com/professionallyevil/co2/laudanum/php/shell.php");
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-
-                        String line = reader.readLine();
-                        while (line != null) {
-                            line = line.replace("${LAUD.IPS}", ipslist.toString());
-                            line = line.replace("${LAUD.TOKEN}", txtAllowedToken.getText());
-                            fos.write(line.getBytes());
-                            fos.write("\n".getBytes());
-                            line = reader.readLine();
-                        }
-
-                        fos.flush();
-                        fos.close();
-                        inStream.close();
-                    } catch (IOException ie) {
-                        callbacks.printError(ie.toString());
-                    }
+                PayloadType pt = payloadTypes.get(cmboFiletype.getSelectedItem().toString());
+                try {
+                    pt.savePayload(mainPanel, txtAllowedIP.getText(), txtAllowedToken.getText());
+                } catch (Exception e1) {
+                    callbacks.printError("Error saving payload: " + e1.getMessage());
+                    JOptionPane.showMessageDialog(mainPanel, "Error saving payload. " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -233,7 +212,7 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
 
             byte[] requestBytes = callbacks.getHelpers().buildHttpRequest(url);
             byte paramType = IParameter.PARAM_URL;
-            if (cmboMethod.equals("POST")) {
+            if (cmboMethod.getSelectedItem().toString().equals("POST")) {
                 paramType = IParameter.PARAM_BODY;
             }
 
@@ -245,7 +224,7 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
             requestBytes = callbacks.getHelpers().addParameter(requestBytes, pcmd);
             requestBytes = callbacks.getHelpers().addParameter(requestBytes, pcwd);
 
-            //TODO: figure out how to support POST params
+            //TODO: figure out how to support additional POST params
             //TODO: fix error output on PHP error
 
             byte[] responseBytes = callbacks.makeHttpRequest(txtHostname.getText(), new Integer(txtPort.getText()), cmboProtocol.getSelectedItem().equals("https"), requestBytes);

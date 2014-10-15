@@ -94,7 +94,9 @@
             </constraints>
             <properties>
               <model>
-                <item value="php"/>
+                <item value="PHP Shell"/>
+                <item value="JSP Shell"/>
+                <item value="WAR Shell"/>
               </model>
             </properties>
           </component>
