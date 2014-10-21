@@ -29,9 +29,8 @@ import java.awt.*;
  * burp.BurpExtender
  */
 public class SQLMapperCo2Extender implements IExtensionStateListener, Co2Extender {
-    public static final String VERSION = "1.1.0 a";
+    public static final String VERSION = "1.0.0";
     private IBurpExtenderCallbacks callbacks;
-    private java.util.Timer co2Timer = new java.util.Timer("Co2", false);
 
     public SQLMapperCo2Extender() {
     }
@@ -58,18 +57,16 @@ public class SQLMapperCo2Extender implements IExtensionStateListener, Co2Extende
 
     @Override
     public void extensionUnloaded() {
-        if (co2Timer != null) {
-            co2Timer.cancel();
-        }
+
     }
 
     /**
      * Callback to select the specified configurable item's tab.
      *
      * @param configurable The configurable item for which a tab should be selected.
-     * @param selectCo2Tab ignored in this implementation.
+     * @param selectCO2Tab ignored in this implementation.
      */
-    public void selectConfigurableTab(Co2Configurable configurable, boolean selectCo2Tab) {
+    public void selectConfigurableTab(Co2Configurable configurable, boolean selectCO2Tab) {
         Component tabComponent = configurable.getTabComponent();
         if (tabComponent != null) {
             Container parent = tabComponent.getParent();
