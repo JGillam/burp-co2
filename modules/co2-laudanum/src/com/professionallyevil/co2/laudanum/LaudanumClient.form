@@ -99,6 +99,7 @@
                 <item value="JSP Shell"/>
                 <item value="WAR Shell"/>
                 <item value="ASP Shell"/>
+                <item value="ASPX Shell"/>
               </model>
             </properties>
           </component>
@@ -248,7 +249,7 @@
                   <editable value="true"/>
                   <model>
                     <item value="&lt;none&gt;"/>
-                    <item value="%ComSpec% /c "/>
+                    <item value="%ComSpec% /c"/>
                   </model>
                 </properties>
               </component>

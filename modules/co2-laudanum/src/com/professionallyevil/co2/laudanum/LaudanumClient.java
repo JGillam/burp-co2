@@ -57,6 +57,7 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
         payloadTypes.put("JSP Shell", new JSPShellPayloadType());
         payloadTypes.put("WAR Shell", new WARShellPayloadType());
         payloadTypes.put("ASP Shell", new ASPShellPayloadType());
+        payloadTypes.put("ASPX Shell", new ASPXShellPayloadType());
 
         this.callbacks = extender.getCallbacks();
         String token = callbacks.loadExtensionSetting(SETTING_LAUD_TOKEN);

@@ -1,6 +1,16 @@
 <%
 ' *******************************************************************************
 ' ***
+' *** Burp-Laudanum
+' ***
+' *** This is a Burp CO2 adoptation of similar functionality defined in the
+' *** Laudanum project.
+' ***
+' *** CO2: www.burpco2.com
+' ***
+' *** Burp-Laudanum Author:
+' ***         Jason Gillam <jgillam@secureideas.com>
+' ***
 ' *** Laudanum Project
 ' *** A Collection of Injectable Files used during a Penetration Test
 ' ***

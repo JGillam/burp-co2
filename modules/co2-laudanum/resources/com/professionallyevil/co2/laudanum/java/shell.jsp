@@ -2,6 +2,22 @@
 <%@ page import="java.net.URLDecoder"%>
 <%@ page import="java.net.URLEncoder"%>
 <%
+/**************************************************************************
+*** Burp-Laudanum
+***
+*** This is a Burp CO2 adoptation of similar functionality defined in the
+*** Laudanum project.
+***
+*** CO2: www.burpco2.com
+***
+*** Burp-Laudanum Author:
+***         Jason Gillam <jgillam@secureideas.com>
+***
+*** Copyright &copy; 2014, <a href="mailto:laudanum@secureideas.net">Kevin Johnson</a> and the Laudanum team.<br/>
+*** Written by Tim Medin.<br/>
+*** Get the latest version at <a href="http://laudanum.secureideas.net">laudanum.secureideas.net</a>.
+***************************************************************************/
+
 String[] allowsIPs = {${LAUD.IPS}};
 String allowedToken = "${LAUD.TOKEN}";
 String token = request.getParameter("laudtoken");

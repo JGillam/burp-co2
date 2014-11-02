@@ -1,4 +1,55 @@
 <?php
+/* *****************************************************************************
+***
+*** Burp-Laudanum
+***
+*** This is a Burp CO2 adoptation of similar functionality defined in the
+*** Laudanum project.
+***
+*** CO2: www.burpco2.com
+***
+*** Burp-Laudanum Author:
+***         Jason Gillam <jgillam@secureideas.com>
+***
+*** Laudanum Project
+*** A Collection of Injectable Files used during a Penetration Test
+***
+*** More information is available at:
+***  http://laudanum.secureideas.net
+***  laudanum@secureideas.net
+***
+***  Project Leads:
+***         Kevin Johnson <kjohnson@secureideas.net>
+***         Tim Medin <tim@counterhack.com>
+***
+*** Copyright 2013 by Kevin Johnson and the Laudanum Team
+***
+********************************************************************************
+***
+*** This file provides shell access to the system. It is built based on the 2.1
+*** version of PHPShell which is Copyright (C) 2000-2005 Martin Geisler
+*** <mgeisler[at]mgeisler.net>
+***
+*** Updated by Tim Medin
+***
+********************************************************************************
+*** This program is free software; you can redistribute it and/or
+*** modify it under the terms of the GNU General Public License
+*** as published by the Free Software Foundation; either version 2
+*** of the License, or (at your option) any later version.
+***
+*** This program is distributed in the hope that it will be useful,
+*** but WITHOUT ANY WARRANTY; without even the implied warranty of
+*** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*** GNU General Public License for more details.
+***
+*** You can get a copy of the GNU General Public License from this
+*** address: http://www.gnu.org/copyleft/gpl.html#SEC1
+*** You can also write to the Free Software Foundation, Inc., 59 Temple
+*** Place - Suite 330, Boston, MA  02111-1307, USA.
+***
+***************************************************************************** */
+
 
 $allowedIPs = array(${LAUD.IPS});
 $allowedToken = "${LAUD.TOKEN}";
