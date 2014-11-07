@@ -8,8 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="co2-core" />
-    <orderEntry type="module" module-name="burp-api" />
+    <orderEntry type="module" module-name="co2-core" exported="" />
+    <orderEntry type="module" module-name="burp-api" exported="" />
   </component>
 </module>
 

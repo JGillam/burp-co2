@@ -3,6 +3,7 @@ package com.professionallyevil.co2.laudanum;
 import burp.IBurpExtenderCallbacks;
 import com.professionallyevil.co2.Co2Configurable;
 import com.professionallyevil.co2.Co2Extender;
+import com.professionallyevil.co2.Co2HelpLink;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -40,6 +41,7 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
     private JButton btnSave;
     private JButton btnConnect;
     private JComboBox cmboPrepend;
+    private JLabel helpButton;
     private String cwd = ".";
     private int commandStart = 0;
     private IBurpExtenderCallbacks callbacks;
@@ -201,7 +203,7 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
                 }
             }
         });
-
+        helpButton.addMouseListener(new Co2HelpLink("https://code.google.com/p/burp-co2/wiki/Laudanum", helpButton));
     }
 
 
@@ -233,6 +235,8 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
             lreq.setToken(txtAllowedToken.getText());
             lreq.setWorkingDirectory(cwd);
 
+            //TODO: Add support for cookies
+            //TODO: Add support for basic auth
             //TODO: figure out how to support additional POST params
             //TODO: fix error output on PHP error
 

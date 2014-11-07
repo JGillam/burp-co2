@@ -83,7 +83,7 @@ if(token!=null && cmd != null && token.equals(allowedToken) && java.util.Arrays.
 	out.println("404 - Not Found");  // todo: return header
 	if(debug){
 		out.println("<br>Token: " + token);
-		out.println("<br>Token Matched?: " + token.equals(allowedToken));
+		out.println("<br>Token Matched?: " + allowedToken.equals(token));
 		out.println("<br>IP: " + lip);
 		out.println("<br>IP Matched?: " + java.util.Arrays.asList(allowsIPs).contains(lip));
 		out.println("<br>cmd: " + cmd);
