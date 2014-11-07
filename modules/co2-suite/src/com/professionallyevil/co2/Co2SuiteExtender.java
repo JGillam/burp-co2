@@ -73,6 +73,7 @@ public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener,
         MiscTab miscTab = new MiscTab(callbacks);
 
         LaudanumClient laudanum = new LaudanumClient(this);
+        callbacks.registerContextMenuFactory(laudanum);
 
         final About about = new About(callbacks);
 //        co2Timer.schedule(new java.util.TimerTask() {     -- disabled for BAppStore integration

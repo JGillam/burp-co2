@@ -39,6 +39,18 @@ public class LaudanumRequest {
         requestBytes = callbacks.getHelpers().buildHttpRequest(url);
     }
 
+    public LaudanumRequest(IBurpExtenderCallbacks callbacks, String method, byte[] requestTemplate) {
+        this.callbacks = callbacks;
+        this.requestBytes = requestTemplate;
+
+        if (method.equalsIgnoreCase("POST")) {
+            defaultParamType = IParameter.PARAM_BODY;
+
+        } else {
+            defaultParamType = IParameter.PARAM_URL;
+        }
+    }
+
     private void addParameter(String name, String value, byte type) {
         IParameter param = callbacks.getHelpers().buildParameter(name, value, type);
         requestBytes = callbacks.getHelpers().addParameter(requestBytes, param);
@@ -63,5 +75,6 @@ public class LaudanumRequest {
     public byte[] getRequestBytes() {
         return requestBytes;
     }
+
 
 }

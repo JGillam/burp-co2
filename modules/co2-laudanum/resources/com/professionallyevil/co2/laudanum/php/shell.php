@@ -68,8 +68,8 @@ if ($token == $allowedToken){
 
 if ($allowed == 0) {
     header("HTTP/1.0 404 Not Found");
-    //die();
-    die("IP " . $LIP . ", token detected:  " . $token);
+    die();
+    //die("IP " . $LIP . ", token detected:  " . $token);
 }
 
 

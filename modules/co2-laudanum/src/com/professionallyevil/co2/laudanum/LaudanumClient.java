@@ -1,11 +1,13 @@
 package com.professionallyevil.co2.laudanum;
 
-import burp.IBurpExtenderCallbacks;
+import burp.*;
 import com.professionallyevil.co2.Co2Configurable;
 import com.professionallyevil.co2.Co2Extender;
 import com.professionallyevil.co2.Co2HelpLink;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -25,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class LaudanumClient implements Co2Configurable, ClipboardOwner {
+public class LaudanumClient implements Co2Configurable, ClipboardOwner, IContextMenuFactory {
     private JPanel mainPanel;
     private JTextField txtAllowedToken;
     private JTextField txtAllowedIP;
@@ -42,11 +44,15 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
     private JButton btnConnect;
     private JComboBox cmboPrepend;
     private JLabel helpButton;
+    private JCheckBox chkUseRequestTemplate;
+    private JLabel lblRequestTemplate;
     private String cwd = ".";
     private int commandStart = 0;
     private IBurpExtenderCallbacks callbacks;
     private static final String SETTING_LAUD_TOKEN = "LAUD.TOKEN";
     private static final String SETTING_LAUD_IP = "LAUD.IP";
+    private byte[] requestTemplate = null;
+    private Co2Extender extender;
     final java.util.List<String> history = new ArrayList<String>();
     int historyPointer = 0;
 
@@ -54,7 +60,8 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     public LaudanumClient(final Co2Extender extender) {
-        final Map<String,PayloadType> payloadTypes = new HashMap<String,PayloadType>();
+        this.extender = extender;
+        final Map<String, PayloadType> payloadTypes = new HashMap<String, PayloadType>();
         payloadTypes.put("PHP Shell", new PHPShellPayloadType());
         payloadTypes.put("JSP Shell", new JSPShellPayloadType());
         payloadTypes.put("WAR Shell", new WARShellPayloadType());
@@ -204,6 +211,16 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
             }
         });
         helpButton.addMouseListener(new Co2HelpLink("https://code.google.com/p/burp-co2/wiki/Laudanum", helpButton));
+
+        chkUseRequestTemplate.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                cmboProtocol.setEnabled(!chkUseRequestTemplate.isSelected());
+                txtPort.setEnabled(!chkUseRequestTemplate.isSelected());
+                txtResource.setEnabled(!chkUseRequestTemplate.isSelected());
+                txtHostname.setEnabled(!chkUseRequestTemplate.isSelected());
+            }
+        });
     }
 
 
@@ -230,14 +247,16 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
 
             URL url = new URL(cmboProtocol.getSelectedItem() + "://" + txtHostname.getText() + ":" + txtPort.getText() + txtResource.getText());
 
-            LaudanumRequest lreq = new LaudanumRequest(callbacks, url, cmboMethod.getSelectedItem().toString());
+            LaudanumRequest lreq;
+            if (requestTemplate != null && chkUseRequestTemplate.isSelected()) {
+                lreq = new LaudanumRequest(callbacks, cmboMethod.getSelectedItem().toString(), requestTemplate);
+            } else {
+                lreq = new LaudanumRequest(callbacks, url, cmboMethod.getSelectedItem().toString());
+            }
             lreq.setCommand(command.startsWith("cd ") ? command : getPrepend() + command);
             lreq.setToken(txtAllowedToken.getText());
             lreq.setWorkingDirectory(cwd);
 
-            //TODO: Add support for cookies
-            //TODO: Add support for basic auth
-            //TODO: figure out how to support additional POST params
             //TODO: fix error output on PHP error
 
             byte[] responseBytes = callbacks.makeHttpRequest(txtHostname.getText(), new Integer(txtPort.getText()), "https".equalsIgnoreCase(cmboProtocol.getSelectedItem().toString()), lreq.getRequestBytes());
@@ -308,5 +327,41 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner {
 
     private String getPrepend() {
         return "<none>".equals(cmboPrepend.getSelectedItem().toString()) ? "" : cmboPrepend.getSelectedItem().toString();
+    }
+
+    @Override
+    public java.util.List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
+        IHttpRequestResponse[] messages = invocation.getSelectedMessages();
+        if (messages != null && messages.length > 0) {
+            callbacks.printOutput("Messages in array: " + messages.length);
+            java.util.List<JMenuItem> list = new ArrayList<JMenuItem>();
+            final IHttpService service = messages[0].getHttpService();
+            final byte[] sentRequestBytes = messages[0].getRequest();
+            JMenuItem menuItem = new JMenuItem("Send to Laudanum");
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        requestTemplate = sentRequestBytes;
+                        IRequestInfo info = callbacks.getHelpers().analyzeRequest(service, requestTemplate);
+                        txtHostname.setText(service.getHost());
+                        cmboProtocol.setSelectedItem(service.getProtocol());
+                        txtResource.setText(info.getUrl().getFile());
+                        txtPort.setText("" + info.getUrl().getPort());
+                        lblRequestTemplate.setText(info.getUrl().toString());
+                        chkUseRequestTemplate.setEnabled(true);
+                        chkUseRequestTemplate.setSelected(true);
+                        callbacks.printOutput("Laudanum received request template for " + info.getUrl().toString());
+                        extender.selectConfigurableTab(LaudanumClient.this, true);
+                    } catch (Exception e1) {
+                        callbacks.printError(e1.getMessage());
+                    }
+                }
+            });
+            list.add(menuItem);
+            return list;
+        }
+
+        return null;
     }
 }
