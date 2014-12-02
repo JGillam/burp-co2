@@ -71,7 +71,7 @@ public class SQLMapper implements Co2Configurable, IContextMenuFactory {
             List<JMenuItem> list = new ArrayList<JMenuItem>();
             final IHttpService service = messages[0].getHttpService();
             final byte[] selectedRequest = messages[0].getRequest();
-            JMenuItem menuItem = new JMenuItem("Send to SQLMapper (request)");
+            JMenuItem menuItem = new JMenuItem("Send to SQLMapper");
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

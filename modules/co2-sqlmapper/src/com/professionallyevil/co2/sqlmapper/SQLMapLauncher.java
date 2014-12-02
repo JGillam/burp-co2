@@ -21,8 +21,6 @@ import java.util.List;
 public abstract class SQLMapLauncher {
 
 
-    public abstract String getLaunchCommand();
-
     public abstract boolean isOSMatch(String os);
 
     public abstract List<String> getExecCommands(String sqlmapParams, String sqlmapPath);

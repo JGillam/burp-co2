@@ -19,24 +19,24 @@ package com.professionallyevil.co2.sqlmapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionScriptSQLMapLauncher extends SQLMapLauncher {
+public class XTermLauncher extends SQLMapLauncher {
 
     @Override
     public boolean isOSMatch(String os) {
-        return "Mac OS X".equals(os);
+        return "Linux".equals(os);
     }
 
     @Override
     public List<String> getExecCommands(String sqlmapParams, String sqlmapPath) {
         List<String> commands = new ArrayList<String>();
-        commands.add("osascript");
+        commands.add("xterm");
         commands.add("-e");
-        commands.add("tell application \"Terminal\" \n\tactivate\n\tdo script \"python " + sqlmapPath + " " + sqlmapParams + "\"\nend tell");
+        commands.add("python " + sqlmapPath + " " + sqlmapParams);
         return commands;
     }
 
     @Override
     public String toString() {
-        return "ActionScript (OSX)";
+        return "XTerm (Linux)";
     }
 }

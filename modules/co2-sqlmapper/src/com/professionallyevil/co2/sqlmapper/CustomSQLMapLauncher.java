@@ -19,10 +19,6 @@ package com.professionallyevil.co2.sqlmapper;
 import java.util.List;
 
 public class CustomSQLMapLauncher extends SQLMapLauncher {
-    @Override
-    public String getLaunchCommand() {
-        return null;
-    }
 
     @Override
     public boolean isOSMatch(String os) {

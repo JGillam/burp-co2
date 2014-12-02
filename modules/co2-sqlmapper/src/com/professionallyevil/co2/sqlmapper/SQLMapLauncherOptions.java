@@ -78,8 +78,8 @@ public class SQLMapLauncherOptions extends JDialog {
         comboLaunchType.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String newCmd = ((SQLMapLauncher) comboLaunchType.getSelectedItem()).getLaunchCommand();
-                textLaunchCommand.setText(newCmd == null ? "" : newCmd);
+                //String newCmd = ((SQLMapLauncher) comboLaunchType.getSelectedItem()).getLaunchCommand();
+                //textLaunchCommand.setText(newCmd == null ? "" : newCmd);
             }
         });
         browseButton.addActionListener(new ActionListener() {
@@ -96,25 +96,26 @@ public class SQLMapLauncherOptions extends JDialog {
 
     private void addLaunchers() {
         comboLaunchType.addItem(new ActionScriptSQLMapLauncher());
-        comboLaunchType.addItem(new CustomSQLMapLauncher());
+        comboLaunchType.addItem(new XTermLauncher());
+        //comboLaunchType.addItem(new CustomSQLMapLauncher());
     }
 
     private void selectDefaultLauncher(String launcherClass) {
         if (launcherClass == null || launcherClass.isEmpty()) {
             // select by OS
             String os = System.getProperty("os.name");
+            callbacks.printOutput("Looking for launcher to match os: " + os);
             for (int i = 0; i < comboLaunchType.getItemCount(); i++) {
                 if (comboLaunchType.getItemAt(i).isOSMatch(os)) {
                     comboLaunchType.setSelectedIndex(i);
-                    String newCmd = ((SQLMapLauncher) comboLaunchType.getSelectedItem()).getLaunchCommand();
-                    textLaunchCommand.setText(newCmd == null ? "" : newCmd);
+                    //String newCmd = ((SQLMapLauncher) comboLaunchType.getSelectedItem()).getLaunchCommand();
+                    //textLaunchCommand.setText(newCmd == null ? "" : newCmd);
                     break;
                 }
             }
         } else {
             for (int i = 0; i < comboLaunchType.getItemCount(); i++) {
-                String itemLaunchCommand = comboLaunchType.getItemAt(i).getLaunchCommand();
-                if (itemLaunchCommand == null || itemLaunchCommand.equals(launcherClass)) {
+                if (launcherClass.equals(comboLaunchType.getItemAt(i).getClass().getName())) {
                     comboLaunchType.setSelectedIndex(i);
                     break;
                 }
