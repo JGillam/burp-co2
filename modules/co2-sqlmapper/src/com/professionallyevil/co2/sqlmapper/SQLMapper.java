@@ -32,11 +32,12 @@ import java.util.List;
  */
 public class SQLMapper implements Co2Configurable, IContextMenuFactory {
 
-    SQLMapperForm tab = new SQLMapperForm();
+    SQLMapperForm tab = null;
     IBurpExtenderCallbacks callbacks;
     Co2Extender extender;
 
     public SQLMapper(IBurpExtenderCallbacks callbacks, Co2Extender extender) {
+        tab = new SQLMapperForm(callbacks);
         this.callbacks = callbacks;
         this.extender = extender;
     }

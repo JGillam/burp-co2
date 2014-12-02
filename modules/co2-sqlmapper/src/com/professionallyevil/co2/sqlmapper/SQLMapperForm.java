@@ -16,6 +16,7 @@
 
 package com.professionallyevil.co2.sqlmapper;
 
+import burp.IBurpExtenderCallbacks;
 import burp.IExtensionHelpers;
 import burp.IParameter;
 import burp.IRequestInfo;
@@ -33,7 +34,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,10 +84,19 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JCheckBox chkDetectLevel;
     private JCheckBox chkDetectRisk;
     private JLabel helpSQLMapper;
+    private JTextField txtExecutable;
+    private JButton btnBrowseSQLMapPath;
+    private JButton btnRun;
+    private JButton configButton;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox, String>();
+    private IBurpExtenderCallbacks callbacks;
+    private List<String> commandList = new ArrayList<String>();
+    public static final String SETTING_SQLMAP_PATH = "sqlmapper.execpath";
+    //private static final String SETTING_SQLMAP_LAUNCH_COMMAND = "sqlmapper.launchcommand";
+    public static final String SETTING_SQLMAP_LAUNCHER = "sqlmapper.launcher";
 
-
-    public SQLMapperForm() {
+    public SQLMapperForm(IBurpExtenderCallbacks extenderCallbacks) {
+        this.callbacks = extenderCallbacks;
         final JPopupMenu popup = new JPopupMenu();
         JMenuItem copy = new JMenuItem("Copy all");
         popup.add(copy);
@@ -167,6 +183,77 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         });
 
         helpSQLMapper.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-sqlmapper.php", helpSQLMapper));
+        btnBrowseSQLMapPath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser(txtExecutable.getText());
+                int result = chooser.showOpenDialog(getMainPanel());
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    txtExecutable.setText(chooser.getSelectedFile().getAbsolutePath());
+                    callbacks.saveExtensionSetting(SETTING_SQLMAP_PATH, txtExecutable.getText());
+                    callbacks.printOutput("Executable set to " + txtExecutable.getText());
+                    btnRun.setEnabled(txtExecutable.getText().length() > 0);
+                }
+            }
+        });
+
+        txtExecutable.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                callbacks.saveExtensionSetting(SETTING_SQLMAP_PATH, txtExecutable.getText());
+                callbacks.printOutput("Executable set to " + txtExecutable.getText());
+                btnRun.setEnabled(txtExecutable.getText().length() > 0);
+            }
+        });
+        String exec_path = callbacks.loadExtensionSetting(SETTING_SQLMAP_PATH);
+        txtExecutable.setText(exec_path == null ? "" : exec_path);
+        btnRun.setEnabled(txtExecutable.getText().length() > 0);
+        btnRun.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sqlmapPath = callbacks.loadExtensionSetting(SETTING_SQLMAP_PATH);
+                String launcherClass = callbacks.loadExtensionSetting(SETTING_SQLMAP_LAUNCHER);
+                try {
+                    Class<?> clazz = Class.forName(launcherClass);
+                    if (SQLMapLauncher.class.isAssignableFrom(clazz) && sqlmapPath != null) {
+                        SQLMapLauncher launcher = (SQLMapLauncher) clazz.newInstance();
+                        ProcessBuilder pb = new ProcessBuilder();
+                        pb.redirectErrorStream(true);
+                        pb.command(launcher.getExecCommands(sqlmapCommandTxt.getText(), sqlmapPath));
+                        Process p = pb.start();
+                        BufferedReader bis = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                        String buf;
+                        while ((buf = bis.readLine()) != null) {
+                            callbacks.printOutput(">" + buf);
+                        }
+
+                    } else {
+                        if (SQLMapLauncher.class.isAssignableFrom(clazz)) {
+                            callbacks.printError("An appropriate launcher is not selected.  Class selected: " + clazz.getName());
+                        } else if (sqlmapPath == null || sqlmapPath.isEmpty()) {
+                            callbacks.printError("The path to sqlmap.py has not been set.");
+                        }
+                    }
+                } catch (ClassNotFoundException e1) {
+                    callbacks.printError(e1.getMessage());
+                } catch (InstantiationException e1) {
+                    callbacks.printError(e1.getMessage());
+                } catch (IllegalAccessException e1) {
+                    callbacks.printError(e1.getMessage());
+                } catch (IOException e1) {
+                    callbacks.printError(e1.getMessage());
+                }
+            }
+        });
+        configButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SQLMapLauncherOptions dialog = new SQLMapLauncherOptions(callbacks);
+                dialog.pack();
+                dialog.setLocationRelativeTo(mainPanel);
+                dialog.setVisible(true);
+            }
+        });
     }
 
     public JPanel getMainPanel() {
@@ -209,23 +296,32 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     }
 
     void buildCommand() {
+        commandList.clear();
+        commandList.add("python");
+        commandList.add(txtExecutable.getText());
         StringBuilder buf = new StringBuilder();
         buf.append("-u ");
+        commandList.add("-u");
+
         buf.append(quotefy(urlTxt.getText()));
+        commandList.add(urlTxt.getText());
 
         if (chkIncludeData.isSelected() && dataTxt.getText().length() > 0) {
             buf.append(" --data=");
             buf.append(quotefy(dataTxt.getText()));
+            commandList.add("--data=" + dataTxt.getText());
         }
 
         if (chkIncludeCookies.isSelected() && cookieTxt.getText().length() > 0) {
             buf.append(" --cookie=");
             buf.append(quotefy(cookieTxt.getText()));
+            commandList.add("--cookie" + cookieTxt.getText());
         }
 
         if (chkDetectLevel.isSelected()) {
             buf.append(" --level=");
             buf.append(cmboDetectionLevel.getSelectedIndex() + 1);
+            commandList.add("--level=" + cmboDetectionLevel.getSelectedIndex() + 1);
         }
 
         if (chkDetectRisk.isSelected()) {
@@ -315,4 +411,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     }
 
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
