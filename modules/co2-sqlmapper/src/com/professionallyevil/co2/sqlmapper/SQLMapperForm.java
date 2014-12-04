@@ -87,9 +87,12 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private IBurpExtenderCallbacks callbacks;
     public static final String SETTING_SQLMAP_PATH = "sqlmapper.execpath";
     public static final String SETTING_SQLMAP_LAUNCHER = "sqlmapper.launcher";
+    private boolean windowsQuotes = false;
 
     public SQLMapperForm(IBurpExtenderCallbacks extenderCallbacks) {
         this.callbacks = extenderCallbacks;
+        String os = System.getProperty("os.name");
+        windowsQuotes = (os != null && os.startsWith("Windows"));
         final JPopupMenu popup = new JPopupMenu();
         JMenuItem copy = new JMenuItem("Copy all");
         popup.add(copy);
@@ -328,11 +331,16 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     }
 
     private String quotefy(String input) {
-        if (input.contains("'")) {
+        if (windowsQuotes) {
+            //todo: escape " inside string
             return "\"" + input + "\"";
-
         } else {
-            return "'" + input + "'";
+            if (input.contains("'")) {
+                return "\"" + input + "\"";
+
+            } else {
+                return "'" + input + "'";
+            }
         }
     }
 

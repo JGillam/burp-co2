@@ -96,6 +96,7 @@ public class SQLMapLauncherOptions extends JDialog {
 
     private void addLaunchers() {
         comboLaunchType.addItem(new ActionScriptSQLMapLauncher());
+        comboLaunchType.addItem(new WindowsCmdSQLMapLauncher());
         comboLaunchType.addItem(new XTermLauncher());
         //comboLaunchType.addItem(new CustomSQLMapLauncher());
     }
