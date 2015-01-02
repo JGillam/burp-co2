@@ -35,10 +35,10 @@ import java.awt.*;
  * burp.BurpExtender
  */
 public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener, Co2Extender {
-    public static final String VERSION = "1.1.3b";
+    public static final String VERSION = "1.1.4b";
     private Co2ConfigTab configTab;
     private IBurpExtenderCallbacks callbacks;
-    private java.util.Timer co2Timer = new java.util.Timer("Co2", false);
+    private java.util.Timer co2Timer = new java.util.Timer("CO2", false);
 
 
     public Co2SuiteExtender() {
@@ -90,7 +90,7 @@ public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener,
         callbacks.customizeUiComponent(configTab);
         callbacks.addSuiteTab(configTab);
 
-        callbacks.printOutput("Co2 Loaded.  Version: " + VERSION + " (build " + about.build + ")");
+        callbacks.printOutput("CO2 Loaded.  Version: " + VERSION + " (build " + about.build + ")");
 
     }
 

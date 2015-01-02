@@ -78,12 +78,53 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JCheckBox chkEnumDump;
     private JComboBox cmboDetectionLevel;
     private JComboBox cmboDetectionRisk;
-    private JCheckBox chkDetectLevel;
-    private JCheckBox chkDetectRisk;
     private JLabel helpSQLMapper;
     private JButton btnRun;
     private JButton configButton;
+    private JCheckBox chkTechBoolBlind;
+    private JCheckBox chkTechTimeBlind;
+    private JCheckBox chkTechUnion;
+    private JCheckBox chkTechError;
+    private JCheckBox chkTechStacked;
+    private JCheckBox chkTechInline;
+    private JTextField txtTimeDelay;
+    private JTextField txtUnionCols;
+    private JTextField txtUnionChar;
+    private JTextField txtUnionTable;
+    private JTextField txtSecondOrderURL;
+    private JCheckBox chkMiscBeep;
+    private JCheckBox chkMiscCheckWAF;
+    private JCheckBox chkMiscCleanup;
+    private JCheckBox chkMiscIndentifyWAF;
+    private JCheckBox chkMiscMobile;
+    private JCheckBox chkMiscPurgeOutput;
+    private JCheckBox chkMiscFlushSession;
+    private JTextField txtMatchStringTrue;
+    private JTextField txtMatchStringFalse;
+    private JTextField txtMatchRegexTrue;
+    private JTextField txtMatchCodeTrue;
+    private JCheckBox chkCompareTextOnly;
+    private JCheckBox chkCompareTitleOnly;
+    private JCheckBox chkTestForms;
+    private JCheckBox chkMiscFreshQueries;
+    private JTextField txtConProxy;
+    private JTextField txtConProxyUser;
+    private JTextField txtConPasswd;
+    private JCheckBox chkIgnoreSysProxy;
+    private JComboBox cmboAuthType;
+    private JTextField txtAuthUser;
+    private JTextField txtAuthPasswd;
+    private JTextField txtConTimeout;
+    private JTextField txtConDelay;
+    private JTextField txtConThreads;
+    private JTextField txtEnumWhere;
+    private JTextField txtEnumStart;
+    private JTextField txtEnumStop;
+    private JTextField txtEnumLast;
+    private JTextField txtEnumFirst;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox, String>();
+    private Map<JCheckBox, String> techniqueCheckboxes = new HashMap<JCheckBox, String>();
+    private Map<JCheckBox, String> generalMiscCheckboxes = new HashMap<JCheckBox, String>();
     private IBurpExtenderCallbacks callbacks;
     public static final String SETTING_SQLMAP_PATH = "sqlmapper.execpath";
     public static final String SETTING_SQLMAP_LAUNCHER = "sqlmapper.launcher";
@@ -129,7 +170,19 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             }
         });
 
+        // Add listeners for Detection tab
+        cmboDetectionRisk.addActionListener(this);
+        cmboDetectionLevel.addActionListener(this);
+        txtMatchStringTrue.getDocument().addDocumentListener(this);
+        txtMatchStringFalse.getDocument().addDocumentListener(this);
+        txtMatchRegexTrue.getDocument().addDocumentListener(this);
+        txtMatchCodeTrue.getDocument().addDocumentListener(this);
+        chkCompareTitleOnly.addActionListener(this);
+        chkCompareTextOnly.addActionListener(this);
+        chkTestForms.addActionListener(this);
 
+
+        // Add listeners for Enumeration tab
         enumCheckboxes.put(chkEnumBanner, "-b");
         enumCheckboxes.put(chkEnumCols, "--columns");
         enumCheckboxes.put(chkEnumComments, "--comments");
@@ -149,6 +202,28 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         for (JCheckBox checkbox : enumCheckboxes.keySet()) {
             checkbox.addActionListener(this);
         }
+        txtEnumWhere.getDocument().addDocumentListener(this);
+        txtEnumFirst.getDocument().addDocumentListener(this);
+        txtEnumLast.getDocument().addDocumentListener(this);
+        txtEnumStart.getDocument().addDocumentListener(this);
+        txtEnumStop.getDocument().addDocumentListener(this);
+
+
+        // Add listeners for technique tab
+        techniqueCheckboxes.put(chkTechBoolBlind, "B");
+        techniqueCheckboxes.put(chkTechError, "E");
+        techniqueCheckboxes.put(chkTechUnion, "U");
+        techniqueCheckboxes.put(chkTechStacked, "S");
+        techniqueCheckboxes.put(chkTechTimeBlind, "T");
+        techniqueCheckboxes.put(chkTechInline, "Q");
+        for (JCheckBox checkbox : techniqueCheckboxes.keySet()) {
+            checkbox.addActionListener(this);
+        }
+        txtSecondOrderURL.getDocument().addDocumentListener(this);
+        txtTimeDelay.getDocument().addDocumentListener(this);
+        txtUnionChar.getDocument().addDocumentListener(this);
+        txtUnionCols.getDocument().addDocumentListener(this);
+        txtUnionTable.getDocument().addDocumentListener(this);
 
         // Add action listeners
         chkIncludeData.addActionListener(this);
@@ -161,22 +236,32 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         txtPinToTable.getDocument().addDocumentListener(this);
         txtPinToUser.getDocument().addDocumentListener(this);
 
-        chkDetectLevel.addActionListener(this);
-        chkDetectRisk.addActionListener(this);
-        cmboDetectionRisk.addActionListener(this);
-        cmboDetectionLevel.addActionListener(this);
-        cmboDetectionLevel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                chkDetectLevel.setSelected(true);
-            }
-        });
-        cmboDetectionRisk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                chkDetectRisk.setSelected(true);
-            }
-        });
+
+        // General/Misc actions listeners
+        generalMiscCheckboxes.put(chkMiscBeep, "--beep");
+        generalMiscCheckboxes.put(chkMiscCheckWAF, "--check-waf");
+        generalMiscCheckboxes.put(chkMiscIndentifyWAF, "--identify-waf");
+        generalMiscCheckboxes.put(chkMiscCleanup, "--cleanup");
+        generalMiscCheckboxes.put(chkMiscMobile, "--mobile");
+        generalMiscCheckboxes.put(chkMiscPurgeOutput, "--purge-output");
+        generalMiscCheckboxes.put(chkMiscFlushSession, "--flush-session");
+        generalMiscCheckboxes.put(chkMiscFreshQueries, "--fresh-queries");
+
+        for (JCheckBox checkbox : generalMiscCheckboxes.keySet()) {
+            checkbox.addActionListener(this);
+        }
+
+        // Connection listeners
+        txtConProxy.getDocument().addDocumentListener(this);
+        txtConProxyUser.getDocument().addDocumentListener(this);
+        txtConPasswd.getDocument().addDocumentListener(this);
+        chkIgnoreSysProxy.addActionListener(this);
+        txtAuthUser.getDocument().addDocumentListener(this);
+        txtAuthPasswd.getDocument().addDocumentListener(this);
+        txtConDelay.getDocument().addDocumentListener(this);
+        txtConTimeout.getDocument().addDocumentListener(this);
+        txtConThreads.getDocument().addDocumentListener(this);
+        cmboAuthType.addActionListener(this);
 
         helpSQLMapper.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-sqlmapper.php", helpSQLMapper));
 
@@ -290,15 +375,77 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             buf.append(quotefy(cookieTxt.getText()));
         }
 
-        if (chkDetectLevel.isSelected()) {
+        // Detection Tab
+
+        if (cmboDetectionLevel.getSelectedIndex() != 0) {     // i.e. not the default
             buf.append(" --level=");
             buf.append(cmboDetectionLevel.getSelectedIndex() + 1);
         }
 
-        if (chkDetectRisk.isSelected()) {
+        if (cmboDetectionRisk.getSelectedIndex() != 1) {      // i.e. not the default
             buf.append(" --risk=");
             buf.append(cmboDetectionRisk.getSelectedIndex());
         }
+
+        buf.append(addIfNotEmpty(txtMatchStringTrue, " --string="));
+        buf.append(addIfNotEmpty(txtMatchStringFalse, " --not-string="));
+        buf.append(addIfNotEmpty(txtMatchRegexTrue, " --regexp="));
+        buf.append(addIfNotEmpty(txtMatchCodeTrue, " --code=", false));
+
+        if (chkCompareTextOnly.isSelected()) {
+            buf.append(" --text-only");
+        }
+
+        if (chkCompareTitleOnly.isSelected()) {
+            buf.append(" --titles");
+        }
+
+        if (chkTestForms.isSelected()) {
+            buf.append(" --forms");
+        }
+
+
+        // Technique tab
+
+        if (!(chkTechBoolBlind.isSelected() && chkTechError.isSelected() && chkTechInline.isSelected() &&
+                chkTechStacked.isSelected() && chkTechTimeBlind.isSelected() && chkTechUnion.isSelected())) {
+            buf.append(" --technique=");
+            for (JCheckBox chk : techniqueCheckboxes.keySet()) {
+                if (chk.isSelected()) {
+                    buf.append(techniqueCheckboxes.get(chk));
+                }
+            }
+        }
+
+        if (chkTechUnion.isSelected()) {
+            String unionCols = txtUnionCols.getText().trim();
+            if (unionCols.length() > 0) {
+                buf.append(" --union-cols=");
+                buf.append(unionCols);
+            }
+            String unionChar = txtUnionChar.getText().trim();
+            if (unionChar.length() > 0) {
+                buf.append(" --union-char=");
+                buf.append(unionChar);
+            }
+            String unionTable = txtUnionTable.getText().trim();
+            if (unionTable.length() > 0) {
+                buf.append(" --union-from=");
+                buf.append(unionTable);
+            }
+        }
+
+        if (chkTechTimeBlind.isSelected() && txtTimeDelay.getText().trim().length() > 0) {
+            buf.append(" --time-sec=");
+            buf.append(txtTimeDelay.getText().trim());
+        }
+
+        if (txtSecondOrderURL.getText().trim().length() > 0) {
+            buf.append(" --second-order=");
+            buf.append(txtSecondOrderURL.getText());
+        }
+
+        // Enumeration Tab
 
         if (txtPinToUser.getText().trim().length() > 0) {
             buf.append(" -U ");
@@ -327,6 +474,59 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             }
         }
 
+        buf.append(addIfNotEmpty(txtEnumWhere, " --where=", true));
+        buf.append(addIfNotEmpty(txtEnumFirst, " --first=", false));
+        buf.append(addIfNotEmpty(txtEnumLast, " --last=", false));
+        buf.append(addIfNotEmpty(txtEnumStart, " --start=", false));
+        buf.append(addIfNotEmpty(txtEnumStop, " --stop=", false));
+
+        // General/Misc. Tab
+        for (JCheckBox checkbox : generalMiscCheckboxes.keySet()) {
+            if (checkbox.isSelected()) {
+                buf.append(" ");
+                buf.append(generalMiscCheckboxes.get(checkbox));
+            }
+        }
+
+        // Connection Tab
+        if (txtConProxy.getText().trim().length() > 0) {
+            buf.append(" --proxy=");
+            buf.append(txtConProxy.getText().trim());
+
+            String proxyUser = txtConProxyUser.getText().trim();
+            String proxyPasswd = txtConPasswd.getText().trim();
+            if (proxyUser.length() > 0 || proxyPasswd.length() > 0) {
+                buf.append(" --proxy-cred=");
+                buf.append(proxyUser);
+                buf.append(":");
+                buf.append(proxyPasswd);
+            }
+        }
+
+        if (chkIgnoreSysProxy.isSelected()) {
+            buf.append(" --ignore-proxy");
+        }
+
+        if (cmboAuthType.getSelectedIndex() > 0) {
+            buf.append(" --auth-type=");
+            buf.append(cmboAuthType.getSelectedItem().toString());
+
+            String authUser = txtAuthUser.getText().trim();
+            String authPasswd = txtAuthPasswd.getText().trim();
+
+            if (authUser.length() > 0 || authPasswd.length() > 0) {
+                buf.append(" --auth-cred=");
+                buf.append(authUser);
+                buf.append(":");
+                buf.append(authPasswd);
+            }
+        }
+
+        buf.append(addIfNotEmpty(txtConDelay, " --delay=", false));
+        buf.append(addIfNotEmpty(txtConTimeout, " --timeout=", false));
+        buf.append(addIfNotEmpty(txtConThreads, " --threads=", false));
+
+
         sqlmapCommandTxt.setText(buf.toString());
     }
 
@@ -351,14 +551,27 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         dataTxt.setText("");
         cmboDetectionLevel.setSelectedIndex(0);
         cmboDetectionRisk.setSelectedIndex(1);
-        chkDetectLevel.setSelected(false);
-        chkDetectRisk.setSelected(false);
 
         for (JCheckBox checkbox : enumCheckboxes.keySet()) {
             checkbox.setSelected(false);
         }
+    }
 
+    private String addIfNotEmpty(JTextField textField, String prefix) {
+        return addIfNotEmpty(textField, prefix, true);
+    }
 
+    private String addIfNotEmpty(JTextField textField, String prefix, boolean quotefy) {
+        String value = textField.getText().trim();
+        if (value.length() > 0) {
+            if (quotefy) {
+                return prefix + quotefy(value);
+            } else {
+                return prefix + value;
+            }
+        } else {
+            return "";
+        }
     }
 
     @Override
