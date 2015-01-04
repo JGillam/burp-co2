@@ -26,6 +26,7 @@
               <component id="218a" class="javax.swing.JTextArea" binding="txtUsername">
                 <constraints/>
                 <properties>
+                  <rows value="10"/>
                   <text value="admin&#10;administrator&#10;manager"/>
                 </properties>
               </component>
@@ -51,6 +52,7 @@
               <component id="47bdf" class="javax.swing.JTextArea" binding="txtPasswords">
                 <constraints/>
                 <properties>
+                  <rows value="10"/>
                   <text value="123456&#10;password&#10;12345678&#10;qwerty&#10;abc123&#10;123456789&#10;111111&#10;1234567&#10;iloveyou&#10;adobe123&#10;123123&#10;admin&#10;1234567890&#10;letmein&#10;photoshop&#10;1234&#10;monkey&#10;shadow&#10;sunshine&#10;12345&#10;password1&#10;princess&#10;azerty&#10;trustno1&#10;000000"/>
                 </properties>
               </component>
@@ -75,7 +77,9 @@
             <children>
               <component id="dfe35" class="javax.swing.JTextArea" binding="textOutput">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <rows value="20"/>
+                </properties>
               </component>
             </children>
           </scrollpane>

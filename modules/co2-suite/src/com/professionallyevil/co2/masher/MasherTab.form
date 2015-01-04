@@ -310,7 +310,7 @@
                   <component id="8b7d0" class="javax.swing.JTextArea" binding="txtSampleOutput">
                     <constraints/>
                     <properties>
-                      <rows value="8"/>
+                      <rows value="20"/>
                       <text value="This may take a while..."/>
                     </properties>
                   </component>
