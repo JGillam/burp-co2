@@ -47,6 +47,9 @@ public class MasherTab {
     private JTextField generatorName;
     private JButton createButton;
     private JSpinner alphaSpinner;
+    private JTextField txtSampleSize;
+    private JButton btnGenerateSample;
+    private JTextArea txtSampleOutput;
 
     IBurpExtenderCallbacks callbacks;
 
@@ -124,6 +127,49 @@ public class MasherTab {
                 }
 
                 callbacks.registerIntruderPayloadGeneratorFactory(new MasherGeneratorFactory(generatorName.getText(), input, spec));
+            }
+        });
+        btnGenerateSample.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int sampleSize = 500;
+                try {
+                    sampleSize = Integer.parseInt(txtSampleSize.getText());
+                } catch (NumberFormatException ex) {
+                    // do nothing
+                }
+                txtSampleOutput.setText("This may take a while...");
+
+                PasswordSpec spec = new PasswordSpec(minCharsSlider.getValue(), maxCharsSlider.getValue(),
+                        (Integer) alphaSpinner.getValue(), (Integer) uppercaseSpinner.getValue(), (Integer) lowercaseSpinner.getValue(),
+                        (Integer) numericSpinner.getValue(), (Integer) specialSpinner.getValue(), restrictSpecialsCheckBox.isSelected(),
+                        specialsText.getText(), spacesOKCheckBox.isSelected());
+
+                String inputString = inputList.getText();
+                List<String> input = new ArrayList<String>();
+                BufferedReader reader = new BufferedReader(new StringReader(inputString));
+                try {
+                    String line = reader.readLine();
+                    while (line != null) {
+                        input.add(line);
+                        line = reader.readLine();
+                    }
+                } catch (IOException e1) {
+                    callbacks.printError("Can't read input list... " + e1.getMessage());
+                }
+
+                MasherGenerator generator = new MasherGenerator("", input, spec);
+
+                StringBuilder sampleOutBuf = new StringBuilder();
+                for (int i = 0; i < sampleSize && generator.hasMorePayloads(); i++) {
+                    sampleOutBuf.append(new String(generator.getNextPayload(null)));
+                    sampleOutBuf.append('\n');
+                }
+
+                generator.reset();
+
+                txtSampleOutput.setText(sampleOutBuf.toString());
+
             }
         });
     }
