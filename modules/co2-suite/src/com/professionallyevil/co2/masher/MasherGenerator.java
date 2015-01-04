@@ -18,10 +18,13 @@ package com.professionallyevil.co2.masher;
 
 import burp.IIntruderPayloadGenerator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
     private static final int BUFFER_SIZE = 3;
@@ -37,12 +40,16 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
     public MasherGenerator(String name, Collection<String> input, PasswordSpec spec) {
         this.name = name;
 
+        //Set<String> dates = processDates(input);
+        //input.addAll(dates);
+
         this.words = new ArrayList<String[]>(input.size());
         for (String word : input) {
             String[] w = new String[1];
             w[0] = word.toLowerCase();
             words.add(w);
         }
+
         this.spec = spec;
 
         generatorThread = new Thread(this, name);
@@ -111,6 +118,30 @@ public class MasherGenerator implements IIntruderPayloadGenerator, Runnable {
         } catch (InterruptedException e) {
             //e.printStackTrace(); Expected on a reset()
         }
+    }
+
+
+    //TODO: fix this... not working as expected...
+    private Set<String> processDates(Collection<String> words) {
+        Set<String> dates = new HashSet<String>();
+        Pattern p = Pattern.compile("^[0-9]{1,2}[/][0-9]{1,2}[/][0-9]{2}([0-9]{2})?$");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat longDateFormatter = new SimpleDateFormat("MMMM MMM MM yyyy yy dd");
+
+        for (String w : words) {
+            if (p.matcher(w).find()) {
+                try {
+                    Date date = dateFormatter.parse(w);
+                    String newWords = longDateFormatter.format(date);
+                    Collections.addAll(dates, newWords.split(" "));
+                    words.remove(w);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return dates;
     }
 
     private void addLowercaseWords(List<String[]> words, String suffix) throws InterruptedException {
