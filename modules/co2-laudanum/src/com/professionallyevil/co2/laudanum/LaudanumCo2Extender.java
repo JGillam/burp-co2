@@ -25,7 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LaudanumCo2Extender implements IExtensionStateListener, Co2Extender {
-    public static final String VERSION = "0.8.2 b";
+    public static final String VERSION = "0.8.3 b";
     private IBurpExtenderCallbacks callbacks;
 
     public LaudanumCo2Extender() {
