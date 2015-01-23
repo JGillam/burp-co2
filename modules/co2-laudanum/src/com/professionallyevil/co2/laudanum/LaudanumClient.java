@@ -139,7 +139,7 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner, IContext
         txtConsole.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (txtConsole.getSelectedText().length() > 0) {
+                if (txtConsole.getSelectedText().length() > 0) {       // todo: this may generate a NullPointerException
                     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                     StringSelection contents = new StringSelection(txtConsole.getSelectedText());
                     clipboard.setContents(contents, LaudanumClient.this);
