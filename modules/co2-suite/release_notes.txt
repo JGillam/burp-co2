@@ -1,5 +1,9 @@
 = Burp CO<sub>2</sub> Release Notes =
 
+==Version 1.1.7 (24 Jan, 2015):==
+  * Fixed update checker and links on About page
+  * Update checker now detects if this is BAppStore deployment or Jar file deployment.
+
 ==Version 1.1.6 c (22 Jan, 2015):==
   * Run button working on SQLMapper
 
