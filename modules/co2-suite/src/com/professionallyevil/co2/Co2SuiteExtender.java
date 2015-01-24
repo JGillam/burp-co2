@@ -76,15 +76,12 @@ public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener,
         callbacks.registerContextMenuFactory(laudanum);
 
         final About about = new About(callbacks);
-        boolean fromBappStore = CO2Config.isLoadedFromBappStore();
-        if (fromBappStore) {
-            co2Timer.schedule(new java.util.TimerTask() {
-                @Override
-                public void run() {
-                    about.performUpdateCheck();
-                }
-            }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hrs
-        }
+        co2Timer.schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                about.performUpdateCheck();
+            }
+        }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hr
 
         Co2Configurable[] configurables = {mapper, laudanum, userGenerator, nameMangler, cewler, masher, basicauther,
                 miscTab, about};
