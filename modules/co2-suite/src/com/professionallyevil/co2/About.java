@@ -36,7 +36,7 @@ public class About implements Co2Configurable {
     public About(IBurpExtenderCallbacks callbacks) {
         build = loadBuild();
         currentVersion = new Version(Co2SuiteExtender.VERSION, build);
-        tab = new AboutTab(callbacks, currentVersion);
+        tab = new AboutTab(callbacks, currentVersion, build);
         ;
     }
 

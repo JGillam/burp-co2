@@ -39,6 +39,7 @@ public class Version {
             minor = Integer.parseInt(m.group("minor"));
             patch = Integer.parseInt(m.group("patch"));
             extra = m.group("extra") == null ? "" : m.group("extra");
+            extra = "";
             build = m.group("build") == null ? 0 : Integer.parseInt(m.group("build"));
         }
 
