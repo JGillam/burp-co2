@@ -1,0 +1,2 @@
+# Why Co2? #
+The name comes from those little carbon dioxide bubbles you find in beer and soft drinks... you know, the bubbles that make your burp?  Yes, it's a cheesy play on words that is totally tied to the name of the wonderful [tool](http://portswigger.net/) that it runs on.  I should add that it is not chemically correct since carbon dioxide should be CO2 (with the 2 being subscript.  But it kind of stuck as Co2 because of mixed case coding conventions so I left it that way.
