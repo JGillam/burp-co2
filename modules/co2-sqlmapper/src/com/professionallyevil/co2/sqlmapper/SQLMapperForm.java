@@ -122,6 +122,12 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JTextField txtEnumStop;
     private JTextField txtEnumLast;
     private JTextField txtEnumFirst;
+    private JTextField txtTestableParameters;
+    private JTextField txtSkipParameters;
+    private JTextField txtPrefix;
+    private JTextField txtSuffix;
+    private JTextField txtDBMS;
+    private JTextField txtOS;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> techniqueCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> generalMiscCheckboxes = new HashMap<JCheckBox, String>();
@@ -224,6 +230,14 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         txtUnionChar.getDocument().addDocumentListener(this);
         txtUnionCols.getDocument().addDocumentListener(this);
         txtUnionTable.getDocument().addDocumentListener(this);
+
+        // Listeners for Injection tab
+        txtTestableParameters.getDocument().addDocumentListener(this);
+        txtSkipParameters.getDocument().addDocumentListener(this);
+        txtPrefix.getDocument().addDocumentListener(this);
+        txtSuffix.getDocument().addDocumentListener(this);
+        txtDBMS.getDocument().addDocumentListener(this);
+        txtOS.getDocument().addDocumentListener(this);
 
         // Add action listeners
         chkIncludeData.addActionListener(this);
@@ -444,6 +458,15 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             buf.append(" --second-order=");
             buf.append(txtSecondOrderURL.getText());
         }
+
+        // Injection Tab
+        buf.append(addIfNotEmpty(txtTestableParameters, " -p "));
+        buf.append(addIfNotEmpty(txtSkipParameters, " --skip="));
+        buf.append(addIfNotEmpty(txtPrefix, " --prefix="));
+        buf.append(addIfNotEmpty(txtSuffix, " --suffix="));
+        buf.append(addIfNotEmpty(txtDBMS, " --dbms="));
+        buf.append(addIfNotEmpty(txtOS, " --os="));
+
 
         // Enumeration Tab
 
