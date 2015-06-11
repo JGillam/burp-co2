@@ -128,6 +128,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JTextField txtSuffix;
     private JTextField txtDBMS;
     private JTextField txtOS;
+    private JTextField txtExtra;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> techniqueCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> generalMiscCheckboxes = new HashMap<JCheckBox, String>();
@@ -276,6 +277,8 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         txtConTimeout.getDocument().addDocumentListener(this);
         txtConThreads.getDocument().addDocumentListener(this);
         cmboAuthType.addActionListener(this);
+
+        txtExtra.getDocument().addDocumentListener(this);
 
         helpSQLMapper.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-sqlmapper.php", helpSQLMapper));
 
@@ -464,8 +467,8 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         buf.append(addIfNotEmpty(txtSkipParameters, " --skip="));
         buf.append(addIfNotEmpty(txtPrefix, " --prefix="));
         buf.append(addIfNotEmpty(txtSuffix, " --suffix="));
-        buf.append(addIfNotEmpty(txtDBMS, " --dbms="));
-        buf.append(addIfNotEmpty(txtOS, " --os="));
+        buf.append(addIfNotEmpty(txtDBMS, " --dbms=", false));
+        buf.append(addIfNotEmpty(txtOS, " --os=", false));
 
 
         // Enumeration Tab
@@ -549,6 +552,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         buf.append(addIfNotEmpty(txtConTimeout, " --timeout=", false));
         buf.append(addIfNotEmpty(txtConThreads, " --threads=", false));
 
+        buf.append(addIfNotEmpty(txtExtra, " ", false));
 
         sqlmapCommandTxt.setText(buf.toString());
     }
