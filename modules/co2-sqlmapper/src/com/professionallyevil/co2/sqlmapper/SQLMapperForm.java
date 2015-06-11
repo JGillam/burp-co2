@@ -463,12 +463,12 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         }
 
         // Injection Tab
-        buf.append(addIfNotEmpty(txtTestableParameters, " -p "));
-        buf.append(addIfNotEmpty(txtSkipParameters, " --skip="));
-        buf.append(addIfNotEmpty(txtPrefix, " --prefix="));
-        buf.append(addIfNotEmpty(txtSuffix, " --suffix="));
-        buf.append(addIfNotEmpty(txtDBMS, " --dbms=", false));
-        buf.append(addIfNotEmpty(txtOS, " --os=", false));
+        buf.append(addIfNotEmpty(txtTestableParameters, " -p ", true));
+        buf.append(addIfNotEmpty(txtSkipParameters, " --skip=", true));
+        buf.append(addIfNotEmpty(txtPrefix, " --prefix=", true));
+        buf.append(addIfNotEmpty(txtSuffix, " --suffix=", true));
+        buf.append(addIfNotEmpty(txtDBMS, " --dbms=", true));
+        buf.append(addIfNotEmpty(txtOS, " --os=", true));
 
 
         // Enumeration Tab
