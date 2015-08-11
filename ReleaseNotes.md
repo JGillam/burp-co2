@@ -1,5 +1,8 @@
 # Burp CO<sub>2</sub> Release Notes #
 
+## Version 1.1.8 (10 Aug, 2015): ##
+  * Major updates to SQLMapper interface.  Many more options enabled.
+
 ## Version 1.1.7 (24 Jan, 2015): ##
   * Fixed update checker and links on About page
   * Update checker now detects if this is BAppStore deployment or Jar file deployment.
