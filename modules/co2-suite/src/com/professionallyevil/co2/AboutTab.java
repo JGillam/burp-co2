@@ -73,18 +73,18 @@ public class AboutTab {
             bugTrackingLink.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    executeLink("https://code.google.com/p/burp-co2/");
+                    executeLink("https://github.com/JGillam/burp-co2/issues");
                 }
             });
             latestVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    executeLink("http://www.burpco2.com?src=co2");           // TODO: Point this at the latest version notes
+                    executeLink("https://github.com/JGillam/burp-co2/releases");           // TODO: Point this at the latest version notes
                 }
             });
         } else {
-            additionalInfoLink.setText("www.burpco2.com.com");
-            bugTrackingLink.setText("https://code.google.com/p/burp-co2/");
+            additionalInfoLink.setText("www.burpco2.com");
+            bugTrackingLink.setText("https://github.com/JGillam/burp-co2/issues");
         }
         buttonCheckForUpdate.addActionListener(new ActionListener() {
             @Override
