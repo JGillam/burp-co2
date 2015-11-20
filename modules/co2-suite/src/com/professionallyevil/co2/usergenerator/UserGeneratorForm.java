@@ -70,6 +70,8 @@ public class UserGeneratorForm implements ClipboardOwner {
     private JLabel statusLabel;
     private JCheckBox commonNicknamesCheckBox;
     private JLabel helpUserGenerator;
+    private JLabel limitToLabel;
+    private JTextField txtOutputLimit;
     private static final String RESOURCE_FOLDER = "com/professionallyevil/co2/lists/";
     private IBurpExtenderCallbacks callbacks;
     private int surnamesMax = 151671;
@@ -336,7 +338,8 @@ public class UserGeneratorForm implements ClipboardOwner {
     private void outputList(TreeSet<StatItem> sortedItems) {
         StringBuilder payloadList = new StringBuilder();
         Iterator<StatItem> itemIterator = sortedItems.iterator();
-        for (int i = 0; itemIterator.hasNext(); i++) {
+        int limit = limit();
+        for (int i = 0; itemIterator.hasNext() && i < limit; i++) {
             StatItem item = itemIterator.next();
             payloadList.append(item);//.append(": ").append(item.getValue());               //TODO: output to file?
             payloadList.append("\n");
@@ -472,6 +475,15 @@ public class UserGeneratorForm implements ClipboardOwner {
 
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
+
+    }
+
+    private int limit() {
+        try {
+            return Integer.parseInt(txtOutputLimit.getText());
+        } catch (NumberFormatException e) {
+            return 10000;
+        }
 
     }
 }
