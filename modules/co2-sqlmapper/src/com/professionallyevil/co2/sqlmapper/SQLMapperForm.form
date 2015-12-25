@@ -65,7 +65,7 @@
               </grid>
             </constraints>
             <properties>
-              <toolTipText value="Remove spaces between cookies (due to a bug in SQLMap)"/>
+              <toolTipText value="Remove spaces between cookies."/>
             </properties>
           </component>
           <component id="3fd17" class="javax.swing.JCheckBox" binding="chkIncludeData">
