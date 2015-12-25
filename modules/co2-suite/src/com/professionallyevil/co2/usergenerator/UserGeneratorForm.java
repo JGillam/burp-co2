@@ -317,7 +317,7 @@ public class UserGeneratorForm implements ClipboardOwner {
         int max = surnamesMax * percent / 100;
         HashMap<StatItem, Integer> stats = new HashMap<StatItem, Integer>(max);
         readListInto("surnames_census2000.csv", stats, max, surnamesLowercaseChk.isSelected(), surnameMixedcaseChk.isSelected(),
-                surnameUppercaseChk.isSelected(), false);
+                surnameUppercaseChk.isSelected(), false, false);
         return stats;
     }
 
@@ -329,7 +329,7 @@ public class UserGeneratorForm implements ClipboardOwner {
 
         for (int i = start; i < end; i += 10) {
             readListInto("firstnames_" + (1900 + i) + "s.csv", stats, Integer.MAX_VALUE, firstNamesLowercaseChk.isSelected(),
-                    firstNamesMixedcaseChk.isSelected(), firstNamesUppercaseChk.isSelected(), firstNameJustInitialChk.isSelected());
+                    firstNamesMixedcaseChk.isSelected(), firstNamesUppercaseChk.isSelected(), firstNameJustInitialChk.isSelected(), true);
         }
         return stats;
     }
@@ -360,14 +360,19 @@ public class UserGeneratorForm implements ClipboardOwner {
     }
 
     //TODO: fix issue - processes nicknames even for surnames
-    private int readListInto(String resourceName, Map<StatItem, Integer> itemSet, int maxCount, boolean lowercase, boolean mixedcase, boolean uppercase, boolean justInitial) throws Exception {
+    private int readListInto(String resourceName, Map<StatItem, Integer> itemSet, int maxCount, boolean lowercase, boolean mixedcase, boolean uppercase, boolean justInitial, boolean includeNicknames) throws Exception {
         InputStream inStream = UserGeneratorForm.this.getClass().getClassLoader().getResourceAsStream(RESOURCE_FOLDER + resourceName);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
 
         String line = reader.readLine();
         int i = 0;
 
-        HashMap<String, String[]> nicknameMap = getNicknames(); // will only be populated if checkbox is selected.
+        HashMap<String, String[]> nicknameMap;
+        if (includeNicknames) {
+            nicknameMap = getNicknames(); // will only be populated if checkbox is selected.
+        } else {
+            nicknameMap = new HashMap<String, String[]>();
+        }
 
         while (line != null && i < maxCount) {
             String[] strings = line.split(",");
