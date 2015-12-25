@@ -335,6 +335,13 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
                 btnRun.setEnabled(exec_path != null && !exec_path.isEmpty() && launcherClass != null && !launcherClass.isEmpty());
             }
         });
+
+        String[] dbmsOptions = {"Microsoft SQL Server", "MySQL", "Oracle", "PostgreSQL", "SQLite", "Sybase", "HSQLDB",
+                "IBM DB2", "Microsoft Access", "Firebird", "SAP MaxDB"};
+        new PopupTextHelper(dbmsOptions, txtDBMS);
+
+        String[] osOptions = {"Linux", "Windows"};
+        new PopupTextHelper(osOptions, txtOS);
     }
 
     public JPanel getMainPanel() {
