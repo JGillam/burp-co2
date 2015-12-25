@@ -79,7 +79,7 @@ public class AboutTab {
             latestVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    executeLink("https://github.com/JGillam/burp-co2/releases");           // TODO: Point this at the latest version notes
+                    executeLink("https://github.com/JGillam/burp-co2/releases");        // TODO: Point this at the latest version notes
                 }
             });
         } else {
@@ -92,7 +92,7 @@ public class AboutTab {
                 versionCheck(false);
             }
         });
-        setVersionText(currentVersion.toString() + " (build " + build + ")" + (CO2Config.isLoadedFromBappStore() ? " from BAppStore." : " from jar file."));
+        setVersionText(currentVersion.toString() + " (build " + build + ")" + (CO2Config.isLoadedFromBappStore(burpCallbacks) ? " from BAppStore." : " from jar file."));
         String settingLastUpdateDate = burpCallbacks.loadExtensionSetting(SETTING_LAST_UPDATE_DATE);
         if (settingLastUpdateDate != null && !settingLastUpdateDate.isEmpty()) {
             lastCheckedDate.setText(settingLastUpdateDate);
@@ -133,7 +133,7 @@ public class AboutTab {
                         "&t=" +
                         (automatic ? "a" : "m") + // reports if automated or manual update
                         "&b=" +
-                        (CO2Config.isLoadedFromBappStore() ? "y" : "n") // loaded from a bappstore version?
+                        (CO2Config.isLoadedFromBappStore(AboutTab.this.callbacks) ? "y" : "n") // loaded from a bappstore version?
                 );
 
                 byte[] request = callbacks.getHelpers().buildHttpRequest(url);
@@ -162,7 +162,7 @@ public class AboutTab {
                         String date = dateFormat.format(new Date());
                         lastCheckedDate.setText(date);
                         callbacks.saveExtensionSetting(SETTING_LAST_UPDATE_DATE, date);
-                        boolean isBappStoreVersion = CO2Config.isLoadedFromBappStore();
+                        boolean isBappStoreVersion = CO2Config.isLoadedFromBappStore(AboutTab.this.callbacks);
                         if (isBappStoreVersion) {
                             if (latestVersions[1].isNewerThan(currentVersion)) {
                                 latestStoreVersionLabel.setText("<html><span color=\"red\"><u>" + latestVersions[1].toString() + "</u></span></html>");

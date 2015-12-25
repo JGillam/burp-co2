@@ -16,6 +16,8 @@
 
 package com.professionallyevil.co2;
 
+import burp.IBurpExtenderCallbacks;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -44,8 +46,8 @@ public class CO2Config {
         }
     }
 
-    public static boolean isLoadedFromBappStore() {
-        return Boolean.parseBoolean(instance.props.getProperty("bappstore", "false"));
+    public static boolean isLoadedFromBappStore(IBurpExtenderCallbacks callbacks) {
+        return callbacks.isExtensionBapp();
     }
 
 

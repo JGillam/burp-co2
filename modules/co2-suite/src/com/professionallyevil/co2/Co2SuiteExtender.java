@@ -52,7 +52,7 @@ public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener,
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         this.callbacks = callbacks;
-        callbacks.setExtensionName("Burp CO2");
+        callbacks.setExtensionName("CO2");
 
         SQLMapper mapper = new SQLMapper(callbacks, this);
         callbacks.registerContextMenuFactory(mapper);
