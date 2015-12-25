@@ -355,10 +355,10 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
                 body.append(param.getValue());
                 body.append('&');
             } else if (param.getType() == IParameter.PARAM_COOKIE) {
-                cookies.append(param.getName());
+                cookies.append(param.getName().trim());
                 cookies.append('=');
-                cookies.append(param.getValue());
-                cookies.append("; ");
+                cookies.append(param.getValue().trim());
+                cookies.append(";");
             }
         }
         if (body.length() > 0) {

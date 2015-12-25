@@ -64,7 +64,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="Remove spaces between cookies (due to a bug in SQLMap)"/>
+            </properties>
           </component>
           <component id="3fd17" class="javax.swing.JCheckBox" binding="chkIncludeData">
             <constraints>
@@ -1114,7 +1116,9 @@
                         <preferred-size width="150" height="-1"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <toolTipText value="Specify protocol &amp; port (e.g. http://127.0.0.1:8081)"/>
+                    </properties>
                   </component>
                   <component id="446a8" class="javax.swing.JLabel">
                     <constraints>
