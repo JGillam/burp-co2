@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Burp CO2 by JGillam</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Burp CO2</h1>
+        <p class="header">A collection of enhancements for Portswigger&#39;s popular Burp Suite web penetration testing tool.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/JGillam/burp-co2/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/JGillam/burp-co2/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/JGillam/burp-co2">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/JGillam">JGillam</a></p>
+
+
+      </header>
+      <section>
+        <h2>
+<a id="welcome-burp-co2" class="anchor" href="#welcome-burp-co2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome Burp CO<sub>2</sub>
+</h2>
+
+<p>Burp CO<sub>2</sub> is an extension for the popular web proxy / web application testing tool called Burp Suite, available at <a href="https://portswigger.net/">Portswigger</a>. <em>You must install Burp Suite before installing the Burp CO<sub>2</sub> extension!</em>. The CO<sub>2</sub> extension includes a variety of functionality to enhance certain web penetration test tasks, such as an interface to make interacting with SQLMap more efficient and less error-prone, various tools for generating lists of users, a Laudanum exploitation shell implementation, and even a word masher for generating passwords.</p>
+
+<h2>
+<a id="suite-modules" class="anchor" href="#suite-modules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Suite Modules</h2>
+
+<h3>
+<a id="sqlmapper" class="anchor" href="#sqlmapper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SQLMapper</h3>
+
+<p>The SQLMapper module provides an interface to the popular <a href="http://sqlmap.org/">SQLMap</a> tool for discovering and exploiting SQL Injection flaws.  SQLMapper improves the efficiency of using SQLMap during a web penetration test.</p>
+
+<h3>
+<a id="user-generator" class="anchor" href="#user-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>User Generator</h3>
+
+<p>This module uses name statistics to generate names or usernames. First name statistics are based on date ranges of common baby names. Last name statistics are based on census data.</p>
+
+<h3>
+<a id="name-mangler" class="anchor" href="#name-mangler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Name Mangler</h3>
+
+<p>Given a short list of first and last names, the name mangler will put them together in different orders and with different separation characters to generate a potential list of usernames.</p>
+
+<h3>
+<a id="cewler" class="anchor" href="#cewler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CeWLer</h3>
+
+<p>This tool is based on the popular <a href="https://digi.ninja/projects/cewl.php">CeWL - Custom Word List</a> generator, by DigiNinja. Rather than re-crawling the site, this module pulls words from existing Burp history.</p>
+
+<h3>
+<a id="masher" class="anchor" href="#masher" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Masher</h3>
+
+<p>Given a list of dictionary words and a password specification, Masher will begin generating potential passwords that can be used with Burp Intruder. This is a useful tool for generating a custom password dictionary for login forms that do not have effective lockout mechanisms.</p>
+
+<h3>
+<a id="basicauther" class="anchor" href="#basicauther" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BasicAuther</h3>
+
+<p>Given a set of usernames and password this tool will generate a list of encoded payloads that can be submitted directly into the BASIC auth position of a request in Intruder.</p>
+
+<h2>
+<a id="burp-co2-philosophy" class="anchor" href="#burp-co2-philosophy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Burp CO2 Philosophy</h2>
+
+<p>With a background in software development, the author of Burp CO<sub>2</sub> (Jason Gillam), has designed each tool in the suite to work efficiently and in harmony with Burp Suite. The objectives of all CO<sub>2</sub> modules include:</p>
+
+<ul>
+<li>Free and open source</li>
+<li>Works on both Free and Pro versions of Burp (except where Free version limits functionality, e.g. Intruder rate limits)</li>
+<li>Lightweight with respect to memory and CPU utilization</li>
+<li>Avoid third party library dependencies</li>
+<li>Help available (online help, examples, etc...)</li>
+</ul>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
