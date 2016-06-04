@@ -394,11 +394,6 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             buf.append(quotefy(dataTxt.getText()));
         }
 
-        if (chkIncludeCookies.isSelected() && cookieTxt.getText().length() > 0) {
-            buf.append(" --cookie=");
-            buf.append(quotefy(cookieTxt.getText()));
-        }
-
         // Detection Tab
 
         if (cmboDetectionLevel.getSelectedIndex() != 0) {     // i.e. not the default
@@ -560,6 +555,13 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         buf.append(addIfNotEmpty(txtConThreads, " --threads=", false));
 
         buf.append(addIfNotEmpty(txtExtra, " ", false));
+
+
+//        Handle cookies.  This is done last because some cookie characters seem to be problematic.
+        if (chkIncludeCookies.isSelected() && cookieTxt.getText().length() > 0) {
+            buf.append(" --cookie=");
+            buf.append(quotefy(cookieTxt.getText()));
+        }
 
         sqlmapCommandTxt.setText(buf.toString());
     }
