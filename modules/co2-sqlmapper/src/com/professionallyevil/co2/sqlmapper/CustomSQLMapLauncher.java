@@ -31,6 +31,11 @@ public class CustomSQLMapLauncher extends SQLMapLauncher {
     }
 
     @Override
+    public List<String> getExecCommands(String sqlmapParams, String sqlmapPath, String pythonPath) {
+        return null;  //TODO: Implement this
+    }
+
+    @Override
     public String toString() {
         return "Custom";
     }

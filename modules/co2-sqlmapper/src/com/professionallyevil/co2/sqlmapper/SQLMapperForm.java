@@ -135,6 +135,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private IBurpExtenderCallbacks callbacks;
     public static final String SETTING_SQLMAP_PATH = "sqlmapper.execpath";
     public static final String SETTING_SQLMAP_LAUNCHER = "sqlmapper.launcher";
+    public static final String SETTING_PYTHON_PATH = "sqlmapper.pythonpath";
     private boolean windowsQuotes = false;
 
     public SQLMapperForm(IBurpExtenderCallbacks extenderCallbacks) {
@@ -290,13 +291,14 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             public void actionPerformed(ActionEvent e) {
                 String sqlmapPath = callbacks.loadExtensionSetting(SETTING_SQLMAP_PATH);
                 String launcherClass = callbacks.loadExtensionSetting(SETTING_SQLMAP_LAUNCHER);
+                String pythonPath = callbacks.loadExtensionSetting(SETTING_PYTHON_PATH);
                 try {
                     Class<?> clazz = Class.forName(launcherClass);
                     if (SQLMapLauncher.class.isAssignableFrom(clazz) && sqlmapPath != null) {
                         SQLMapLauncher launcher = (SQLMapLauncher) clazz.newInstance();
                         ProcessBuilder pb = new ProcessBuilder();
                         pb.redirectErrorStream(true);
-                        pb.command(launcher.getExecCommands(sqlmapCommandTxt.getText(), sqlmapPath));
+                        pb.command(launcher.getExecCommands(sqlmapCommandTxt.getText(), sqlmapPath, pythonPath));
                         Process p = pb.start();
                         BufferedReader bis = new BufferedReader(new InputStreamReader(p.getInputStream()));
                         String buf;

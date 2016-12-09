@@ -25,6 +25,8 @@ public abstract class SQLMapLauncher {
 
     public abstract List<String> getExecCommands(String sqlmapParams, String sqlmapPath);
 
+    public abstract List<String> getExecCommands(String sqlmapParams, String sqlmapPath, String pythonPath);
+
     public String toString() {
         return "SQLMapLauncher";
     }

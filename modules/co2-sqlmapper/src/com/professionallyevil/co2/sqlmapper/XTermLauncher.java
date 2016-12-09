@@ -27,13 +27,18 @@ public class XTermLauncher extends SQLMapLauncher {
     }
 
     @Override
-    public List<String> getExecCommands(String sqlmapParams, String sqlmapPath) {
+    public List<String> getExecCommands(String sqlmapParams, String sqlmapPath, String pythonPath) {
         List<String> commands = new ArrayList<String>();
         commands.add("xterm");
         commands.add("-hold");
         commands.add("-e");
-        commands.add("python " + sqlmapPath + " " + sqlmapParams);
+        commands.add(pythonPath + " " + sqlmapPath + " " + sqlmapParams);
         return commands;
+    }
+
+    @Override
+    public List<String> getExecCommands(String sqlmapParams, String sqlmapPath) {
+        return getExecCommands(sqlmapParams, sqlmapPath, "python");
     }
 
     @Override

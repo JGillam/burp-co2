@@ -28,10 +28,15 @@ public class ActionScriptSQLMapLauncher extends SQLMapLauncher {
 
     @Override
     public List<String> getExecCommands(String sqlmapParams, String sqlmapPath) {
+        return getExecCommands(sqlmapParams, sqlmapPath, "python");
+    }
+
+    @Override
+    public List<String> getExecCommands(String sqlmapParams, String sqlmapPath, String pythonPath) {
         List<String> commands = new ArrayList<String>();
         commands.add("osascript");
         commands.add("-e");
-        commands.add("tell application \"Terminal\" \n\tactivate\n\tdo script \"python " + sqlmapPath + " " + sqlmapParams + "\"\nend tell");
+        commands.add("tell application \"Terminal\" \n\tactivate\n\tdo script \"" + pythonPath + " " + sqlmapPath + " " + sqlmapParams + "\"\nend tell");
         return commands;
     }
 

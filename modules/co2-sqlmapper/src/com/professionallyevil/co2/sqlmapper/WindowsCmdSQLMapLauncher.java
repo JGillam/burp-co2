@@ -27,13 +27,18 @@ public class WindowsCmdSQLMapLauncher extends SQLMapLauncher {
 
     @Override
     public List<String> getExecCommands(String sqlmapParams, String sqlmapPath) {
+        return getExecCommands(sqlmapParams, sqlmapPath, "python");
+    }
+
+    @Override
+    public List<String> getExecCommands(String sqlmapParams, String sqlmapPath, String pythonPath) {
         List<String> commands = new ArrayList<String>();
         commands.add("cmd.exe");
         commands.add("/c");
         commands.add("start");
         commands.add("cmd.exe");
         commands.add("/k");
-        commands.add("python " + sqlmapPath + " " + sqlmapParams);
+        commands.add(pythonPath + " " + sqlmapPath + " " + sqlmapParams);
         return commands;
     }
 

@@ -29,8 +29,11 @@ public class SQLMapLauncherOptions extends JDialog {
     private JButton browseButton;
     private JComboBox<SQLMapLauncher> comboLaunchType;
     private JTextField textLaunchCommand;
+    private JTextField textPythonPath;
+    private JButton buttonPythonPath;
     private static final String SETTING_SQLMAP_PATH = SQLMapperForm.SETTING_SQLMAP_PATH;
     private static final String SETTING_SQLMAP_LAUNCHER = SQLMapperForm.SETTING_SQLMAP_LAUNCHER;
+    private static final String SETTING_PYTHON_PATH = SQLMapperForm.SETTING_PYTHON_PATH;
     private IBurpExtenderCallbacks callbacks;
 
 
@@ -44,6 +47,9 @@ public class SQLMapLauncherOptions extends JDialog {
         textSQLMapPath.setText(sqlMapPath == null ? "" : sqlMapPath);
 
         String launcherClass = callbacks.loadExtensionSetting(SETTING_SQLMAP_LAUNCHER);
+
+        String pythonPath = callbacks.loadExtensionSetting(SETTING_PYTHON_PATH);
+        textPythonPath.setText(pythonPath == null ? "python" : pythonPath);
 
         addLaunchers();
         comboLaunchType.setSelectedIndex(0);
@@ -92,6 +98,17 @@ public class SQLMapLauncherOptions extends JDialog {
                 }
             }
         });
+
+        buttonPythonPath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                int result = chooser.showOpenDialog(contentPane);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    textPythonPath.setText(chooser.getSelectedFile().getAbsolutePath());
+                }
+            }
+        });
     }
 
     private void addLaunchers() {
@@ -127,6 +144,7 @@ public class SQLMapLauncherOptions extends JDialog {
     private void onOK() {
         callbacks.saveExtensionSetting(SETTING_SQLMAP_PATH, textSQLMapPath.getText());
         callbacks.saveExtensionSetting(SETTING_SQLMAP_LAUNCHER, comboLaunchType.getSelectedItem().getClass().getName());
+        callbacks.saveExtensionSetting(SETTING_PYTHON_PATH, textPythonPath.getText());
 // add your code here
         dispose();
     }
