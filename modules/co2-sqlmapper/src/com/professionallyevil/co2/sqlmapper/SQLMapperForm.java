@@ -131,6 +131,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JTextField txtOS;
     private JTextField txtExtra;
     private JTextArea textExtraHeaders;
+    private JCheckBox chkRandomUserAgent;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> techniqueCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> generalMiscCheckboxes = new HashMap<JCheckBox, String>();
@@ -182,6 +183,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
 
         // Add listeners for Request / Headers tab
         textExtraHeaders.getDocument().addDocumentListener(this);
+        enumCheckboxes.put(chkRandomUserAgent, "--random-agent");  // yes, this isn't an enum checkbox, but it is convenient for now.
 
         // Add listeners for Detection tab
         cmboDetectionRisk.addActionListener(this);
