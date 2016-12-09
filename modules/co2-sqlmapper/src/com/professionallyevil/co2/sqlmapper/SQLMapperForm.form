@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="653" height="734"/>
+      <xy x="20" y="20" width="653" height="771"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -34,23 +34,6 @@
                   <editable value="false"/>
                 </properties>
               </component>
-              <component id="6c1f6" class="javax.swing.JButton" binding="btnRun">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Run"/>
-                  <visible value="true"/>
-                </properties>
-              </component>
-              <component id="4228d" class="javax.swing.JButton" binding="configButton" default-binding="true">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Config"/>
-                </properties>
-              </component>
               <grid id="5ea3d" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
@@ -75,6 +58,34 @@
                     </constraints>
                     <properties>
                       <toolTipText value="Additional SQLMap command parameters for anything not otherwise found in SQLMapper."/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="3f47" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="line" title="Auto Run"/>
+                <children>
+                  <component id="6c1f6" class="javax.swing.JButton" binding="btnRun">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Run"/>
+                      <visible value="true"/>
+                    </properties>
+                  </component>
+                  <component id="4228d" class="javax.swing.JButton" binding="configButton" default-binding="true">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Config"/>
+                      <toolTipText value="Configure the settings to auto run."/>
                     </properties>
                   </component>
                 </children>
