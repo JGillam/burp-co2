@@ -409,9 +409,9 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             buf.append(cmboDetectionLevel.getSelectedIndex() + 1);
         }
 
-        if (cmboDetectionRisk.getSelectedIndex() != 1) {      // i.e. not the default
+        if (cmboDetectionRisk.getSelectedIndex() != 0) {      // i.e. not the default
             buf.append(" --risk=");
-            buf.append(cmboDetectionRisk.getSelectedIndex());
+            buf.append(cmboDetectionRisk.getSelectedItem());
         }
 
         buf.append(addIfNotEmpty(txtMatchStringTrue, " --string="));
