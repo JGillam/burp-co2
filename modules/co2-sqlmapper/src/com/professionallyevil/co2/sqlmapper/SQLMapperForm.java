@@ -132,6 +132,8 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JTextField txtExtra;
     private JTextArea textExtraHeaders;
     private JCheckBox chkRandomUserAgent;
+    private JComboBox comboDBMS;
+    private JTextField txtDBMSVersion;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> techniqueCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> generalMiscCheckboxes = new HashMap<JCheckBox, String>();
@@ -195,6 +197,21 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         chkCompareTitleOnly.addActionListener(this);
         chkCompareTextOnly.addActionListener(this);
         chkTestForms.addActionListener(this);
+        comboDBMS.addActionListener(this);
+        txtDBMSVersion.getDocument().addDocumentListener(this);
+        comboDBMS.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String dbms = comboDBMS.getSelectedItem().toString();
+                boolean versionRequired = "MySQL".equals(dbms) || "Microsoft SQL Server".equals(dbms);
+                txtDBMSVersion.setEditable(versionRequired);
+                txtDBMSVersion.setEnabled(versionRequired);
+                if (versionRequired) {
+                    JOptionPane.showConfirmDialog(mainPanel, "A version number is required for this database!",
+                            "Important", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
 
         // Add listeners for Enumeration tab
         enumCheckboxes.put(chkEnumBanner, "-b");
@@ -431,7 +448,14 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             buf.append(" --forms");
         }
 
-
+        if (comboDBMS.getSelectedIndex() > 0) {
+            String dbms = comboDBMS.getSelectedItem().toString();
+            if ("MySQL".equals(dbms) || "Microsoft SQL Server".equals(dbms)) {
+                dbms = dbms + " " + txtDBMSVersion.getText().trim();
+            }
+            buf.append(" --dbms=");
+            buf.append(quotefy(dbms));
+        }
         // Technique tab
 
         if (!(chkTechBoolBlind.isSelected() && chkTechError.isSelected() && chkTechInline.isSelected() &&

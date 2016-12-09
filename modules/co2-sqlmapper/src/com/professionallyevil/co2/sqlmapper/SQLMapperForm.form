@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="611" height="734"/>
+      <xy x="20" y="20" width="653" height="734"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -131,7 +131,7 @@
         <properties/>
         <border type="line" title="Options"/>
         <children>
-          <grid id="864f2" layout-manager="GridLayoutManager" row-count="9" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="864f2" layout-manager="GridLayoutManager" row-count="10" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Detection"/>
@@ -199,7 +199,7 @@
               </grid>
               <vspacer id="a688e">
                 <constraints>
-                  <grid row="8" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="9" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="769d3" class="javax.swing.JLabel">
@@ -220,7 +220,7 @@
               </component>
               <component id="a04ad" class="javax.swing.JTextField" binding="txtMatchStringTrue">
                 <constraints>
-                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="1" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -228,7 +228,7 @@
               </component>
               <component id="cc43d" class="javax.swing.JTextField" binding="txtMatchStringFalse">
                 <constraints>
-                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="2" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -244,7 +244,7 @@
               </component>
               <component id="f764b" class="javax.swing.JTextField" binding="txtMatchRegexTrue">
                 <constraints>
-                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="3" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -260,7 +260,7 @@
               </component>
               <component id="5e1c6" class="javax.swing.JTextField" binding="txtMatchCodeTrue">
                 <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="4" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
@@ -289,6 +289,57 @@
                 <properties>
                   <text value="Test Forms"/>
                   <toolTipText value="Parse and test forms on target URL"/>
+                </properties>
+              </component>
+              <component id="17d2c" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="DBMS:"/>
+                  <toolTipText value="Specify the DBMS, if known."/>
+                </properties>
+              </component>
+              <component id="28b88" class="javax.swing.JComboBox" binding="comboDBMS">
+                <constraints>
+                  <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model>
+                    <item value="- unknown -"/>
+                    <item value="MySQL"/>
+                    <item value="Oracle"/>
+                    <item value="PostgreSQL"/>
+                    <item value="Microsoft SQL Server"/>
+                    <item value="Microsoft Access"/>
+                    <item value="IBM DB2"/>
+                    <item value="SQLite"/>
+                    <item value="Firebird"/>
+                    <item value="Sybase"/>
+                    <item value="SAP MaxDB"/>
+                    <item value="HSQLDB"/>
+                    <item value="Informix"/>
+                  </model>
+                </properties>
+              </component>
+              <component id="27dfc" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Version:"/>
+                  <toolTipText value="Version is required for MySQL and Microsoft SQL Server."/>
+                </properties>
+              </component>
+              <component id="34a23" class="javax.swing.JTextField" binding="txtDBMSVersion">
+                <constraints>
+                  <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="50" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <enabled value="false"/>
                 </properties>
               </component>
             </children>
