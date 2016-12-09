@@ -25,6 +25,7 @@ import com.professionallyevil.co2.Co2HelpLink;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -129,6 +130,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
     private JTextField txtDBMS;
     private JTextField txtOS;
     private JTextField txtExtra;
+    private JTextArea textExtraHeaders;
     private Map<JCheckBox, String> enumCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> techniqueCheckboxes = new HashMap<JCheckBox, String>();
     private Map<JCheckBox, String> generalMiscCheckboxes = new HashMap<JCheckBox, String>();
@@ -178,6 +180,9 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             }
         });
 
+        // Add listeners for Request / Headers tab
+        textExtraHeaders.getDocument().addDocumentListener(this);
+
         // Add listeners for Detection tab
         cmboDetectionRisk.addActionListener(this);
         cmboDetectionLevel.addActionListener(this);
@@ -188,7 +193,6 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         chkCompareTitleOnly.addActionListener(this);
         chkCompareTextOnly.addActionListener(this);
         chkTestForms.addActionListener(this);
-
 
         // Add listeners for Enumeration tab
         enumCheckboxes.put(chkEnumBanner, "-b");
@@ -558,6 +562,14 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
 
         buf.append(addIfNotEmpty(txtExtra, " ", false));
 
+        // Handle headers
+        String headers = textExtraHeaders.getText();
+        if (!headers.isEmpty()) {
+            headers = headers.replace("\n", "\\n");
+            buf.append(" --headers=");
+            buf.append(quotefy(headers));
+        }
+
 
 //        Handle cookies.  This is done last because some cookie characters seem to be problematic.
         if (chkIncludeCookies.isSelected() && cookieTxt.getText().length() > 0) {
@@ -595,11 +607,11 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         }
     }
 
-    private String addIfNotEmpty(JTextField textField, String prefix) {
+    private String addIfNotEmpty(JTextComponent textField, String prefix) {
         return addIfNotEmpty(textField, prefix, true);
     }
 
-    private String addIfNotEmpty(JTextField textField, String prefix, boolean quotefy) {
+    private String addIfNotEmpty(JTextComponent textField, String prefix, boolean quotefy) {
         String value = textField.getText().trim();
         if (value.length() > 0) {
             if (quotefy) {
