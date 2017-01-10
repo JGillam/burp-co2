@@ -1,0 +1,5 @@
+['core', 'laudanum', 'sqlmapper', 'suite'].each {
+    def prj = "co2-${it}"
+    include prj
+    project(":${prj}").projectDir = new File(settingsDir, "modules/${prj}")
+}

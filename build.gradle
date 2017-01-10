@@ -1,0 +1,48 @@
+allprojects {
+    apply plugin: 'java'
+    sourceSets.main.java.srcDirs = ['src']
+
+    if (new File(project.projectDir, 'resources').exists()) {
+        sourceSets.main.resources.srcDirs = ['resources']
+    }
+}
+
+dependencies {
+    compile files("$burpJar")
+    compile project(':co2-suite')
+}
+
+project(':co2-core') {
+    dependencies {
+        compile files("$burpJar")
+    }
+}
+
+project(':co2-laudanum') {
+    dependencies {
+        compile files("$burpJar")
+        compile project(':co2-core')
+    }
+}
+
+project(':co2-sqlmapper') {
+    dependencies {
+        compile files("$burpJar")
+        compile project(':co2-core')
+    }
+}
+
+project(':co2-suite') {
+    dependencies {
+        compile files("$burpJar")
+        compile project(':co2-core')
+        compile project(':co2-laudanum')
+        compile project(':co2-sqlmapper')
+    }
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
