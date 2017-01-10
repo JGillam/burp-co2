@@ -3,7 +3,7 @@ package burp;
 import com.professionallyevil.co2.*;
 
 public class BurpExtender implements IBurpExtender {
-    private final Co2Extender co2Extender = new Co2Extender();
+    private final Co2Extender co2Extender = new Co2SuiteExtender();
 
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
