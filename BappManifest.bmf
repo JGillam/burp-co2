@@ -1,0 +1,11 @@
+Uuid: c5071c7a7e004f72ae485e8a72911afc
+ExtensionType: 1
+Name: CO2
+ScreenVersion: 1.1.10
+SerialVersion: 5
+MinPlatformVersion: 0
+ProOnly: False
+Author: Jason Gillam
+ShortDescription: Adds various capabilities including SQL Mapper, User Generator and Prettier JS.
+EntryPoint: build/libs/co2-all.jar
+BuildCommand: gradle -PburpJar=$BURP_JAR fatJar

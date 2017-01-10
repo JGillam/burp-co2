@@ -1,0 +1,23 @@
+<p>This extension contains various modules for enhancing Burp's capabiities.</p>
+<p>The extension has its own configuration tab with sub-tabs for each Co2 module.
+Modules that interact with other Burp tools can be disabled from within the Co2 configuration tab, so there is no need to disable the entire extension when using just part of the functionality.</p>
+
+<p>O2 includes the following modules:</p>
+<ul>
+	<li><strong>SQLMapper</strong>, a sqlmap helper.
+Simply right-click on any request in Burp and you will see a new menu option to send the request to SQLMapper.
+The SQLMapper screen will appear pre-populated with the URL, POST data (if applicable) and Cookies (if applicable) from the request.
+You can then set any other options you need and then copy/paste the SQLMap Command to sqlmap on your command line.</li>
+	<li><strong>User Generator</strong>.
+For this one I collected publicly available census data from http://www.census.gov/genealogy/www/data/2000surnames/ (for surnames)
+and popular baby names from the social security website (http://www.ssa.gov/OACT/babynames/) to make a username generator based on this statistical data.
+The interface allows you to tinker with the data sets a little bit, specify if you want full names, initials, a delimiter between first and last names, etc.
+The tool will approximate which name combinations are the most common and sort the list accordingly.
+The result set is currently limited to the top 200,000 names to avoid performance issues.</li>
+	<li><strong>Prettier JS</strong> - adds a tab to the main response window which will attempt to make the format more human-readable through the use of line feeds and indentation.
+This is still a work in progress but based on a request to Google's hosted compressed jquery library (jquery.min.js) it is a definitely improvement.</li>
+	<li><strong>ASCII Payload Processor</strong> - shows up as an Intruder payload.  It will convert payloads into ascii decimal (don't laugh, I wrote this after encountering the need for it twice in the wild!)</li>
+	<li><strong>Masher</strong> - can be used to guess passwords given a word list and a known 
+	password specification.</li>
+</ul>
+
