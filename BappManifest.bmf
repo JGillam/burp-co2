@@ -8,4 +8,4 @@ ProOnly: False
 Author: Jason Gillam
 ShortDescription: Adds various capabilities including SQL Mapper, User Generator and Prettier JS.
 EntryPoint: build/libs/co2-all.jar
-BuildCommand: gradle -PburpJar=$BURP_JAR fatJar
+BuildCommand: gradle fatJar
