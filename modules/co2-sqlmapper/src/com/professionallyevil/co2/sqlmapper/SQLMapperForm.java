@@ -608,13 +608,16 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
 
     private String quotefy(String input) {
         if (windowsQuotes) {
-            //todo: escape " inside string
+            input = input.replaceAll("([\"&|><^\\\\])", "^$0");
             return "\"" + input + "\"";
         } else {
+            input = input.replace("\\", "\\\\");
             if (input.contains("'")) {
+                input = input.replace("\"", "\\\"");
                 return "\"" + input + "\"";
 
             } else {
+                input = input.replace("'", "\\'");
                 return "'" + input + "'";
             }
         }
