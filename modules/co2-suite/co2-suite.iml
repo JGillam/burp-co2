@@ -12,6 +12,6 @@
     <orderEntry type="module" module-name="co2-core" exported="" />
     <orderEntry type="module" module-name="co2-laudanum" exported="" />
     <orderEntry type="module" module-name="co2-sqlmapper" exported="" />
+    <orderEntry type="library" name="forms_rt" level="application" />
   </component>
 </module>
-

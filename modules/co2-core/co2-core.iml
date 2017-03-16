@@ -9,6 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="burp-api" exported="" />
+    <orderEntry type="library" name="forms_rt" level="application" />
   </component>
 </module>
-
