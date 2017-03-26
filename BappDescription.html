@@ -8,16 +8,24 @@ Modules that interact with other Burp tools can be disabled from within the Co2 
 Simply right-click on any request in Burp and you will see a new menu option to send the request to SQLMapper.
 The SQLMapper screen will appear pre-populated with the URL, POST data (if applicable) and Cookies (if applicable) from the request.
 You can then set any other options you need and then copy/paste the SQLMap Command to sqlmap on your command line.</li>
-	<li><strong>User Generator</strong>.
+	<li><strong>User Generator</strong> -
 For this one I collected publicly available census data from http://www.census.gov/genealogy/www/data/2000surnames/ (for surnames)
 and popular baby names from the social security website (http://www.ssa.gov/OACT/babynames/) to make a username generator based on this statistical data.
 The interface allows you to tinker with the data sets a little bit, specify if you want full names, initials, a delimiter between first and last names, etc.
 The tool will approximate which name combinations are the most common and sort the list accordingly.
 The result set is currently limited to the top 200,000 names to avoid performance issues.</li>
-	<li><strong>Prettier JS</strong> - adds a tab to the main response window which will attempt to make the format more human-readable through the use of line feeds and indentation.
-This is still a work in progress but based on a request to Google's hosted compressed jquery library (jquery.min.js) it is a definitely improvement.</li>
-	<li><strong>ASCII Payload Processor</strong> - shows up as an Intruder payload.  It will convert payloads into ascii decimal (don't laugh, I wrote this after encountering the need for it twice in the wild!)</li>
-	<li><strong>Masher</strong> - can be used to guess passwords given a word list and a known 
-	password specification.</li>
+	<li><strong>Name Mangler</strong> -
+		Given some names and domains it will mangle them to generate a list of potential usernames that can be dropped into
+        Intruder to test for valid logins.</li>
+	<li><strong>CeWLer</strong> -
+        Based on Digininja's command-line CeWL script for extracting a wordlist from HTML files, this version works with a list of responses
+        directly inside of Burp.</li>
+	<li><strong>Masher</strong> - Given a seed list of words and a password specification this tool will generate a fuzzy list of possible
+        passwords.  Masher will start with combining words from the provided list, then append and replace characters to build
+        new passwords.
+    </li>
+    <li><strong>BasicAuther</strong> - Given a list of usernames and a list of passwords it will output proper BasicAuth strings
+        that can then be dropped into Intruder.
+    </li>
 </ul>
 
