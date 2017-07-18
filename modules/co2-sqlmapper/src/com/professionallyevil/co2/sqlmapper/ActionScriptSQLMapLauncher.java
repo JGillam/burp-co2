@@ -36,6 +36,8 @@ public class ActionScriptSQLMapLauncher extends SQLMapLauncher {
         List<String> commands = new ArrayList<String>();
         commands.add("osascript");
         commands.add("-e");
+        sqlmapPath = sqlmapPath.replace("\\", "\\\\");
+        sqlmapPath = sqlmapPath.replace("\"", "\\\"");
         commands.add("tell application \"Terminal\" \n\tactivate\n\tdo script \"" + pythonPath + " " + sqlmapPath + " " + sqlmapParams + "\"\nend tell");
         return commands;
     }
