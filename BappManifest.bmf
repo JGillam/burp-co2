@@ -3,7 +3,7 @@ ExtensionType: 1
 Name: CO2
 RepoName: co2
 ScreenVersion: 1.1.11
-SerialVersion: 7
+SerialVersion: 9
 MinPlatformVersion: 0
 ProOnly: False
 Author: Jason Gillam

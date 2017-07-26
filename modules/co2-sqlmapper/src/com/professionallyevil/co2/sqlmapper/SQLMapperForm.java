@@ -611,15 +611,8 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             input = input.replaceAll("([\"&|><^\\\\])", "^$0");
             return "\"" + input + "\"";
         } else {
-            input = input.replace("\\", "\\\\");
-            if (input.contains("'")) {
-                input = input.replace("\"", "\\\"");
-                return "\"" + input + "\"";
-
-            } else {
-                input = input.replace("'", "\\'");
-                return "'" + input + "'";
-            }
+            input = input.replace("'", "'\\''");
+            return "'" + input + "'";
         }
     }
 
