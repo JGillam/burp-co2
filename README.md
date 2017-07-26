@@ -1,4 +1,4 @@
-#Latest Burp CO<sub>2</sub> Suite binary: [Download](https://github.com/JGillam/burp-co2/releases/latest)
+# Latest Burp CO<sub>2</sub> Suite binary: [Download](https://github.com/JGillam/burp-co2/releases/latest)
 CO<sub>2</sub> is a project for lightweight and useful enhancements to Portswigger's popular Burp Suite web penetration tool
 through the standard Extender API. If you are looking for the binaries, you can find them in the BApp Store within Burp.
 The latest standalone .jar versions are also available [here](https://drive.google.com/folderview?id=0B_0PMu9iUbMOWmdZQ3A0LWRNb28&usp=sharing#list).
@@ -19,7 +19,7 @@ See [ReleaseNotes](https://github.com/JGillam/burp-co2/blob/wiki/ReleaseNotes.md
 
 If you are interested in contributing or playing with the code, check out the setup instructions below:
 
-##IntelliJ IDEA Setup Instructions:
+## IntelliJ IDEA Setup Instructions:
 
 This project is best built under IntelliJ IDEA.  There are several modules
 with dependencies on other modules.  Here are some key modules:
