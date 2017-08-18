@@ -397,7 +397,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
             body.deleteCharAt(body.length() - 1);
         }
         if (cookies.length() > 1) {
-            cookies.deleteCharAt(cookies.length() - 2);
+            cookies.deleteCharAt(cookies.length() - 1); //Delete trailing semicolon
         }
         dataTxt.setText(body.toString());
         chkIncludeData.setSelected(dataTxt.getText().length() > 0);
