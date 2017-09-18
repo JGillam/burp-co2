@@ -1,0 +1,8 @@
+title: Burp CO2
+description: A collection of enhancements for Portswigger's popular Burp Suite web penetration testing tool.
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-dinky
+
+gems:
+  - jekyll-mentions
