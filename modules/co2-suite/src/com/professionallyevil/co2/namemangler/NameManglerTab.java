@@ -103,7 +103,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
         });
 
         thisYear = Calendar.getInstance().get(Calendar.YEAR);
-        helpNameMangler.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-namemangler.php", helpNameMangler));
+        helpNameMangler.addMouseListener(new Co2HelpLink("https://github.com/JGillam/burp-co2/wiki/NameMangler", helpNameMangler));
     }
 
     private List<String> parseLines(String blockOfText) {

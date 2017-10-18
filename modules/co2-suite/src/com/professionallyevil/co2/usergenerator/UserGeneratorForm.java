@@ -308,7 +308,7 @@ public class UserGeneratorForm implements ClipboardOwner {
                 }
             }
         });
-        helpUserGenerator.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-usergen.php", helpUserGenerator));
+        helpUserGenerator.addMouseListener(new Co2HelpLink("https://github.com/JGillam/burp-co2/wiki/UserGenerator", helpUserGenerator));
     }
 
     // must be called from within a SwingWorker

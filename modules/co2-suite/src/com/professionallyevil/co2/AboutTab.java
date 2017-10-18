@@ -53,7 +53,7 @@ public class AboutTab {
     private IBurpExtenderCallbacks callbacks;
     private static String SETTING_LAST_UPDATE_DATE = "co2.about.lastupdate.date";
     private static String SETTING_UPDATE_CHECK_AUTO = "co2.about.lastupdate.auto";
-    private static String VERSION_URI = "http://www.burpco2.com/latestversions.txt";
+    private static String VERSION_URI = "http://burpco2.com/latestversions.txt";
     private DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
     private Version currentVersion;
     private boolean autoCheck;
@@ -66,7 +66,7 @@ public class AboutTab {
             additionalInfoLink.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    executeLink("http://www.burpco2.com?src=co2");
+                    executeLink("http://burpco2.com/?src=co2");
                 }
             });
             bugTrackingLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -137,7 +137,7 @@ public class AboutTab {
                 );
 
                 byte[] request = callbacks.getHelpers().buildHttpRequest(url);
-                byte[] response = callbacks.makeHttpRequest("www.burpco2.com", 80, false, request);
+                byte[] response = callbacks.makeHttpRequest("burpco2.com", 80, false, request);
                 IResponseInfo responseInfo = callbacks.getHelpers().analyzeResponse(response);
                 if (responseInfo.getStatusCode() == 200) {
                     String body = new String(response).substring(responseInfo.getBodyOffset()).trim();
@@ -307,7 +307,7 @@ public class AboutTab {
         final com.intellij.uiDesigner.core.Spacer spacer3 = new com.intellij.uiDesigner.core.Spacer();
         panel2.add(spacer3, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         additionalInfoLink = new JLabel();
-        additionalInfoLink.setText("<html><a href=\"http://www.burpco2.com\">www.burpco2.com</a></html>");
+        additionalInfoLink.setText("<html><a href=\"http://burpco2.com\">burpco2.com</a></html>");
         panel2.add(additionalInfoLink, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label5 = new JLabel();
         label5.setText("<html><h2>Bugs and Feature Requests</h2><html>");

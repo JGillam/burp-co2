@@ -162,7 +162,7 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
 
             }
         });
-        cewlerHelp.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-cewler.php", cewlerHelp));
+        cewlerHelp.addMouseListener(new Co2HelpLink("https://github.com/JGillam/burp-co2/wiki/CeWLer", cewlerHelp));
     }
 
     @Override

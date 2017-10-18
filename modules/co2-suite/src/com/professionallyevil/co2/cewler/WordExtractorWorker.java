@@ -49,7 +49,7 @@ public class WordExtractorWorker extends SwingWorker<Set<String>, Object> {
     private WordExtractorListener listener;
     private StatusBar statusBar;
     private boolean forceLowercase;
-    private Pattern wordPattern = Pattern.compile("[a-zA-Z0-9]*");
+    private Pattern wordPattern = Pattern.compile("[a-zA-Z0-9'\\p{L}]*");
     private boolean ignoreScriptTags = false;
     private boolean ignoreStyleTags = false;
     private boolean ignoreComments = false;

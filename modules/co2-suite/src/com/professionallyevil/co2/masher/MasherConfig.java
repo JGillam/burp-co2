@@ -52,7 +52,7 @@ public class MasherConfig implements Co2Configurable {
             }
         });
 
-        masherHelp.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-masher.php", masherHelp));
+        masherHelp.addMouseListener(new Co2HelpLink("https://github.com/JGillam/burp-co2/wiki/Masher", masherHelp));
 
         //TODO: add a clone tab button
 
