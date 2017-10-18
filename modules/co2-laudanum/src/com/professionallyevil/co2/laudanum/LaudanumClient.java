@@ -210,7 +210,7 @@ public class LaudanumClient implements Co2Configurable, ClipboardOwner, IContext
                 }
             }
         });
-        helpButton.addMouseListener(new Co2HelpLink("https://code.google.com/p/burp-co2/wiki/Laudanum", helpButton));
+        helpButton.addMouseListener(new Co2HelpLink("https://github.com/JGillam/burp-co2/wiki/SQLMapper", helpButton));
 
         chkUseRequestTemplate.addChangeListener(new ChangeListener() {
             @Override
