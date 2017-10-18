@@ -84,7 +84,7 @@ public class Co2HelpLink implements MouseListener {
     }
 
     private void popupAlternate(URI uri) {
-        JOptionPane.showMessageDialog(sourceComponent.getTopLevelAncestor(), "Please visit co2.professionallyevil.com for assistance");
+        JOptionPane.showMessageDialog(sourceComponent.getTopLevelAncestor(), "Please visit burpco2.com for assistance");
 
     }
 }
