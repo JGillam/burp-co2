@@ -304,7 +304,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
 
         txtExtra.getDocument().addDocumentListener(this);
 
-        helpSQLMapper.addMouseListener(new Co2HelpLink("http://co2.professionallyevil.com/help-sqlmapper.php", helpSQLMapper));
+        helpSQLMapper.addMouseListener(new Co2HelpLink("https://github.com/JGillam/burp-co2/wiki/SQLMapper", helpSQLMapper));
 
         String exec_path = callbacks.loadExtensionSetting(SETTING_SQLMAP_PATH);
         String launcherClass = callbacks.loadExtensionSetting(SETTING_SQLMAP_LAUNCHER);
@@ -622,7 +622,7 @@ public class SQLMapperForm implements ClipboardOwner, ActionListener, DocumentLi
         cookieTxt.setText("");
         dataTxt.setText("");
         cmboDetectionLevel.setSelectedIndex(0);
-        cmboDetectionRisk.setSelectedIndex(1);
+        cmboDetectionRisk.setSelectedIndex(0);
 
         for (JCheckBox checkbox : enumCheckboxes.keySet()) {
             checkbox.setSelected(false);

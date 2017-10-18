@@ -195,7 +195,6 @@
                     <properties>
                       <model>
                         <item value="1 (default)"/>
-                        <item value="0"/>
                         <item value="2"/>
                         <item value="3"/>
                       </model>
