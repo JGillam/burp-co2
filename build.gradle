@@ -39,17 +39,27 @@ project(':co2-sqlmapper') {
     }
 }
 
+project(':co2-cewler') {
+    dependencies {
+        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+        compile 'com.intellij:forms_rt:7.0.3'
+        compile project(':co2-core')
+    }
+}
+
 project(':co2-suite') {
     dependencies {
         compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
         compile project(':co2-core')
         compile project(':co2-laudanum')
         compile project(':co2-sqlmapper')
+        compile project(':co2-cewler')
+        compile project(':co2-core')
     }
 }
 
 task fatJar(type: Jar) {
-    baseName = project.name + '-all'
+    archiveBaseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }

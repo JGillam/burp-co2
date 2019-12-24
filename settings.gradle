@@ -1,6 +1,7 @@
-['core', 'laudanum', 'sqlmapper', 'suite'].each {
+['core', 'laudanum', 'sqlmapper', 'cewler', 'suite'].each {
     def prj = "co2-${it}"
     include prj
     project(":${prj}").projectDir = new File(settingsDir, "modules/${prj}")
 }
 rootProject.name = 'co2'
+
