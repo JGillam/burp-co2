@@ -29,6 +29,12 @@ project(':co2-laudanum') {
         compile 'com.intellij:forms_rt:7.0.3'
         compile project(':co2-core')
     }
+
+    task fatJar(type: Jar) {
+        archiveBaseName = project.name + '-all'
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+        with jar
+    }
 }
 
 project(':co2-sqlmapper') {
@@ -37,6 +43,12 @@ project(':co2-sqlmapper') {
         compile 'com.intellij:forms_rt:7.0.3'
         compile project(':co2-core')
     }
+
+    task fatJar(type: Jar) {
+        archiveBaseName = project.name + '-all'
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+        with jar
+    }
 }
 
 project(':co2-cewler') {
@@ -44,6 +56,12 @@ project(':co2-cewler') {
         compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
         compile 'com.intellij:forms_rt:7.0.3'
         compile project(':co2-core')
+    }
+
+    task fatJar(type: Jar) {
+        archiveBaseName = project.name + '-all'
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+        with jar
     }
 }
 

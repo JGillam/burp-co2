@@ -83,6 +83,8 @@ public class CewlerTab implements Co2Configurable, IContextMenuFactory, Clipboar
         extractWordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                callbacks.printOutput("Word Extractor Triggered.");
+
                 WordExtractorWorker extractor = new WordExtractorWorker(callbacks, statusBar, messageListModel.getMessages(), forceToLowercaseCheckBox.isSelected(), new WordExtractorListener() {
                     @Override
                     public void addWords(Set<String> words) {
