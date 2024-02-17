@@ -1,5 +1,8 @@
 = Burp CO<sub>2</sub> Release Notes =
 
+==Version 1.2.0 (17 Feb, 2024):==
+  * Removed laudanum module to prevent flagging as malware by some AV vendors
+
 ==Version 1.1.10 (4 June, 2016):==
   * Moved the cookies in sqlmapper to the end of the line to work around issue where cookie characters sometimes break the input into sqlmap.
 

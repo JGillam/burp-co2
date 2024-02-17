@@ -53,7 +53,7 @@ public class AboutTab {
     private IBurpExtenderCallbacks callbacks;
     private static String SETTING_LAST_UPDATE_DATE = "co2.about.lastupdate.date";
     private static String SETTING_UPDATE_CHECK_AUTO = "co2.about.lastupdate.auto";
-    private static String VERSION_URI = "http://burpco2.com/latestversions.txt";
+    // private static String VERSION_URI = "http://burpco2.com/latestversions.txt";
     private DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
     private Version currentVersion;
     private boolean autoCheck;
@@ -66,7 +66,7 @@ public class AboutTab {
             additionalInfoLink.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    executeLink("http://burpco2.com/?src=co2");
+                    executeLink("https://github.com/JGillam/burp-co2");
                 }
             });
             bugTrackingLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -83,7 +83,7 @@ public class AboutTab {
                 }
             });
         } else {
-            additionalInfoLink.setText("www.burpco2.com");
+            additionalInfoLink.setText("CO2 on GitHub");
             bugTrackingLink.setText("https://github.com/JGillam/burp-co2/issues");
         }
         buttonCheckForUpdate.addActionListener(new ActionListener() {
@@ -92,7 +92,7 @@ public class AboutTab {
                 versionCheck(false);
             }
         });
-        setVersionText(currentVersion.toString() + " (build " + build + ")" + (CO2Config.isLoadedFromBappStore(burpCallbacks) ? " from BAppStore." : " from jar file."));
+        setVersionText(currentVersion.toString() + (CO2Config.isLoadedFromBappStore(burpCallbacks) ? " from BAppStore." : " from jar file."));
         String settingLastUpdateDate = burpCallbacks.loadExtensionSetting(SETTING_LAST_UPDATE_DATE);
         if (settingLastUpdateDate != null && !settingLastUpdateDate.isEmpty()) {
             lastCheckedDate.setText(settingLastUpdateDate);
@@ -105,14 +105,14 @@ public class AboutTab {
         chkAutoCheck.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (autoCheck != chkAutoCheck.isSelected()) {
-                    autoCheck = chkAutoCheck.isSelected();
-                    AboutTab.this.callbacks.saveExtensionSetting(SETTING_UPDATE_CHECK_AUTO, "" + autoCheck);
-                    AboutTab.this.callbacks.printOutput("CO2 automatic version check is now " + (autoCheck ? "on" : "off"));
-                    if (autoCheck) {
-                        versionCheck(true);
-                    }
-                }
+//                if (autoCheck != chkAutoCheck.isSelected()) {
+//                    autoCheck = chkAutoCheck.isSelected();
+//                    AboutTab.this.callbacks.saveExtensionSetting(SETTING_UPDATE_CHECK_AUTO, "" + autoCheck);
+//                    AboutTab.this.callbacks.printOutput("CO2 automatic version check is now " + (autoCheck ? "on" : "off"));
+//                    if (autoCheck) {
+//                        versionCheck(false);
+//                    }
+//                }
             }
         });
     }
@@ -121,92 +121,7 @@ public class AboutTab {
      * Perform a version check.  Look up latest version on the Internet and determine if a update is available.
      */
     public void versionCheck(final boolean automatic) {
-        callbacks.printOutput("CO2 Performing version check.  Your version: " + currentVersion.toString());
-        latestVersionLabel.setText("Checking...");
-        latestStoreVersionLabel.setText("Checking...");
-
-        SwingWorker worker = new SwingWorker() {
-            @Override
-            protected Object doInBackground() throws Exception {
-                URL url = new URL(VERSION_URI + "?v=" +
-                        currentVersion.getVersionString() +
-                        "&t=" +
-                        (automatic ? "a" : "m") + // reports if automated or manual update
-                        "&b=" +
-                        (CO2Config.isLoadedFromBappStore(AboutTab.this.callbacks) ? "y" : "n") // loaded from a bappstore version?
-                );
-
-                byte[] request = callbacks.getHelpers().buildHttpRequest(url);
-                byte[] response = callbacks.makeHttpRequest("burpco2.com", 80, false, request);
-                IResponseInfo responseInfo = callbacks.getHelpers().analyzeResponse(response);
-                if (responseInfo.getStatusCode() == 200) {
-                    String body = new String(response).substring(responseInfo.getBodyOffset()).trim();
-                    String[] versionText = body.split(",");
-                    Version[] versions = new Version[versionText.length];
-                    for (int i = 0; i < versions.length; i++) {
-                        versions[i] = new Version(versionText[i]);
-                    }
-                    return versions;
-
-                } else {
-                    return null;
-                }
-            }
-
-            @Override
-            protected void done() {
-                super.done();
-                try {
-                    Version[] latestVersions = (Version[]) get();
-                    if (latestVersions != null && latestVersions.length == 2) {   // don't process if we don't have 2
-                        String date = dateFormat.format(new Date());
-                        lastCheckedDate.setText(date);
-                        callbacks.saveExtensionSetting(SETTING_LAST_UPDATE_DATE, date);
-                        boolean isBappStoreVersion = CO2Config.isLoadedFromBappStore(AboutTab.this.callbacks);
-                        if (isBappStoreVersion) {
-                            if (latestVersions[1].isNewerThan(currentVersion)) {
-                                latestStoreVersionLabel.setText("<html><span color=\"red\"><u>" + latestVersions[1].toString() + "</u></span></html>");
-                                //latestStoreVersionLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                                callbacks.printOutput("CO2 Version " + latestVersions[1].toString() + " is now available on the BAppStore.");
-                                if (autoCheck) {
-                                    callbacks.issueAlert("CO2 Version " + latestVersions[1].toString() + " is now available on the BAppStore.  See the CO2 About tab for more info.");
-                                }
-                            } else {
-                                latestStoreVersionLabel.setText(latestVersions[1].toString());
-                            }
-                            latestVersionLabel.setText(latestVersions[0].toString());
-                        } else {
-                            if (latestVersions[0].isNewerThan(currentVersion)) {
-                                latestVersionLabel.setText("<html><span color=\"red\"><u>" + latestVersions[0].toString() + "</u></span></html>");
-                                latestVersionLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                                callbacks.printOutput("CO2 Version " + latestVersions[0].toString() + " is now available.");
-                                if (autoCheck) {
-                                    callbacks.issueAlert("CO2 Version " + latestVersions[0].toString() + " is now available.  See the CO2 About tab for more info.");
-                                }
-                            } else {
-                                latestVersionLabel.setText(latestVersions[0].toString());
-                                latestVersionLabel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                            }
-                            latestStoreVersionLabel.setText(latestVersions[1].toString());
-                        }
-                    } else {
-                        callbacks.printError("Unable to retrieve versions from: " +
-                                VERSION_URI);
-                        callbacks.issueAlert("Unable to retrieve versions from: " +
-                                VERSION_URI);
-                        latestVersionLabel.setText("Unknown");
-                        latestStoreVersionLabel.setText("Unknown");
-
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        worker.execute();
+        callbacks.printOutput("Version checking has been disabled. Please update with the BAppStore.");        callbacks.printOutput("CO2 Performing version check.  Your version: " + currentVersion.toString());
     }
 
     public JPanel getMainPanel() {
