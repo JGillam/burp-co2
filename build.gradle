@@ -13,35 +13,21 @@ allprojects {
 }
 
 dependencies {
-    compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-    compile project(':co2-suite')
+    implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+    implementation project(':co2-suite')
 }
 
 project(':co2-core') {
     dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-    }
-}
-
-project(':co2-laudanum') {
-    dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile 'com.intellij:forms_rt:7.0.3'
-        compile project(':co2-core')
-    }
-
-    task fatJar(type: Jar) {
-        archiveBaseName = project.name + '-all'
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-        with jar
+        implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
     }
 }
 
 project(':co2-sqlmapper') {
     dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile 'com.intellij:forms_rt:7.0.3'
-        compile project(':co2-core')
+        implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+        implementation 'com.intellij:forms_rt:7.0.3'
+        implementation project(':co2-core')
     }
 
     task fatJar(type: Jar) {
@@ -53,9 +39,9 @@ project(':co2-sqlmapper') {
 
 project(':co2-cewler') {
     dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile 'com.intellij:forms_rt:7.0.3'
-        compile project(':co2-core')
+        implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+        implementation 'com.intellij:forms_rt:7.0.3'
+        implementation project(':co2-core')
     }
 
     task fatJar(type: Jar) {
@@ -67,12 +53,11 @@ project(':co2-cewler') {
 
 project(':co2-suite') {
     dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile project(':co2-core')
-        compile project(':co2-laudanum')
-        compile project(':co2-sqlmapper')
-        compile project(':co2-cewler')
-        compile project(':co2-core')
+        implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+        implementation project(':co2-core')
+        implementation project(':co2-sqlmapper')
+        implementation project(':co2-cewler')
+        implementation project(':co2-core')
     }
 }
 

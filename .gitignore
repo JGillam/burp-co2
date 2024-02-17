@@ -1,2 +1,6 @@
 .gradle/
 build/
+modules/burp-api/burp/
+.idea/
+
+
