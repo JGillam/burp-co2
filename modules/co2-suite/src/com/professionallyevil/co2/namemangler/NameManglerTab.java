@@ -127,7 +127,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
     }
 
     private void mangleNames(final List<String> nameList, final List<String> domainList) {
-        //callbacks.printOutput("Mangling names " + nameList.size());
+        callbacks.printOutput("Mangling names " + nameList.size());
         SwingWorker worker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
@@ -201,7 +201,7 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
                 }
 
                 // first, middle, last
-                if (middle.length() > 0) {
+                if (!middle.isEmpty()) {
                     mangledNames.add(first.toLowerCase() + delim + middle.toLowerCase() + delim + last.toLowerCase() + domain);
                     mangledNames.add(first.substring(0, 1).toLowerCase() + delim + middle.substring(0, 1).toLowerCase() + delim + last.toLowerCase() + domain);
                     if (caseSensitiveCheckBox.isSelected()) {
@@ -377,8 +377,9 @@ public class NameManglerTab implements Co2Configurable, ClipboardOwner {
         panel2.add(panel6, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 500), null, 0, false));
         final JPanel panel7 = new JPanel();
         panel7.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel7.setToolTipText("These need to be first / last name pairs.");
         panel6.add(panel7, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Names", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Names (First Last)", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JScrollPane scrollPane2 = new JScrollPane();
         panel7.add(scrollPane2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         inputText = new JTextArea();
