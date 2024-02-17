@@ -21,7 +21,6 @@ import burp.IBurpExtenderCallbacks;
 import burp.IExtensionStateListener;
 import com.professionallyevil.co2.basicauth.BasicAuther;
 import com.professionallyevil.co2.cewler.CewlerTab;
-import com.professionallyevil.co2.laudanum.LaudanumClient;
 import com.professionallyevil.co2.masher.MasherConfig;
 import com.professionallyevil.co2.namemangler.NameManglerTab;
 import com.professionallyevil.co2.sqlmapper.SQLMapper;
@@ -35,7 +34,7 @@ import java.awt.*;
  * burp.BurpExtender
  */
 public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener, Co2Extender {
-    public static final String VERSION = "1.1.13";
+    public static final String VERSION = "1.2.0";
     private Co2ConfigTab configTab;
     private IBurpExtenderCallbacks callbacks;
     private java.util.Timer co2Timer = new java.util.Timer("CO2", false);
@@ -72,9 +71,6 @@ public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener,
 
         MiscTab miscTab = new MiscTab(callbacks);
 
-        LaudanumClient laudanum = new LaudanumClient(this);
-        callbacks.registerContextMenuFactory(laudanum);
-
         final About about = new About(callbacks);
         co2Timer.schedule(new java.util.TimerTask() {
             @Override
@@ -83,14 +79,14 @@ public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener,
             }
         }, 1000 * 10, 1000 * 60 * 60 * 24);  // check 10 seconds after startup + every 24 hr
 
-        Co2Configurable[] configurables = {mapper, laudanum, userGenerator, nameMangler, cewler, masher, basicauther,
+        Co2Configurable[] configurables = {mapper, userGenerator, nameMangler, cewler, masher, basicauther,
                 miscTab, about};
 
         configTab = new Co2ConfigTab(callbacks, configurables);
         callbacks.customizeUiComponent(configTab);
         callbacks.addSuiteTab(configTab);
 
-        callbacks.printOutput("CO2 Loaded.  Version: " + VERSION + " (build " + about.build + ")");
+        callbacks.printOutput("CO2 Loaded.  Version: " + VERSION );
 
     }
 

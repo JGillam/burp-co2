@@ -1,3 +1,7 @@
+tasks.register('cleanDist', Delete) {
+    delete 'dist'
+}
+
 allprojects {
     apply plugin: 'java'
 
@@ -12,72 +16,64 @@ allprojects {
     }
 }
 
-dependencies {
-    compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-    compile project(':co2-suite')
-}
+// ... (other configurations)
 
 project(':co2-core') {
     dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+        implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
     }
 }
 
-project(':co2-laudanum') {
-    dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile 'com.intellij:forms_rt:7.0.3'
-        compile project(':co2-core')
+
+subprojects {
+    // Apply common configuration to all subprojects except 'co2-core'
+    if (name != 'co2-core') {
+        dependencies {
+            implementation project(':co2-core')
+            implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+            implementation 'javax.xml.bind:jaxb-api:2.3.1'
+            implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+            implementation 'com.sun.xml.bind:jaxb-impl:2.3.2'
+            implementation 'com.intellij:forms_rt:7.0.3'
+        }
     }
 
-    task fatJar(type: Jar) {
-        archiveBaseName = project.name + '-all'
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    // Define fatJar for all subprojects that require it
+    tasks.register('fatJar', Jar) {
+        archiveBaseName = "${project.name}-all"
+        from sourceSets.main.output
+        from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
         with jar
+
+        // Set duplicate strategy
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+        doLast {
+            if (project.name != 'co2-core') {
+                // Get the fat jar file
+                def distDir = file("$rootProject.projectDir/dist")
+                if (!distDir.exists()) {
+                    distDir.mkdirs()
+                }
+
+                // Copy the fat jar to the /dist directory
+                copy {
+                    from archiveFile
+                    into distDir
+                    rename { String fileName ->
+                        "${project.name}.jar"
+                    }
+                }
+            }
+        }
     }
 }
 
-project(':co2-sqlmapper') {
-    dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile 'com.intellij:forms_rt:7.0.3'
-        compile project(':co2-core')
-    }
-
-    task fatJar(type: Jar) {
-        archiveBaseName = project.name + '-all'
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-        with jar
-    }
-}
-
-project(':co2-cewler') {
-    dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile 'com.intellij:forms_rt:7.0.3'
-        compile project(':co2-core')
-    }
-
-    task fatJar(type: Jar) {
-        archiveBaseName = project.name + '-all'
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-        with jar
-    }
-}
-
+// Configure specific dependencies for 'co2-suite'
 project(':co2-suite') {
     dependencies {
-        compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-        compile project(':co2-core')
-        compile project(':co2-laudanum')
-        compile project(':co2-sqlmapper')
-        compile project(':co2-cewler')
-        compile project(':co2-core')
+        // 'co2-core' is already included above in the 'subprojects' block
+        implementation project(':co2-sqlmapper')
+        implementation project(':co2-cewler')
     }
-}
-
-task fatJar(type: Jar) {
-    archiveBaseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
 }

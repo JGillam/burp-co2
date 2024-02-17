@@ -19,22 +19,42 @@ See [ReleaseNotes](https://github.com/JGillam/burp-co2/blob/wiki/ReleaseNotes.md
 
 If you are interested in contributing or playing with the code, check out the setup instructions below:
 
-## IntelliJ IDEA Setup Instructions:
 
-This project is best built under IntelliJ IDEA.  There are several modules
-with dependencies on other modules.  Here are some key modules:
+## IntelliJ IDEA Setup Instructions
 
-burp-api:   The source is not populated by default!  You must put the latest
-            API source from Burp into this source folder before building any
-            of the other modules.
+This project is optimized for development in IntelliJ IDEA and involves multiple modules with interdependencies. To set up and build the project effectively, follow these guidelines:
 
-co2-core:   This module contains core functionality that is used across all
-            the CO2 modules.
+### Key Modules:
 
-co2-suite:  This is the full CO<sub>2</sub> suite module.  It basically depends on everything
-            else.
+1. **burp-api**:
+    - **Important**: This module requires the latest Burp API source code.
+    - Before building other modules, populate the `burp-api` module's source folder with the latest API source from Burp Suite.
 
+2. **co2-core**:
+    - Contains core functionality used across all CO2 modules.
 
-Output jar files from making these Burp extensions is organized under:
+3. **co2-suite**:
+    - Represents the complete CO2 suite, depending on all other modules.
 
-    burp-co2/out/artifacts
+4. **co2-cewler**:
+    - A standalone version of the CO2 Cewler module.
+    - 
+5. **co2-sqlmapper**:
+    - A standalone version of the CO2 SQLMapper module.
+
+### Gradle Build:
+
+- The project uses Gradle for building and managing dependencies. Ensure you have Gradle set up and configured properly.
+- Run `./gradlew build` to build the entire project or individual modules.
+
+### IntelliJ IDEA GUI Designer:
+
+- The project uses IntelliJ IDEA's GUI Designer for some components. Ensure the GUI Designer is configured to generate Java source code.
+- This setting is found under `File -> Settings -> Editor -> GUI Designer` in IntelliJ IDEA. Select `Generate GUI into: Java source code`.
+- This configuration ensures that changes made via the GUI Designer are reflected in the Java source files, which are crucial for the Gradle build process.
+- To rebuild the gui classes after changing forms, you can use the IntelliJ `Build -> Groovy Resources -> Build Resources` menu option. 
+
+### Output Artifacts:
+
+- Output JAR files from the build process are typically located in the `dist` directory of each module.
+- The Gradle `fatJar` task consolidates dependencies into a single JAR file for each module.
