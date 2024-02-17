@@ -1,3 +1,7 @@
+tasks.register('cleanDist', Delete) {
+    delete 'dist'
+}
+
 allprojects {
     apply plugin: 'java'
 

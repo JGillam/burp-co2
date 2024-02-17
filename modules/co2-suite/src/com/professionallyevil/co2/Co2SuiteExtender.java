@@ -86,7 +86,7 @@ public class Co2SuiteExtender implements IBurpExtender, IExtensionStateListener,
         callbacks.customizeUiComponent(configTab);
         callbacks.addSuiteTab(configTab);
 
-        callbacks.printOutput("CO2 Loaded.  Version: " + VERSION + " (build " + about.build + ")");
+        callbacks.printOutput("CO2 Loaded.  Version: " + VERSION );
 
     }
 
